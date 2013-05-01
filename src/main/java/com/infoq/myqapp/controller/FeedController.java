@@ -1,6 +1,6 @@
 package com.infoq.myqapp.controller;
 
-import com.infoq.myqapp.domain.Feed;
+import com.infoq.myqapp.domain.FeedEntry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +15,7 @@ public class FeedController {
 
     @RequestMapping(method =  RequestMethod.GET)
     @ResponseBody
-    public List<Feed> getAllBoxes(){
+    public List<FeedEntry> getAllBoxes(){
         return new ArrayList<>();
     }
 }

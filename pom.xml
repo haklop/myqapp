@@ -15,6 +15,10 @@
         <slf4j.version>1.7.5</slf4j.version>
         <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
         <jdk.version>1.7</jdk.version>
+        <rome.version>1.0</rome.version>
+        <junit.version>4.10</junit.version>
+        <fest-assert.version>1.4</fest-assert.version>
+        <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
     </properties>
 
     <dependencies>
@@ -67,6 +71,29 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>${rome.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-assert</artifactId>
+            <version>${fest-assert.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-api.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
