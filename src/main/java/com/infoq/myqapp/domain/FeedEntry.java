@@ -15,6 +15,8 @@ public class FeedEntry {
 
     private Date publishedDate;
 
+    private String type;
+
     public List<String> getCategories() {
         return categories;
     }
@@ -53,5 +55,13 @@ public class FeedEntry {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
