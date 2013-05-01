@@ -1,4 +1,4 @@
-function FeedListCtrl($scope, Feed) {
+function FeedListCtrl($scope, Feed, Trello) {
     $scope.feeds = Feed.query();
     $scope.formatDate = function (date) {
         return new Date(date).toLocaleDateString();
@@ -12,6 +12,9 @@ function FeedListCtrl($scope, Feed) {
             s += categories[i];
         }
         return s;
+    }
+    $scope.addToTrello = function(feed){
+        Trello.add(feed);
     }
 }
 

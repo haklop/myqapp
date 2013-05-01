@@ -8,6 +8,7 @@ Check the last {{feeds.length}} Feeds from InfoQ.com
             <th>Link</th>
             <th>Date</th>
             <th width="30%">Categories</th>
+            <th width="120px">Add to Trello</th>
         </tr>
     </thead>
     <tbody>
@@ -17,6 +18,7 @@ Check the last {{feeds.length}} Feeds from InfoQ.com
             <td><a href="{{feed.link}}">See on InfoQ</a></td>
             <td>{{formatDate(feed.publishedDate)}}</td>
             <td>{{formatCategories(feed.categories)}}</td>
+            <td><button class="btn btn-info" ng-click="addToTrello(feed)">Add to Trello</button></td>
         </tr>
     </tbody>
 </table>
