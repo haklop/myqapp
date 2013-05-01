@@ -3,6 +3,7 @@ package com.infoq.myqapp.service;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.feed.synd.SyndCategory;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import org.slf4j.Logger;
@@ -52,8 +53,16 @@ public class FeedService {
         feedEntry.setDescription(syndFeedEntry.getDescription().getValue());
         feedEntry.setLink(syndFeedEntry.getLink());
         feedEntry.setPublishedDate(syndFeedEntry.getPublishedDate());
-        feedEntry.setCategories(syndFeedEntry.getCategories());
+        feedEntry.setCategories(buildCategories(syndFeedEntry));
 
         return feedEntry;
+    }
+
+    private List<String> buildCategories(SyndEntry syndFeedEntry) {
+        List<String> categories = new ArrayList<>();
+        for(Object o : syndFeedEntry.getCategories()){
+            categories.add(((SyndCategory) o).getName());
+        }
+        return categories;
     }
 }
