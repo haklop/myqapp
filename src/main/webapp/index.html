@@ -1,1 +1,29 @@
-Hello World
+<!doctype html>
+<html ng-app="myqapp">
+<head>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="app/css/myqapp.css"/>
+</head>
+<body>
+<div class="navbar navbar-static-top banner">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="./">MyQ, The App for The Best</a>
+        </div>
+    </div>
+</div>
+
+<div class="mainContent">
+    <div ng-view></div>
+</div>
+
+<script src="lib/angular/angular.min.js"></script>
+<script src="lib/angular/lib/angular-resource.min.js"></script>
+<script src="app/js/app.js"></script>
+<script src="app/js/services.js"></script>
+<script src="app/js/controller.js"></script>
+<script src="lib/jquery/jquery-1.8.2.min.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/angular/lib/angularstrap.js"></script>
+</body>
+</html>

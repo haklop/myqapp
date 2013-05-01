@@ -63,13 +63,13 @@ public class FeedService {
         String link = syndFeedEntry.getLink();
 
         if (link.startsWith("http://www.infoq.com/articles/")) {
-            return "article";
+            return "Article";
         } else if (link.startsWith("http://www.infoq.com/interviews/")) {
-            return "interview";
+            return "Interview";
         } else if (link.startsWith("http://www.infoq.com/presentations/")) {
-            return "presentation";
+            return "Presentation";
         } else if (link.startsWith("http://www.infoq.com/news/")) {
-            return "news";
+            return "News";
         } else {
             return "";
         }
@@ -80,6 +80,8 @@ public class FeedService {
         for (Object o : syndFeedEntry.getCategories()) {
             categories.add(((SyndCategory) o).getName());
         }
+        //The last item is the type of the article and not a real category
+        categories.remove(categories.size() - 1);
         return categories;
     }
 }

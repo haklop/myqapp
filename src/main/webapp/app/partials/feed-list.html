@@ -1,0 +1,22 @@
+Check the last {{feeds.length}} Feeds from InfoQ.com
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Title</th>
+            <th>Link</th>
+            <th>Date</th>
+            <th width="30%">Categories</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="feed in feeds">
+            <td>{{feed.type}}</td>
+            <td>{{feed.title}}</td>
+            <td><a href="{{feed.link}}">See on InfoQ</a></td>
+            <td>{{formatDate(feed.publishedDate)}}</td>
+            <td>{{formatCategories(feed.categories)}}</td>
+        </tr>
+    </tbody>
+</table>
