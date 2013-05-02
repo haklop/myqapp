@@ -1,13 +1,13 @@
 package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.domain.FeedEntry;
+import com.infoq.myqapp.domain.RequestResult;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
@@ -29,11 +29,18 @@ public class TrelloController {
     @Resource
     private TrelloAuthenticationService trelloAuthenticationService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public void addToTrello(@RequestBody FeedEntry feed) throws Exception {
+    @RequestMapping(method = RequestMethod.POST, value = "/card")
+    @ResponseBody
+    public RequestResult addToTrello(@RequestBody FeedEntry feed, WebRequest request) throws Exception {
         LOG.info("Adding card to Trello {}", feed.getTitle());
-        //TODO
+
+        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+
+        if (requestToken == null || accessToken == null) {
+            return new RequestResult("api/trello/login");
+        }
+        return new RequestResult("");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
@@ -43,12 +50,19 @@ public class TrelloController {
         LOG.info("Login attempt with request and access token : {} {}", requestToken, accessToken);
         if (requestToken == null || accessToken == null) {
             // generate new request token
+            LOG.debug("1");
             OAuthService service = trelloAuthenticationService.getService();
+            LOG.debug("2");
             requestToken = service.getRequestToken();
+            LOG.debug("3");
             request.setAttribute(ATTR_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
+            LOG.debug("4");
 
-            // redirect to linkedin auth page
-            return "redirect:" + service.getAuthorizationUrl(requestToken);
+            // redirect to trello auth page
+            String redirectUrl = "redirect:" + service.getAuthorizationUrl(requestToken);
+
+            LOG.debug("5 : {}", redirectUrl);
+            return redirectUrl;
         }
         return "redirect:/";
     }

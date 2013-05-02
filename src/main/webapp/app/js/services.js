@@ -7,7 +7,7 @@ angularModule.factory('Feed', function ($resource) {
 });
 
 angularModule.factory('Trello', function ($resource) {
-    return $resource('api/trello/', {}, {
+    return $resource('api/trello/card', {}, {
         add: {method: 'POST'}
     });
 });
