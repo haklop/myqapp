@@ -15,7 +15,6 @@
             <tr>
                 <th>Type</th>
                 <th>Title</th>
-                <th>Link</th>
                 <th>Date</th>
                 <th width="30%">Categories</th>
                 <th width="120px">Add to Trello</th>
@@ -24,8 +23,7 @@
             <tbody>
             <tr ng-repeat="feed in feeds | filter:filterCategory">
                 <td>{{feed.type}}</td>
-                <td>{{feed.title}}</td>
-                <td><a href="{{feed.link}}">See on InfoQ</a></td>
+                <td><a href="{{feed.link}}">{{feed.title}}</a></td>
                 <td>{{formatDate(feed.publishedDate)}}</td>
                 <td>{{formatCategories(feed.categories)}}</td>
                 <td>
