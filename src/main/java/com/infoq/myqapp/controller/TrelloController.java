@@ -24,7 +24,6 @@ public class TrelloController {
     private static final Logger LOG = LoggerFactory.getLogger(TrelloController.class);
 
     private static final String ATTR_OAUTH_REQUEST_TOKEN = "oauthrequestoken";
-
     private static final String ATTR_OAUTH_ACCESS_TOKEN = "oauthaccesstoken";
 
     @Resource
@@ -82,7 +81,6 @@ public class TrelloController {
         // store access token as a session attribute
         request.setAttribute(ATTR_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
 
-        ModelAndView mav = new ModelAndView("redirect:/");
-        return mav;
+        return new ModelAndView("redirect:/");
     }
 }

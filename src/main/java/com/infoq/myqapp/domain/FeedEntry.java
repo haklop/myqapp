@@ -6,16 +6,11 @@ import java.util.List;
 public class FeedEntry {
 
     private String title;
-
     private String link;
-
     private String description;
-
-    private List<String> categories;
-
-    private Date publishedDate;
-
     private String type;
+    private Date publishedDate;
+    private List<String> categories;
 
     public List<String> getCategories() {
         return categories;
