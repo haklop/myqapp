@@ -1,12 +1,16 @@
 package com.infoq.myqapp.domain;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
 import java.util.List;
 
 public class FeedEntry {
 
-    private String title;
+    @Id
     private String link;
+
+    private String title;
     private String description;
     private String type;
     private Date publishedDate;

@@ -20,7 +20,7 @@ public class FeedServiceTest {
 
     @Test
     public void testReadFeed() throws Exception {
-        List<FeedEntry> feedEntries = feedService.readFeed();
+        List<FeedEntry> feedEntries = feedService.retrieveFeedTask();
 
         assertThat(feedEntries).isNotEmpty();
     }
