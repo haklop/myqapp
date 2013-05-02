@@ -1,24 +1,39 @@
-Check the last {{feeds.length}} Feeds from InfoQ.com
+<div class="row-fluid">
+    <div class="span3">
+        <p>Check the last {{feeds.length}} Feeds from InfoQ.com</p>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Type</th>
-            <th>Title</th>
-            <th>Link</th>
-            <th>Date</th>
-            <th width="30%">Categories</th>
-            <th width="120px">Add to Trello</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="feed in feeds">
-            <td>{{feed.type}}</td>
-            <td>{{feed.title}}</td>
-            <td><a href="{{feed.link}}">See on InfoQ</a></td>
-            <td>{{formatDate(feed.publishedDate)}}</td>
-            <td>{{formatCategories(feed.categories)}}</td>
-            <td><button class="btn btn-info" ng-click="addToTrello(feed)">Add to Trello</button></td>
-        </tr>
-    </tbody>
-</table>
+        <fieldset>
+            <legend>Filtrer par type</legend>
+            <label class="checkbox" ng-repeat="type in types">
+                <input type="checkbox" ng-model="type.selected"> {{type.name}}
+            </label>
+        </fieldset>
+    </div>
+    <div class="span9">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Type</th>
+                <th>Title</th>
+                <th>Link</th>
+                <th>Date</th>
+                <th width="30%">Categories</th>
+                <th width="120px">Add to Trello</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="feed in feeds | filter:filterCategory">
+                <td>{{feed.type}}</td>
+                <td>{{feed.title}}</td>
+                <td><a href="{{feed.link}}">See on InfoQ</a></td>
+                <td>{{formatDate(feed.publishedDate)}}</td>
+                <td>{{formatCategories(feed.categories)}}</td>
+                <td>
+                    <button class="btn btn-info" ng-click="addToTrello(feed)">Add to Trello</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
