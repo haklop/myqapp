@@ -17,7 +17,7 @@ public class TrelloAuthenticationService {
                 .provider(TrelloApi.class)
                 .apiKey(APPLICATION_KEY)
                 .apiSecret(OAUTH_SECRET)
-                .callback("http://localhost:8080/myqapp/api/trello/callback/")
+                .callback("http://localhost:8080/api/trello/callback/")
                 .build();
     }
 }
