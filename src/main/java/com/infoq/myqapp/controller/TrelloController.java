@@ -3,6 +3,7 @@ package com.infoq.myqapp.controller;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.RequestResult;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
+import com.infoq.myqapp.service.TrelloService;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
@@ -29,6 +30,9 @@ public class TrelloController {
     @Resource
     private TrelloAuthenticationService trelloAuthenticationService;
 
+    @Resource
+    private TrelloService trelloService;
+
     @RequestMapping(method = RequestMethod.POST, value = "/card")
     @ResponseBody
     public RequestResult addToTrello(@RequestBody FeedEntry feed, WebRequest request) throws Exception {
@@ -40,6 +44,9 @@ public class TrelloController {
         if (requestToken == null || accessToken == null) {
             return new RequestResult("api/trello/login");
         }
+
+        trelloService.addCardToTrello(feed, accessToken);
+
         return new RequestResult("");
     }
 
@@ -50,19 +57,12 @@ public class TrelloController {
         LOG.info("Login attempt with request and access token : {} {}", requestToken, accessToken);
         if (requestToken == null || accessToken == null) {
             // generate new request token
-            LOG.debug("1");
             OAuthService service = trelloAuthenticationService.getService();
-            LOG.debug("2");
             requestToken = service.getRequestToken();
-            LOG.debug("3");
             request.setAttribute(ATTR_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
-            LOG.debug("4");
 
             // redirect to trello auth page
-            String redirectUrl = "redirect:" + service.getAuthorizationUrl(requestToken);
-
-            LOG.debug("5 : {}", redirectUrl);
-            return redirectUrl;
+            return "redirect:" + service.getAuthorizationUrl(requestToken);
         }
         return "redirect:/";
     }
@@ -81,8 +81,6 @@ public class TrelloController {
 
         // store access token as a session attribute
         request.setAttribute(ATTR_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
-
-        // getting user profile
 
         ModelAndView mav = new ModelAndView("redirect:/");
         return mav;

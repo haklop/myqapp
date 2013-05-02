@@ -13,9 +13,11 @@ function FeedListCtrl($scope, Feed, Trello) {
         }
         return s;
     }
-    $scope.addToTrello = function(feed){
-        Trello.add(feed, function(result){
-            window.location = window.location.pathname + result.result;
+    $scope.addToTrello = function (feed) {
+        Trello.add(feed, function (result) {
+            if (result.result != "") {
+                window.location = window.location.pathname + result.result;
+            }
         });
     }
 }
