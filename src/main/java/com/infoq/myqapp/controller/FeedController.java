@@ -26,7 +26,7 @@ public class FeedController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<FeedEntry> getAllBoxes() {
+    public List<FeedEntry> getAllFeeds() {
         Page<FeedEntry> page = feedRepository.findAll(new PageRequest(0, 20, Sort.Direction.DESC, "publishedDate"));
         return page.getContent();
     }
