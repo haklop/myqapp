@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,14 +27,22 @@ public class FeedController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<FeedEntry> getAllFeeds() {
+    public Page<FeedEntry> getAllFeeds() {
         Page<FeedEntry> page = feedRepository.findAll(new PageRequest(0, 20, Sort.Direction.DESC, "publishedDate"));
+        return page;
+    }
+
+    @RequestMapping(value = "{page}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<FeedEntry> getPage(@PathVariable("page") int pageNumber) {
+        Page<FeedEntry> page = feedRepository.findAll(new PageRequest(pageNumber, 20, Sort.Direction.DESC, "publishedDate"));
         return page.getContent();
     }
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)
     @ResponseBody
-    public List<FeedEntry> refreshAndGetNewFeed() {
-        return feedService.retrieveFeedTask();
+    public Page<FeedEntry> refreshAndGetNewFeed() {
+        feedService.retrieveFeedTask();
+        return getAllFeeds();
     }
 }

@@ -39,7 +39,7 @@ function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
     };
 
     $scope.addToTrello = function (index) {
-        trello.add($scope.feeds[index], function (result) {
+        trello.add($scope.feeds.content[index], function (result) {
             if (result.result != "") {
                 window.location = window.location.pathname + result.result;
             } else {
@@ -66,13 +66,8 @@ function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
 
     $scope.refreshFeed = function () {
         refreshFeed.query(function (f) {
-            if ($scope.feeds.length === 0) {
-                $scope.feeds = f;
-            } else {
-                $scope.feeds = f.concat($scope.feeds);
-            }
-
-            $scope.alerts.push({"title": "Mise à jour terminé", "type": "success", "content": f.length + " nouveaux éléments"});
+            $scope.feeds = f;
+            $scope.alerts.push({"title": "Mise à jour terminé", "type": "success", "content": ""});
         });
     };
 }
