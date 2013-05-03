@@ -54,7 +54,7 @@ function FeedListCtrl($scope, feed, refreshFeed, trello) {
             if ($scope.feeds.length === 0) {
                 $scope.feeds = f;
             } else {
-                $scope.feeds.unshift(f);
+                $scope.feeds = f.concat($scope.feeds);
             }
         });
 
