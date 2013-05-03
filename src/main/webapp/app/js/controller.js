@@ -42,7 +42,11 @@ function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
         trello.add(feed, function (result) {
             if (result.result != "") {
                 window.location = window.location.pathname + result.result;
+            } else {
+                $scope.alerts.push({"title": "Carte créée dans Trello", "type": "success", "content": ""});
             }
+        }, function(error){
+            $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
         });
     };
 
@@ -67,7 +71,7 @@ function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
 
             $scope.alerts.push({"title": "Mise à jour terminé", "type": "success", "content": f.length + " nouveaux éléments"});
         });
-
     };
+
 }
 
