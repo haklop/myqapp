@@ -28,22 +28,26 @@ public class TrelloService {
     private FeedRepository feedRepository;
 
     public void addCardToTrello(FeedEntry feedEntry, Token accessToken) {
-        LOG.info("Trying to add card to Trello");
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
         Board board = trelloApi.getBoard(EDITING_PROCESS_BOARD_ID);
-        LOG.info("URL Board : {}", board.getName());
 
         List<TList> lists = board.getLists();
-        LOG.info("Lists retrieved : {}", lists.size());
 
         Card cardToCreate = buildCardFromFeedEntry(feedEntry);
         Card card = lists.get(0).createCard(cardToCreate);
 
-        LOG.info("Card created, id is {}", card.getId());
         card.addLabels(TrelloLabel.TRADUCTION.getLabelColor(), TrelloLabel.valueOf(feedEntry.getType().toUpperCase()).getLabelColor());
+        LOG.info("Card created on Trello, id is {}", card.getId());
 
         feedEntry.setAddedInTrello(true);
         feedRepository.save(feedEntry);
+    }
+
+    public List<TList> getLists(Token accessToken){
+        Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
+        Board board = trelloApi.getBoard(EDITING_PROCESS_BOARD_ID);
+
+        return board.getLists();
     }
 
     public Member getMember(String username, Token accessToken) {

@@ -18,6 +18,12 @@ angularModule.factory('trello', function ($resource) {
     });
 });
 
+angularModule.factory('trelloList', function ($resource) {
+    return $resource('api/trello/lists', {}, {
+        query: {method: 'GET'}
+    });
+});
+
 angularModule.factory('trelloMember', function ($resource) {
     return $resource('api/trello/userinfo', {}, {
         query: {method: 'GET'}

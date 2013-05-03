@@ -19,7 +19,7 @@ function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
 
     $scope.connected = false;
 
-    $scope.userinfo = trelloMember.query(function() {
+    $scope.userinfo = trelloMember.query(function () {
         $scope.connected = true;
     });
 
@@ -48,7 +48,7 @@ function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
                     $scope.feeds = f;
                 });
             }
-        }, function(error){
+        }, function (error) {
             $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
         });
     };
@@ -77,8 +77,13 @@ function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
     };
 }
 
-function StatsCtrl($scope, feed, refreshFeed, trello, trelloMember) {
-
-
+function StatsCtrl($scope, trelloList) {
+    trelloList.query(function (l) {
+        if (l.result != null && l.result != "") {
+            window.location = window.location.pathname + l.result;
+        } else {
+            $scope.lists = l.body;
+        }
+    });
 }
 

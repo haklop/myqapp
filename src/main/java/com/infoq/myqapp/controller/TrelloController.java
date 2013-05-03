@@ -5,6 +5,7 @@ import com.infoq.myqapp.domain.RequestResult;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
 import com.julienvey.trello.domain.Member;
+import com.julienvey.trello.domain.TList;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("/trello")
@@ -51,6 +53,18 @@ public class TrelloController {
         trelloService.addCardToTrello(feed, accessToken);
 
         return new RequestResult("");
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/lists")
+    public RequestResult<List<TList>> getLists(WebRequest request) {
+        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+
+        if (requestToken == null || accessToken == null) {
+            return new RequestResult("api/trello/login");
+        }
+        return new RequestResult<>(trelloService.getLists(accessToken));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
