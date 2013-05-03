@@ -44,6 +44,7 @@ function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
                 window.location = window.location.pathname + result.result;
             } else {
                 $scope.alerts.push({"title": "Carte créée dans Trello", "type": "success", "content": ""});
+                //TODO Rafraichir les feeds pour que le bouton passe en disabled
             }
         }, function(error){
             $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
