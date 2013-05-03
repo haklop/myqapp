@@ -2,6 +2,7 @@ package com.infoq.myqapp.service;
 
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.TrelloLabel;
+import com.infoq.myqapp.repository.FeedRepository;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.Board;
 import com.julienvey.trello.domain.Member;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
@@ -21,6 +23,9 @@ public class TrelloService {
     private static final Logger LOG = LoggerFactory.getLogger(TrelloService.class);
 
     public static final String EDITING_PROCESS_BOARD_ID = "5182683ef43ba8a401000160";
+
+    @Resource
+    private FeedRepository feedRepository;
 
     public void addCardToTrello(FeedEntry feedEntry, Token accessToken) {
         LOG.info("Trying to add card to Trello");
@@ -37,7 +42,8 @@ public class TrelloService {
         LOG.info("Card created, id is {}", card.getId());
         card.addLabels(TrelloLabel.TRADUCTION.getLabelColor(), TrelloLabel.valueOf(feedEntry.getType().toUpperCase()).getLabelColor());
 
-
+        feedEntry.setAddedInTrello(true);
+        feedRepository.save(feedEntry);
     }
 
     public Member getMember(String username, Token accessToken) {

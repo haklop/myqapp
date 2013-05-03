@@ -9,12 +9,12 @@ public class FeedEntry {
 
     @Id
     private String link;
-
     private String title;
     private String description;
     private String type;
     private Date publishedDate;
     private List<String> categories;
+    private boolean addedInTrello;
 
     public List<String> getCategories() {
         return categories;
@@ -62,5 +62,13 @@ public class FeedEntry {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isAddedInTrello() {
+        return addedInTrello;
+    }
+
+    public void setAddedInTrello(boolean addedInTrello) {
+        this.addedInTrello = addedInTrello;
     }
 }

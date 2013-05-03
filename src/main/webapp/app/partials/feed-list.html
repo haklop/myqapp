@@ -39,7 +39,8 @@
                 <td>{{formatDate(feed.publishedDate)}}</td>
                 <td>{{formatCategories(feed.categories)}}</td>
                 <td>
-                    <button ng-if="feed.type == 'Article' || feed.type == 'News'" class="btn btn-info" ng-click="addToTrello(feed)">Add to Trello</button>
+                    <button ng-if="(feed.type == 'Article' || feed.type == 'News') && !feed.addedInTrello" class="btn btn-info" ng-click="addToTrello(feed)">Add to Trello</button>
+                    <button ng-if="feed.addedInTrello" class="btn btn-success disabled">Added</button>
                 </td>
             </tr>
             </tbody>
