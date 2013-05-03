@@ -3,8 +3,9 @@
 var module = angular.module('myqapp', ['myqapi', '$strap.directives']).
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.
-            when('/', {templateUrl: 'app/partials/feed-list.html',   controller: FeedListCtrl}).
-            otherwise({redirectTo: '/'});
+            when('/feed', {templateUrl: 'app/partials/feed-list.html',   controller: FeedListCtrl}).
+            when('/stats', {templateUrl: 'app/partials/stats.html',   controller: StatsCtrl}).
+            otherwise({redirectTo: '/feed'});
     }]);
 
 module.directive('ngIf', function() {

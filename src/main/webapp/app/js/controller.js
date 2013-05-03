@@ -75,6 +75,10 @@ function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
             $scope.alerts.push({"title": "Mise à jour terminé", "type": "success", "content": f.length + " nouveaux éléments"});
         });
     };
+}
+
+function StatsCtrl($scope, feed, refreshFeed, trello, trelloMember) {
+
 
 }
 
