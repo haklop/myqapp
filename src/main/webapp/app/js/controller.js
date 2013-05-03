@@ -31,7 +31,7 @@ function FeedListCtrl($scope, feed, refreshFeed, trello) {
     };
 
     $scope.addToTrello = function (feed) {
-        Trello.add(feed, function (result) {
+        trello.add(feed, function (result) {
             if (result.result != "") {
                 window.location = window.location.pathname + result.result;
             }
