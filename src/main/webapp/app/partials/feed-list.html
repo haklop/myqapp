@@ -1,5 +1,11 @@
 <div class="row-fluid">
     <div class="span3">
+        <div ng-switch on="connected" >
+            <span ng-switch-when="true">{{userinfo.fullName}} ({{userinfo.username}})</span>
+            <span ng-switch-default>Vous n'êtes pas connecté avec Trello <br/><a href="">Cliquez ici pour se connecter.</a></span>
+            <hr/>
+        </div>
+
         <fieldset>
             <legend>Filtrer par type</legend>
             <label class="checkbox" ng-repeat="type in types">

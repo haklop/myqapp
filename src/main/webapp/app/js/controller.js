@@ -1,4 +1,4 @@
-function FeedListCtrl($scope, feed, refreshFeed, trello) {
+function FeedListCtrl($scope, feed, refreshFeed, trello, trelloMember) {
     var types = [
         {"name": "News", "selected": true},
         {"name": "Article", "selected": true},
@@ -16,6 +16,12 @@ function FeedListCtrl($scope, feed, refreshFeed, trello) {
     });
 
     $scope.alerts = [];
+
+    $scope.connected = false;
+
+    $scope.userinfo = trelloMember.query(function() {
+        $scope.connected = true;
+    });
 
     $scope.formatDate = function (date) {
         return new Date(date).toLocaleDateString();

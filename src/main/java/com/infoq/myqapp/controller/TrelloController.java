@@ -4,11 +4,14 @@ import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.RequestResult;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
+import com.julienvey.trello.domain.Member;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
@@ -84,5 +87,18 @@ public class TrelloController {
         request.setAttribute(ATTR_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
 
         return new ModelAndView("redirect:/");
+    }
+
+    @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
+    public ResponseEntity getUserInfo(WebRequest request) {
+        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+
+        if (requestToken == null || accessToken == null) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        Member member = trelloService.getMember("me", accessToken);
+        return new ResponseEntity<>(member, HttpStatus.OK);
     }
 }

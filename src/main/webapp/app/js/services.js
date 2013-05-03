@@ -17,3 +17,9 @@ angularModule.factory('trello', function ($resource) {
         add: {method: 'POST'}
     });
 });
+
+angularModule.factory('trelloMember', function ($resource) {
+    return $resource('api/trello/userinfo', {}, {
+        query: {method: 'GET'}
+    });
+});

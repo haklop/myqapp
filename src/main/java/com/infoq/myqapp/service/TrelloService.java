@@ -3,6 +3,7 @@ package com.infoq.myqapp.service;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.Board;
+import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.impl.TrelloImpl;
 import org.scribe.model.Token;
 import org.slf4j.Logger;
@@ -23,6 +24,11 @@ public class TrelloService {
 
         LOG.info("URL Board : {}", board.getName());
 
+    }
+
+    public Member getMember(String username, Token accessToken) {
+        Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
+        return trelloApi.getBasicMemberInformation(username);
     }
 
 }
