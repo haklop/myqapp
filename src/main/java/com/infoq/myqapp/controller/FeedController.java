@@ -28,15 +28,13 @@ public class FeedController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Page<FeedEntry> getAllFeeds() {
-        Page<FeedEntry> page = feedRepository.findAll(new PageRequest(0, 20, Sort.Direction.DESC, "publishedDate"));
-        return page;
+        return getPage(0);
     }
 
     @RequestMapping(value = "{page}", method = RequestMethod.GET)
     @ResponseBody
-    public List<FeedEntry> getPage(@PathVariable("page") int pageNumber) {
-        Page<FeedEntry> page = feedRepository.findAll(new PageRequest(pageNumber, 20, Sort.Direction.DESC, "publishedDate"));
-        return page.getContent();
+    public Page<FeedEntry> getPage(@PathVariable("page") int pageNumber) {
+        return feedRepository.findAll(new PageRequest(pageNumber, 20, Sort.Direction.DESC, "publishedDate"));
     }
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)

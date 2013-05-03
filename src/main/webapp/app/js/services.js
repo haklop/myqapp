@@ -1,7 +1,7 @@
 var angularModule = angular.module('myqapi', ['ngResource']);
 
 angularModule.factory('feed', function ($resource) {
-    return $resource('api/feed/', {}, {
+    return $resource('api/feed/:page', {}, {
         query: {method: 'GET', isArray: false}
     });
 });
