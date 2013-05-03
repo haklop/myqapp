@@ -1,6 +1,6 @@
 <div>
     <div class="well well-small" ng-repeat="list in lists">
-        <div><strong>{{list.name}}</strong> : {{writing.cards.length}} items</div>
+        <div><strong>{{list.name}}</strong> : {{list.cards.length}} items</div>
         <div class="row-fluid">
             <div class="span6">
                 <div>News : {{countNews(list.cards)}} ({{countNewsOriginal(list.cards)}} original,
