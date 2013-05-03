@@ -2,7 +2,7 @@
     <div class="span3">
         <div ng-switch on="connected" >
             <span ng-switch-when="true">{{userinfo.fullName}} ({{userinfo.username}})</span>
-            <span ng-switch-default>Vous n'êtes pas connecté avec Trello <br/><a href="">Cliquez ici pour se connecter.</a></span>
+            <span ng-switch-default>Vous n'êtes pas connecté avec Trello <br/><a href="./api/trello/login">Cliquez ici pour se connecter.</a></span>
             <hr/>
         </div>
 
