@@ -16,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/trello")
@@ -50,12 +51,13 @@ public class TrelloController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
-    public String login(WebRequest request) throws Exception {
+    public String login(WebRequest request, HttpServletRequest httpServletRequest) throws Exception {
         Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
         Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
         LOG.info("Login attempt with request and access token : {} {}", requestToken, accessToken);
         if (requestToken == null || accessToken == null) {
             // generate new request token
+            trelloAuthenticationService.setRequestURL(httpServletRequest.getRequestURL().toString());
             OAuthService service = trelloAuthenticationService.getService();
             requestToken = service.getRequestToken();
             request.setAttribute(ATTR_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
