@@ -10,7 +10,7 @@ package com.infoq.myqapp.domain;
 public enum TrelloLabel {
 
     NEWS("green"),
-    ARTICLES("yellow"),
+    ARTICLE("yellow"),
     SPONSOR("red"),
     TRADUCTION("purple"),
     ORIGINAL("blue");
