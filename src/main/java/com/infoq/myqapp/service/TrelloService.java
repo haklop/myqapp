@@ -22,14 +22,15 @@ public class TrelloService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrelloService.class);
 
-    public static final String EDITING_PROCESS_BOARD_ID = "5182683ef43ba8a401000160";
+    public static final String TEST_EDITING_PROCESS_BOARD_ID = "5182683ef43ba8a401000160";
+    public static final String EDITING_PROCESS_BOARD_ID = "51499c4cb867d5eb5900678f";
 
     @Resource
     private FeedRepository feedRepository;
 
     public void addCardToTrello(FeedEntry feedEntry, Token accessToken) {
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
-        Board board = trelloApi.getBoard(EDITING_PROCESS_BOARD_ID);
+        Board board = trelloApi.getBoard(TEST_EDITING_PROCESS_BOARD_ID);
 
         List<TList> lists = board.getLists();
 

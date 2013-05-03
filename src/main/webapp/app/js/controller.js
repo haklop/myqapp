@@ -86,5 +86,75 @@ function StatsCtrl($scope, trelloList) {
             $scope.lists = l.body;
         }
     });
+
+    function hasLabel(card, label) {
+        var labels = card.labels;
+        for (var i = 0; i < labels.length; i++) {
+            if (labels[i].name == label) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $scope.countNews = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (hasLabel(cards[i], "News")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    $scope.countNewsOriginal = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (hasLabel(cards[i], "News") && hasLabel(cards[i], "Original")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    $scope.countNewsTraduction = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (hasLabel(cards[i], "News") && hasLabel(cards[i], "Traduction")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    $scope.countArticles = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (hasLabel(cards[i], "Articles")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    $scope.countArticlesOriginal = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (hasLabel(cards[i], "Articles") && hasLabel(cards[i], "Original")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    $scope.countArticlesTraduction = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (hasLabel(cards[i], "Articles") && hasLabel(cards[i], "Traduction")) {
+                count++;
+            }
+        }
+        return count;
+    }
 }
 
