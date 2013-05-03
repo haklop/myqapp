@@ -1,6 +1,7 @@
 package com.infoq.myqapp.service;
 
 import com.infoq.myqapp.domain.FeedEntry;
+import com.infoq.myqapp.domain.TrelloLabel;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.Board;
 import com.julienvey.trello.domain.Member;
@@ -30,13 +31,11 @@ public class TrelloService {
         List<TList> lists = board.getLists();
         LOG.info("Lists retrieved : {}", lists.size());
 
-        Card card = new Card();
-        card.setName(feedEntry.getTitle());
-        lists.get(0).createCard(card);
+        Card cardToCreate = buildCardFromFeedEntry(feedEntry);
+        Card card = lists.get(0).createCard(cardToCreate);
 
-        for(TList list : lists){
-            LOG.info("List retrieved : {} {} {}", list.getId(), list.getName());
-        }
+        LOG.info("Card created, id is {}", card.getId());
+        card.addLabels(TrelloLabel.TRADUCTION.getLabelColor(), TrelloLabel.valueOf(feedEntry.getType().toUpperCase()).getLabelColor());
 
 
     }
@@ -46,4 +45,10 @@ public class TrelloService {
         return trelloApi.getBasicMemberInformation(username);
     }
 
+    private Card buildCardFromFeedEntry(FeedEntry feedEntry) {
+        Card cardToCreate = new Card();
+        cardToCreate.setName(feedEntry.getTitle());
+        cardToCreate.setDesc(feedEntry.getLink());
+        return cardToCreate;
+    }
 }
