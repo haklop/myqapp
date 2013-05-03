@@ -11,7 +11,6 @@ public enum TrelloLabel {
 
     NEWS("green"),
     ARTICLES("yellow"),
-    INTERVIEW("orange"),
     SPONSOR("red"),
     TRADUCTION("purple"),
     ORIGINAL("blue");
