@@ -4,6 +4,7 @@ import com.infoq.myqapp.domain.FeedEntry;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.Board;
 import com.julienvey.trello.domain.Member;
+import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
 import org.scribe.model.Token;
@@ -28,6 +29,10 @@ public class TrelloService {
 
         List<TList> lists = board.getLists();
         LOG.info("Lists retrieved : {}", lists.size());
+
+        Card card = new Card();
+        card.setName(feedEntry.getTitle());
+        lists.get(0).createCard(card);
 
         for(TList list : lists){
             LOG.info("List retrieved : {} {} {}", list.getId(), list.getName());

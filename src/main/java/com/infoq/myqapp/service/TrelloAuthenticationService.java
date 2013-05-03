@@ -1,5 +1,6 @@
 package com.infoq.myqapp.service;
 
+import com.infoq.myqapp.service.scribe.TrelloApiProvider;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TrelloApi;
 import org.scribe.oauth.OAuthService;
@@ -23,7 +24,7 @@ public class TrelloAuthenticationService {
 
     public OAuthService getService() {
         return new ServiceBuilder()
-                .provider(TrelloApi.class)
+                .provider(TrelloApiProvider.class)
                 .apiKey(APPLICATION_KEY)
                 .apiSecret(OAUTH_SECRET)
                 .callback(callBackURL)
