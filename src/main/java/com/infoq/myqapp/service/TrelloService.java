@@ -4,11 +4,14 @@ import com.infoq.myqapp.domain.FeedEntry;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.Board;
 import com.julienvey.trello.domain.Member;
+import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
 import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TrelloService {
@@ -21,8 +24,15 @@ public class TrelloService {
         LOG.info("Trying to add card to Trello");
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
         Board board = trelloApi.getBoard(EDITING_PROCESS_BOARD_ID);
-
         LOG.info("URL Board : {}", board.getName());
+
+        List<TList> lists = board.getLists();
+        LOG.info("Lists retrieved : {}", lists.size());
+
+        for(TList list : lists){
+            LOG.info("List retrieved : {} {} {}", list.getId(), list.getName());
+        }
+
 
     }
 
