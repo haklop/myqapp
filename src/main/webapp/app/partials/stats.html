@@ -1,15 +1,37 @@
 <div>
     <div class="well well-small" ng-repeat="list in lists">
-        <div><strong>{{list.name}}</strong> : {{list.cards.length}} items</div>
         <div class="row-fluid">
-            <div class="span6">
+            <div class="span4">
+                <div><strong>{{list.name}}</strong> : {{list.cards.length}} items</div>
                 <div>News : {{countNews(list.cards)}} ({{countNewsOriginal(list.cards)}} original,
                     {{countNewsTraduction(list.cards)}} traduction)
                 </div>
                 <div>Articles : {{countArticles(list.cards)}} ({{countArticlesOriginal(list.cards)}} original,
-                    {{countArticlesTraduction(list.cards)}} traduction)</div>
+                    {{countArticlesTraduction(list.cards)}} traduction)
+                </div>
             </div>
-            <div class="span6"></div>
+            <div class="span8">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Auteur</th>
+                        <th>News Originales</th>
+                        <th>News Traduites</th>
+                        <th>Articles Originales</th>
+                        <th>Articles Traduits</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="(author, count) in getAuthors(list.cards)">
+                        <td>{{matchUserId(author).fullName}}</td>
+                        <td>{{count.newsoriginal}}</td>
+                        <td>{{count.newstraduction}}</td>
+                        <td>{{count.articlesoriginal}}</td>
+                        <td>{{count.articlestraduction}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

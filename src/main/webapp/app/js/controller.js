@@ -78,7 +78,7 @@ function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMem
     };
 }
 
-function StatsCtrl($scope, trelloList) {
+function StatsCtrl($scope, trelloList, trelloUser) {
     trelloList.query(function (l) {
         if (l.result != null && l.result != "") {
             window.location = window.location.pathname + l.result;
@@ -105,6 +105,18 @@ function StatsCtrl($scope, trelloList) {
             }
         }
         return count;
+    }
+
+     trelloUser.query(function(users){
+         var userMap = {}
+         for (var i = 0; i < users.length; i++) {
+            userMap[users[i].id] = users[i];
+         }
+         $scope.users = userMap;
+     });
+
+    $scope.matchUserId = function(memberId){
+        return $scope.users[memberId];
     }
 
     $scope.countNewsOriginal = function (cards) {
@@ -155,6 +167,31 @@ function StatsCtrl($scope, trelloList) {
             }
         }
         return count;
+    }
+
+    $scope.getAuthors = function(cards){
+        var authors = {};
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            var idAuthor = card.idMembers[0];
+
+            if(!authors[ idAuthor]){
+                authors[idAuthor] = { newsoriginal : 0, newstraduction: 0, articlesoriginal : 0, articlestraduction: 0} ;
+            }
+            if (hasLabel(card, "Articles") && hasLabel(card, "Original")){
+                authors[idAuthor]["articlesoriginal"]++;
+            }
+            if (hasLabel(card, "Articles") && hasLabel(card, "Traduction")){
+                authors[idAuthor]["articlestraduction"]++;
+            }
+            if (hasLabel(card, "News") && hasLabel(card, "Original")){
+                authors[idAuthor]["newsoriginal"]++;
+            }
+            if (hasLabel(card, "News") && hasLabel(card, "Traduction")){
+                authors[idAuthor]["newstraduction"]++;
+            }
+        }
+        return authors;
     }
 }
 

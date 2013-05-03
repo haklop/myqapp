@@ -2,6 +2,7 @@ package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.RequestResult;
+import com.infoq.myqapp.service.MemberService;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
 import com.julienvey.trello.domain.Member;
@@ -37,6 +38,9 @@ public class TrelloController {
 
     @Resource
     private TrelloService trelloService;
+
+    @Resource
+    private MemberService memberService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/card")
     @ResponseBody
@@ -114,5 +118,18 @@ public class TrelloController {
 
         Member member = trelloService.getMember("me", accessToken);
         return new ResponseEntity<>(member, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/member", method = RequestMethod.GET)
+    public ResponseEntity getMembers(WebRequest request) {
+        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+
+        if (requestToken == null || accessToken == null) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        List<Member> members = memberService.getMembers(accessToken);
+        return new ResponseEntity<>(members, HttpStatus.OK);
     }
 }
