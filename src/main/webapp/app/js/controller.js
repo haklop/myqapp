@@ -1,7 +1,5 @@
-function FeedListCtrl($scope, Feed, Trello) {
-    $scope.feeds = Feed.query();
-
-    types = [
+function FeedListCtrl($scope, feed, refreshFeed, trello) {
+    var types = [
         {"name": "News", "selected": true},
         {"name": "Article", "selected": true},
         {"name": "Interview", "selected": true},
@@ -9,6 +7,13 @@ function FeedListCtrl($scope, Feed, Trello) {
     ];
     $scope.types = types;
 
+    $scope.feeds = feed.query(function (f) {
+        if (f.length === 0) {
+            $scope.refreshFeed();
+        } else {
+            $scope.feeds = f;
+        }
+    });
 
     $scope.formatDate = function (date) {
         return new Date(date).toLocaleDateString();
@@ -42,6 +47,17 @@ function FeedListCtrl($scope, Feed, Trello) {
             }
         }
         return false;
+    };
+
+    $scope.refreshFeed = function () {
+        refreshFeed.query(function (f) {
+            if ($scope.feeds.length === 0) {
+                $scope.feeds = f;
+            } else {
+                $scope.feeds.unshift(f);
+            }
+        });
+
     };
 }
 

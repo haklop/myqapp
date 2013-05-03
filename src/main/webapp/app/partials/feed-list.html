@@ -1,12 +1,15 @@
 <div class="row-fluid">
     <div class="span3">
-        <p>Check the last {{feeds.length}} Feeds from InfoQ.com</p>
-
         <fieldset>
             <legend>Filtrer par type</legend>
             <label class="checkbox" ng-repeat="type in types">
                 <input type="checkbox" ng-model="type.selected"> {{type.name}}
             </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Actions</legend>
+            <button class="btn" ng-click="refreshFeed()">Rafraichir le feed</button>
         </fieldset>
     </div>
     <div class="span9">
