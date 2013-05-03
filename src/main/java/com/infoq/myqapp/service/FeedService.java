@@ -16,7 +16,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class FeedService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FeedService.class);
