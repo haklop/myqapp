@@ -15,6 +15,8 @@ function FeedListCtrl($scope, feed, refreshFeed, trello) {
         }
     });
 
+    $scope.alerts = [];
+
     $scope.formatDate = function (date) {
         return new Date(date).toLocaleDateString();
     };
@@ -56,6 +58,8 @@ function FeedListCtrl($scope, feed, refreshFeed, trello) {
             } else {
                 $scope.feeds = f.concat($scope.feeds);
             }
+
+            $scope.alerts.push({"title": "Mise à jour terminé", "type": "success", "content": f.length + " nouveaux éléments"});
         });
 
     };

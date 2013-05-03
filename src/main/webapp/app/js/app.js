@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('myqapp', ['myqapi']).
+angular.module('myqapp', ['myqapi', '$strap.directives']).
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.
             when('/', {templateUrl: 'app/partials/feed-list.html',   controller: FeedListCtrl}).
