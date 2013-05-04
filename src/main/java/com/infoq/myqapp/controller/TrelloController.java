@@ -1,5 +1,6 @@
 package com.infoq.myqapp.controller;
 
+import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.RequestResult;
 import com.infoq.myqapp.service.MemberService;
@@ -30,8 +31,7 @@ public class TrelloController {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrelloController.class);
 
-    private static final String ATTR_OAUTH_REQUEST_TOKEN = "oauthrequestoken";
-    private static final String ATTR_OAUTH_ACCESS_TOKEN = "oauthaccesstoken";
+
 
     @Resource
     private TrelloAuthenticationService trelloAuthenticationService;
@@ -47,12 +47,7 @@ public class TrelloController {
     public RequestResult addToTrello(@RequestBody FeedEntry feed, WebRequest request) throws Exception {
         LOG.info("Adding card to Trello {}", feed.getTitle());
 
-        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
-        Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
-
-        if (requestToken == null || accessToken == null) {
-            return new RequestResult("api/trello/login");
-        }
+        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
         trelloService.addCardToTrello(feed, accessToken);
 
@@ -62,26 +57,23 @@ public class TrelloController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/lists")
     public RequestResult<List<TList>> getLists(WebRequest request) {
-        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
-        Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
-        if (requestToken == null || accessToken == null) {
-            return new RequestResult("api/trello/login");
-        }
         return new RequestResult<>(trelloService.getLists(accessToken));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) throws Exception {
-        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
-        Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token requestToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
         LOG.info("Login attempt with request and access token : {} {}", requestToken, accessToken);
+
         if (requestToken == null || accessToken == null) {
             // generate new request token
             trelloAuthenticationService.setRequestURL(httpServletRequest.getRequestURL().toString());
             OAuthService service = trelloAuthenticationService.getService();
             requestToken = service.getRequestToken();
-            request.setAttribute(ATTR_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
+            request.setAttribute(AuthenticationFilter.ATTR_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
 
             // redirect to trello auth page
             return "redirect:" + service.getAuthorizationUrl(requestToken);
@@ -94,7 +86,7 @@ public class TrelloController {
 
         // getting request tocken
         OAuthService service = trelloAuthenticationService.getService();
-        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token requestToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
 
         // getting access token
         Verifier verifier = new Verifier(oauthVerifier);
@@ -102,19 +94,14 @@ public class TrelloController {
         LOG.info("Access Granted to Trello with token {}", accessToken);
 
         // store access token as a session attribute
-        request.setAttribute(ATTR_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
+        request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
 
         return new ModelAndView("redirect:/");
     }
 
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
     public ResponseEntity getUserInfo(WebRequest request) {
-        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
-        Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
-
-        if (requestToken == null || accessToken == null) {
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
-        }
+        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
         Member member = trelloService.getMember("me", accessToken);
         return new ResponseEntity<>(member, HttpStatus.OK);
@@ -122,12 +109,7 @@ public class TrelloController {
 
     @RequestMapping(value = "/member", method = RequestMethod.GET)
     public ResponseEntity getMembers(WebRequest request) {
-        Token requestToken = (Token) request.getAttribute(ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
-        Token accessToken = (Token) request.getAttribute(ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
-
-        if (requestToken == null || accessToken == null) {
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
-        }
+        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
         List<Member> members = memberService.getMembers(accessToken);
         return new ResponseEntity<>(members, HttpStatus.OK);
