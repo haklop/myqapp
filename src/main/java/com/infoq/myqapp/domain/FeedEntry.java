@@ -15,6 +15,7 @@ public class FeedEntry {
     private Date publishedDate;
     private List<String> categories;
     private boolean addedInTrello;
+    private String urlTrello;
 
     public List<String> getCategories() {
         return categories;
@@ -70,5 +71,13 @@ public class FeedEntry {
 
     public void setAddedInTrello(boolean addedInTrello) {
         this.addedInTrello = addedInTrello;
+    }
+
+    public String getUrlTrello() {
+        return urlTrello;
+    }
+
+    public void setUrlTrello(String urlTrello) {
+        this.urlTrello = urlTrello;
     }
 }

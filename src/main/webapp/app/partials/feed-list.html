@@ -43,7 +43,8 @@
                     <button ng-if="(feed.type == 'Article' || feed.type == 'News') && !feed.addedInTrello"
                             class="btn btn-info" ng-click="addToTrello($index)">Add to Trello
                     </button>
-                    <button ng-if="feed.addedInTrello" class="btn btn-success disabled">Added</button>
+                    <a ng-if="feed.addedInTrello" href="{{feed.urlTrello}}" class="btn btn-success disabed"
+                       title="View on Trello" target="_blank">Added</a>
                 </td>
             </tr>
             </tbody>

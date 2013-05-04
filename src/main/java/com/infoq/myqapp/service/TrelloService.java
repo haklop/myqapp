@@ -5,8 +5,8 @@ import com.infoq.myqapp.domain.TrelloLabel;
 import com.infoq.myqapp.repository.FeedRepository;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.Board;
-import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.Card;
+import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
 import org.scribe.model.Token;
@@ -41,10 +41,11 @@ public class TrelloService {
         LOG.info("Card created on Trello, id is {}", card.getId());
 
         feedEntry.setAddedInTrello(true);
+        feedEntry.setUrlTrello(card.getUrl());
         feedRepository.save(feedEntry);
     }
 
-    public List<TList> getLists(Token accessToken){
+    public List<TList> getLists(Token accessToken) {
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
         Board board = trelloApi.getBoard(EDITING_PROCESS_BOARD_ID);
 
