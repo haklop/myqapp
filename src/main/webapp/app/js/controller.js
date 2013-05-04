@@ -29,10 +29,6 @@ function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMem
         $scope.connected = true;
     });
 
-    $scope.formatDate = function (date) {
-        return new Date(date).toLocaleDateString();
-    };
-
     $scope.formatCategories = function (categories) {
         var s = "";
         var append = "";

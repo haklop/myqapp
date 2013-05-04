@@ -37,7 +37,7 @@
             <tr ng-repeat="feed in feeds.content | filter:filterCategory">
                 <td>{{feed.type}}</td>
                 <td><a href="{{feed.link}}">{{feed.title}}</a></td>
-                <td>{{formatDate(feed.publishedDate)}}</td>
+                <td>{{feed.publishedDate | date:'dd/MM/yyyy'}}</td>
                 <td>{{formatCategories(feed.categories)}}</td>
                 <td>
                     <button ng-if="(feed.type == 'Article' || feed.type == 'News') && !feed.addedInTrello"
