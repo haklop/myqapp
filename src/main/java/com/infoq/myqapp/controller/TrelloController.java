@@ -44,7 +44,7 @@ public class TrelloController {
     private FeedRepository feedRepository;
 
     @RequestMapping(method = RequestMethod.POST, value = "/card")
-    public ResponseEntity addToTrello(@RequestBody FeedEntry feed, WebRequest request) throws Exception {
+    public ResponseEntity addToTrello(@RequestBody FeedEntry feed, WebRequest request) {
         LOG.info("Adding card to Trello {}", feed.getTitle());
 
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
@@ -66,7 +66,7 @@ public class TrelloController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
-    public String login(WebRequest request, HttpServletRequest httpServletRequest) throws Exception {
+    public String login(WebRequest request, HttpServletRequest httpServletRequest) {
         Token requestToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
         LOG.info("Login attempt with request and access token : {} {}", requestToken, accessToken);
@@ -85,8 +85,9 @@ public class TrelloController {
 
         if (hasToAuthenticate) {
             // generate new request token
-            trelloAuthenticationService.setRequestURL(httpServletRequest.getRequestURL().toString());
-            OAuthService service = trelloAuthenticationService.getService();
+            OAuthService service = trelloAuthenticationService.getService(httpServletRequest.getRequestURL()
+                    .toString().replace("/api/trello/login", "/api/trello/callback"));
+
             requestToken = service.getRequestToken();
             request.setAttribute(AuthenticationFilter.ATTR_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
 
@@ -131,7 +132,7 @@ public class TrelloController {
     }
 
     @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity handleUnauthorized() {
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    public ResponseEntity handleUnauthorized(HttpClientErrorException e) {
+        return new ResponseEntity(e.getStatusCode());
     }
 }
