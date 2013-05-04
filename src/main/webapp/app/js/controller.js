@@ -23,12 +23,6 @@ function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMem
 
     $scope.alerts = [];
 
-    $scope.connected = false;
-
-    $scope.userinfo = trelloMember.query(function () {
-        $scope.connected = true;
-    });
-
     $scope.formatCategories = function (categories) {
         var s = "";
         var append = "";
@@ -49,7 +43,7 @@ function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMem
             });
 
         }, function (response) {
-            if(response.status === 409) {
+            if (response.status === 409) {
                 $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "info", "content": "Carte déjà existante"});
             } else {
                 $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
@@ -100,15 +94,15 @@ function StatsCtrl($scope, trelloList, trelloUser) {
         return count;
     };
 
-     trelloUser.query(function(users){
-         var userMap = {};
-         for (var i = 0; i < users.length; i++) {
+    trelloUser.query(function (users) {
+        var userMap = {};
+        for (var i = 0; i < users.length; i++) {
             userMap[users[i].id] = users[i];
-         }
-         $scope.users = userMap;
-     });
+        }
+        $scope.users = userMap;
+    });
 
-    $scope.matchUserId = function(memberId){
+    $scope.matchUserId = function (memberId) {
         return $scope.users[memberId];
     };
 
@@ -162,30 +156,47 @@ function StatsCtrl($scope, trelloList, trelloUser) {
         return count;
     };
 
-    $scope.getAuthors = function(cards){
+    $scope.getAuthors = function (cards) {
         var authors = {};
         for (var i = 0; i < cards.length; i++) {
             var card = cards[i];
             var idAuthor = card.idMembers[0];
 
-            if(!authors[ idAuthor]){
-                authors[idAuthor] = { newsoriginal : 0, newstraduction: 0, articlesoriginal : 0, articlestraduction: 0} ;
+            if (!authors[ idAuthor]) {
+                authors[idAuthor] = { newsoriginal: 0, newstraduction: 0, articlesoriginal: 0, articlestraduction: 0};
             }
-            if (hasLabel(card, "Articles") && hasLabel(card, "Original")){
+            if (hasLabel(card, "Articles") && hasLabel(card, "Original")) {
                 authors[idAuthor]["articlesoriginal"]++;
             }
-            if (hasLabel(card, "Articles") && hasLabel(card, "Traduction")){
+            if (hasLabel(card, "Articles") && hasLabel(card, "Traduction")) {
                 authors[idAuthor]["articlestraduction"]++;
             }
-            if (hasLabel(card, "News") && hasLabel(card, "Original")){
+            if (hasLabel(card, "News") && hasLabel(card, "Original")) {
                 authors[idAuthor]["newsoriginal"]++;
             }
-            if (hasLabel(card, "News") && hasLabel(card, "Traduction")){
+            if (hasLabel(card, "News") && hasLabel(card, "Traduction")) {
                 authors[idAuthor]["newstraduction"]++;
             }
         }
         return authors;
     };
+
+}
+
+function headerController($scope, $location, trelloMember) {
+    $scope.isActive = function (route) {
+        return $location.path().indexOf(route) === 0;
+    };
+
+    $scope.userinfo = trelloMember.query();
+
+    $scope.$on('$routeChangeStart', function(next, current) {
+         trelloMember.query(function(response) {
+             $scope.userinfo = response;
+         }, function(response) {
+             window.location = window.location.pathname + "api/trello/login";
+         });
+    });
 
 }
 

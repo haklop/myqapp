@@ -16,10 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
@@ -73,7 +71,19 @@ public class TrelloController {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
         LOG.info("Login attempt with request and access token : {} {}", requestToken, accessToken);
 
+        boolean hasToAuthenticate = false;
         if (requestToken == null || accessToken == null) {
+            hasToAuthenticate = true;
+        } else {
+            // check if the token is not revoked
+            try {
+                trelloService.getMember("me", accessToken);
+            } catch (HttpClientErrorException e) {
+                hasToAuthenticate = true;
+            }
+        }
+
+        if (hasToAuthenticate) {
             // generate new request token
             trelloAuthenticationService.setRequestURL(httpServletRequest.getRequestURL().toString());
             OAuthService service = trelloAuthenticationService.getService();
@@ -118,5 +128,10 @@ public class TrelloController {
 
         List<Member> members = memberService.getMembers(accessToken);
         return new ResponseEntity<>(members, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(HttpClientErrorException.class)
+    public ResponseEntity handleUnauthorized() {
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 }

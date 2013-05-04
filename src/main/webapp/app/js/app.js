@@ -8,6 +8,26 @@ var module = angular.module('myqapp', ['myqapi', '$strap.directives']).
             otherwise({redirectTo: '/feed/0'});
     }]);
 
+
+
+module.factory('http401Interceptor', function ($q) {
+    return function (promise) {
+        return promise.then(function (response) {
+            return response;
+        }, function (response) {
+            if (response.status === 401) {
+                window.location = window.location.pathname + "api/trello/login";
+            }
+            // do something on error
+            return $q.reject(response);
+        });
+    };
+});
+
+module.config(function ($httpProvider) {
+    $httpProvider.responseInterceptors.push('http401Interceptor');
+});
+
 module.directive('ngIf', function() {
     return {
         link: function(scope, element, attrs) {
