@@ -2,7 +2,6 @@ package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.FeedEntry;
-import com.infoq.myqapp.domain.RequestResult;
 import com.infoq.myqapp.repository.FeedRepository;
 import com.infoq.myqapp.service.MemberService;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
@@ -17,10 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -59,12 +60,11 @@ public class TrelloController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/lists")
-    public RequestResult<List<TList>> getLists(WebRequest request) {
+    public ResponseEntity<List<TList>> getLists(WebRequest request) {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
-        return new RequestResult<>(trelloService.getLists(accessToken));
+        return new ResponseEntity<>(trelloService.getLists(accessToken), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
@@ -87,7 +87,7 @@ public class TrelloController {
     }
 
     @RequestMapping(value = {"/callback"}, method = RequestMethod.GET)
-    public ModelAndView callback(@RequestParam(value = "oauth_verifier", required = false) String oauthVerifier, WebRequest request) {
+    public String callback(@RequestParam(value = "oauth_verifier", required = false) String oauthVerifier, WebRequest request) {
 
         // getting request tocken
         OAuthService service = trelloAuthenticationService.getService();
@@ -101,7 +101,7 @@ public class TrelloController {
         // store access token as a session attribute
         request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
 
-        return new ModelAndView("redirect:/");
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)

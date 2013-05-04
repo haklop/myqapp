@@ -78,13 +78,7 @@ function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMem
 }
 
 function StatsCtrl($scope, trelloList, trelloUser) {
-    trelloList.query(function (l) {
-        if (l.result != null && l.result != "") {
-            window.location = window.location.pathname + l.result;
-        } else {
-            $scope.lists = l.body;
-        }
-    });
+    $scope.lists = trelloList.query();
 
     function hasLabel(card, label) {
         var labels = card.labels;

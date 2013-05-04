@@ -20,7 +20,7 @@ angularModule.factory('trello', function ($resource) {
 
 angularModule.factory('trelloList', function ($resource) {
     return $resource('api/trello/lists', {}, {
-        query: {method: 'GET'}
+        query: {method: 'GET', isArray: true}
     });
 });
 
