@@ -3,6 +3,7 @@ package com.infoq.myqapp.controller;
 import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.RequestResult;
+import com.infoq.myqapp.repository.FeedRepository;
 import com.infoq.myqapp.service.MemberService;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
@@ -31,8 +32,6 @@ public class TrelloController {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrelloController.class);
 
-
-
     @Resource
     private TrelloAuthenticationService trelloAuthenticationService;
 
@@ -42,16 +41,22 @@ public class TrelloController {
     @Resource
     private MemberService memberService;
 
+    @Resource
+    private FeedRepository feedRepository;
+
     @RequestMapping(method = RequestMethod.POST, value = "/card")
-    @ResponseBody
-    public RequestResult addToTrello(@RequestBody FeedEntry feed, WebRequest request) throws Exception {
+    public ResponseEntity addToTrello(@RequestBody FeedEntry feed, WebRequest request) throws Exception {
         LOG.info("Adding card to Trello {}", feed.getTitle());
 
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
-        trelloService.addCardToTrello(feed, accessToken);
+        FeedEntry entry = feedRepository.findOne(feed.getLink());
+        if (entry != null && entry.isAddedInTrello()) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
 
-        return new RequestResult("");
+        trelloService.addCardToTrello(feed, accessToken);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @ResponseBody

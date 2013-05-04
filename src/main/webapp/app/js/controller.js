@@ -42,16 +42,19 @@ function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMem
 
     $scope.addToTrello = function (index) {
         trello.add($scope.feeds.content[index], function (result) {
-            if (result.result != "") {
-                window.location = window.location.pathname + result.result;
+
+            $scope.alerts.push({"title": "Carte créée dans Trello", "type": "success", "content": ""});
+            $scope.feeds = feed.query({"page": feedPage}, function (f) {
+                $scope.feeds = f;
+            });
+
+        }, function (response) {
+            if(response.status === 409) {
+                $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "info", "content": "Carte déjà existante"});
             } else {
-                $scope.alerts.push({"title": "Carte créée dans Trello", "type": "success", "content": ""});
-                $scope.feeds = feed.query({"page": feedPage}, function (f) {
-                    $scope.feeds = f;
-                });
+                $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
             }
-        }, function (error) {
-            $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
+
         });
     };
 
@@ -101,10 +104,10 @@ function StatsCtrl($scope, trelloList, trelloUser) {
             }
         }
         return count;
-    }
+    };
 
      trelloUser.query(function(users){
-         var userMap = {}
+         var userMap = {};
          for (var i = 0; i < users.length; i++) {
             userMap[users[i].id] = users[i];
          }
@@ -113,7 +116,7 @@ function StatsCtrl($scope, trelloList, trelloUser) {
 
     $scope.matchUserId = function(memberId){
         return $scope.users[memberId];
-    }
+    };
 
     $scope.countNewsOriginal = function (cards) {
         var count = 0;
@@ -123,7 +126,7 @@ function StatsCtrl($scope, trelloList, trelloUser) {
             }
         }
         return count;
-    }
+    };
 
     $scope.countNewsTraduction = function (cards) {
         var count = 0;
@@ -133,7 +136,7 @@ function StatsCtrl($scope, trelloList, trelloUser) {
             }
         }
         return count;
-    }
+    };
 
     $scope.countArticles = function (cards) {
         var count = 0;
@@ -143,7 +146,7 @@ function StatsCtrl($scope, trelloList, trelloUser) {
             }
         }
         return count;
-    }
+    };
 
     $scope.countArticlesOriginal = function (cards) {
         var count = 0;
@@ -153,7 +156,7 @@ function StatsCtrl($scope, trelloList, trelloUser) {
             }
         }
         return count;
-    }
+    };
 
     $scope.countArticlesTraduction = function (cards) {
         var count = 0;
@@ -163,7 +166,7 @@ function StatsCtrl($scope, trelloList, trelloUser) {
             }
         }
         return count;
-    }
+    };
 
     $scope.getAuthors = function(cards){
         var authors = {};
@@ -188,6 +191,7 @@ function StatsCtrl($scope, trelloList, trelloUser) {
             }
         }
         return authors;
-    }
+    };
+
 }
 
