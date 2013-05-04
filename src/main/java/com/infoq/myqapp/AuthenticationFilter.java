@@ -25,10 +25,15 @@ public class AuthenticationFilter implements Filter {
         Token requestToken = (Token) request.getSession().getAttribute(ATTR_OAUTH_REQUEST_TOKEN);
         Token accessToken = (Token) request.getSession().getAttribute(ATTR_OAUTH_ACCESS_TOKEN);
 
-        if (!"/trello/login".equals(request.getPathInfo()) && !"/trello/callback".equals(request.getPathInfo()) &&
-                (requestToken == null || accessToken == null)) {
+        if (!"/favicon.ico".equals(request.getServletPath()) && !"/trello/login".equals(request.getPathInfo())
+                && !"/trello/callback".equals(request.getPathInfo()) && (requestToken == null || accessToken == null)) {
             HttpServletResponse response = (HttpServletResponse) servletResponse;
-            response.sendRedirect("/api/trello/login");
+
+            if (request.getServletPath().equals("/api")) {
+                response.sendError(401);
+            } else {
+                response.sendRedirect("/api/trello/login");
+            }
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
