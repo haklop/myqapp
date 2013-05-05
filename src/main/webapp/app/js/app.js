@@ -4,7 +4,7 @@ var module = angular.module('myqapp', ['myqapi', '$strap.directives']).
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.
             when('/feed/:page', {templateUrl: 'app/partials/feed-list.html',   controller: FeedListCtrl}).
-            when('/stats', {templateUrl: 'app/partials/stats.html',   controller: StatsCtrl}).
+            when('/stats', {templateUrl: 'app/partials/stats-list.html',   controller: StatsListCtrl}).
             otherwise({redirectTo: '/feed/0'});
     }]);
 
