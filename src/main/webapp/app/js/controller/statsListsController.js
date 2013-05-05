@@ -1,5 +1,5 @@
-function StatsListCtrl($scope, trelloList, trelloUser) {
-    $scope.lists = trelloList.query();
+function StatsListCtrl($scope, TrelloList, TrelloUser) {
+    $scope.lists = TrelloList.query();
 
     function hasLabel(card, label) {
         var labels = card.labels;
@@ -21,7 +21,7 @@ function StatsListCtrl($scope, trelloList, trelloUser) {
         return count;
     };
 
-    trelloUser.query(function (users) {
+    TrelloUser.query(function (users) {
         var userMap = {};
         for (var i = 0; i < users.length; i++) {
             userMap[users[i].id] = users[i];

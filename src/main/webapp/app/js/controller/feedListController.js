@@ -1,4 +1,4 @@
-function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMember) {
+function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello) {
     var types = [
         {"name": "News", "selected": true},
         {"name": "Article", "selected": true},
@@ -13,7 +13,7 @@ function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMem
     } else {
         feedPage = 0;
     }
-    $scope.feeds = feed.query({"page": feedPage}, function (f) {
+    $scope.feeds = Feed.query({"page": feedPage}, function (f) {
         if (f.length === 0) {
             $scope.refreshFeed();
         } else {
@@ -35,10 +35,10 @@ function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMem
     };
 
     $scope.addToTrello = function (index) {
-        trello.add($scope.feeds.content[index], function (result) {
+        Trello.add($scope.feeds.content[index], function (result) {
 
             $scope.alerts.push({"title": "Carte créée dans Trello", "type": "success", "content": ""});
-            $scope.feeds = feed.query({"page": feedPage}, function (f) {
+            $scope.feeds = Feed.query({"page": feedPage}, function (f) {
                 $scope.feeds = f;
             });
 
@@ -64,7 +64,7 @@ function FeedListCtrl($scope, $routeParams, feed, refreshFeed, trello, trelloMem
     };
 
     $scope.refreshFeed = function () {
-        refreshFeed.query(function (f) {
+        RefreshFeed.query(function (f) {
             $scope.feeds = f;
             $scope.alerts.push({"title": "Mise à jour terminé", "type": "success", "content": ""});
         });

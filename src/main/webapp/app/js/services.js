@@ -1,36 +1,36 @@
 var angularModule = angular.module('myqapi', ['ngResource']);
 
-angularModule.factory('feed', function ($resource) {
+angularModule.factory('Feed', function ($resource) {
     return $resource('api/feed/:page', {}, {
         query: {method: 'GET', isArray: false}
     });
 });
 
-angularModule.factory('refreshFeed', function ($resource) {
+angularModule.factory('RefreshFeed', function ($resource) {
     return $resource('api/feed/refresh', {}, {
         query: {method: 'GET', isArray: false}
     });
 });
 
-angularModule.factory('trello', function ($resource) {
+angularModule.factory('Trello', function ($resource) {
     return $resource('api/trello/card', {}, {
         add: {method: 'POST'}
     });
 });
 
-angularModule.factory('trelloList', function ($resource) {
+angularModule.factory('TrelloList', function ($resource) {
     return $resource('api/trello/lists', {}, {
         query: {method: 'GET', isArray: true}
     });
 });
 
-angularModule.factory('trelloMember', function ($resource) {
+angularModule.factory('TrelloMember', function ($resource) {
     return $resource('api/trello/userinfo', {}, {
         query: {method: 'GET'}
     });
 });
 
-angularModule.factory('trelloUser', function ($resource) {
+angularModule.factory('TrelloUser', function ($resource) {
     return $resource('api/trello/member', {}, {
         query: {method: 'GET', isArray: true}
     });

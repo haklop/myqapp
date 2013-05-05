@@ -1,12 +1,12 @@
-function HeaderController($scope, $location, trelloMember) {
+function HeaderController($scope, $location, TrelloMember) {
     $scope.isActive = function (route) {
         return $location.path().indexOf(route) === 0;
     };
 
-    $scope.userinfo = trelloMember.query();
+    $scope.userinfo = TrelloMember.query();
 
     $scope.$on('$routeChangeStart', function(next, current) {
-        trelloMember.query(function(response) {
+        TrelloMember.query(function(response) {
             $scope.userinfo = response;
         }, function(response) {
             window.location = window.location.pathname + "api/trello/login";
