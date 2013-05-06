@@ -49,5 +49,65 @@ angularModule.factory('StatsHelper', function () {
         return false;
     }
 
+    statsHelperService.countNews = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (statsHelperService.hasLabel(cards[i], "News")) {
+                count++;
+            }
+        }
+        return count;
+    };
+
+    statsHelperService.countNewsOriginal = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (statsHelperService.hasLabel(cards[i], "News") && statsHelperService.hasLabel(cards[i], "Original")) {
+                count++;
+            }
+        }
+        return count;
+    };
+
+    statsHelperService.countNewsTraduction = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (statsHelperService.hasLabel(cards[i], "News") && statsHelperService.hasLabel(cards[i], "Traduction")) {
+                count++;
+            }
+        }
+        return count;
+    };
+
+    statsHelperService.countArticles = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (statsHelperService.hasLabel(cards[i], "Articles")) {
+                count++;
+            }
+        }
+        return count;
+    };
+
+    statsHelperService.countArticlesOriginal = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (statsHelperService.hasLabel(cards[i], "Articles") && statsHelperService.hasLabel(cards[i], "Original")) {
+                count++;
+            }
+        }
+        return count;
+    };
+
+    statsHelperService.countArticlesTraduction = function (cards) {
+        var count = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (statsHelperService.hasLabel(cards[i], "Articles") && statsHelperService.hasLabel(cards[i], "Traduction")) {
+                count++;
+            }
+        }
+        return count;
+    };
+
     return statsHelperService;
 });

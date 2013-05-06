@@ -3,10 +3,16 @@
         <thead>
         <tr>
             <th>Nom</th>
+            <th>Articles</th>
+            <th>News</th>
+            <th>Validations</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="user in users">
+            <td>{{user.fullName}}</td>
+            <td>{{countArticlesDone(user)}}</td>
+            <td>{{user.fullName}}</td>
             <td>{{user.fullName}}</td>
         </tr>
         </tbody>

@@ -1,16 +1,6 @@
 function StatsListCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
     $scope.lists = TrelloList.query();
 
-    $scope.countNews = function (cards) {
-        var count = 0;
-        for (var i = 0; i < cards.length; i++) {
-            if (StatsHelper.hasLabel(cards[i], "News")) {
-                count++;
-            }
-        }
-        return count;
-    };
-
     TrelloUser.query(function (users) {
         var userMap = {};
         for (var i = 0; i < users.length; i++) {
@@ -23,55 +13,12 @@ function StatsListCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
         return $scope.users[memberId];
     };
 
-    $scope.countNewsOriginal = function (cards) {
-        var count = 0;
-        for (var i = 0; i < cards.length; i++) {
-            if (StatsHelper.hasLabel(cards[i], "News") && StatsHelper.hasLabel(cards[i], "Original")) {
-                count++;
-            }
-        }
-        return count;
-    };
-
-    $scope.countNewsTraduction = function (cards) {
-        var count = 0;
-        for (var i = 0; i < cards.length; i++) {
-            if (StatsHelper.hasLabel(cards[i], "News") && StatsHelper.hasLabel(cards[i], "Traduction")) {
-                count++;
-            }
-        }
-        return count;
-    };
-
-    $scope.countArticles = function (cards) {
-        var count = 0;
-        for (var i = 0; i < cards.length; i++) {
-            if (StatsHelper.hasLabel(cards[i], "Articles")) {
-                count++;
-            }
-        }
-        return count;
-    };
-
-    $scope.countArticlesOriginal = function (cards) {
-        var count = 0;
-        for (var i = 0; i < cards.length; i++) {
-            if (StatsHelper.hasLabel(cards[i], "Articles") && StatsHelper.hasLabel(cards[i], "Original")) {
-                count++;
-            }
-        }
-        return count;
-    };
-
-    $scope.countArticlesTraduction = function (cards) {
-        var count = 0;
-        for (var i = 0; i < cards.length; i++) {
-            if (StatsHelper.hasLabel(cards[i], "Articles") && StatsHelper.hasLabel(cards[i], "Traduction")) {
-                count++;
-            }
-        }
-        return count;
-    };
+    $scope.countNewsOriginal = StatsHelper.countNewsOriginal;
+    $scope.countNewsTraduction = StatsHelper.countNewsTraduction;
+    $scope.countArticles = StatsHelper.countArticles;
+    $scope.countArticlesOriginal = StatsHelper.countArticlesOriginal;
+    $scope.countArticlesTraduction = StatsHelper.countArticlesOriginal;
+    $scope.countNews = StatsHelper.countNews;
 
     $scope.getAuthors = function (cards) {
         var authors = {};
