@@ -35,3 +35,19 @@ angularModule.factory('TrelloUser', function ($resource) {
         query: {method: 'GET', isArray: true}
     });
 });
+
+angularModule.factory('StatsHelper', function () {
+    var statsHelperService = {};
+
+    statsHelperService.hasLabel = function(card, label) {
+        var labels = card.labels;
+        for (var i = 0; i < labels.length; i++) {
+            if (labels[i].name == label) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    return statsHelperService;
+});

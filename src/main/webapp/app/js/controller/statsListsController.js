@@ -1,20 +1,10 @@
-function StatsListCtrl($scope, TrelloList, TrelloUser) {
+function StatsListCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
     $scope.lists = TrelloList.query();
-
-    function hasLabel(card, label) {
-        var labels = card.labels;
-        for (var i = 0; i < labels.length; i++) {
-            if (labels[i].name == label) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     $scope.countNews = function (cards) {
         var count = 0;
         for (var i = 0; i < cards.length; i++) {
-            if (hasLabel(cards[i], "News")) {
+            if (StatsHelper.hasLabel(cards[i], "News")) {
                 count++;
             }
         }
@@ -36,7 +26,7 @@ function StatsListCtrl($scope, TrelloList, TrelloUser) {
     $scope.countNewsOriginal = function (cards) {
         var count = 0;
         for (var i = 0; i < cards.length; i++) {
-            if (hasLabel(cards[i], "News") && hasLabel(cards[i], "Original")) {
+            if (StatsHelper.hasLabel(cards[i], "News") && StatsHelper.hasLabel(cards[i], "Original")) {
                 count++;
             }
         }
@@ -46,7 +36,7 @@ function StatsListCtrl($scope, TrelloList, TrelloUser) {
     $scope.countNewsTraduction = function (cards) {
         var count = 0;
         for (var i = 0; i < cards.length; i++) {
-            if (hasLabel(cards[i], "News") && hasLabel(cards[i], "Traduction")) {
+            if (StatsHelper.hasLabel(cards[i], "News") && StatsHelper.hasLabel(cards[i], "Traduction")) {
                 count++;
             }
         }
@@ -56,7 +46,7 @@ function StatsListCtrl($scope, TrelloList, TrelloUser) {
     $scope.countArticles = function (cards) {
         var count = 0;
         for (var i = 0; i < cards.length; i++) {
-            if (hasLabel(cards[i], "Articles")) {
+            if (StatsHelper.hasLabel(cards[i], "Articles")) {
                 count++;
             }
         }
@@ -66,7 +56,7 @@ function StatsListCtrl($scope, TrelloList, TrelloUser) {
     $scope.countArticlesOriginal = function (cards) {
         var count = 0;
         for (var i = 0; i < cards.length; i++) {
-            if (hasLabel(cards[i], "Articles") && hasLabel(cards[i], "Original")) {
+            if (StatsHelper.hasLabel(cards[i], "Articles") && StatsHelper.hasLabel(cards[i], "Original")) {
                 count++;
             }
         }
@@ -76,7 +66,7 @@ function StatsListCtrl($scope, TrelloList, TrelloUser) {
     $scope.countArticlesTraduction = function (cards) {
         var count = 0;
         for (var i = 0; i < cards.length; i++) {
-            if (hasLabel(cards[i], "Articles") && hasLabel(cards[i], "Traduction")) {
+            if (StatsHelper.hasLabel(cards[i], "Articles") && StatsHelper.hasLabel(cards[i], "Traduction")) {
                 count++;
             }
         }
@@ -92,16 +82,16 @@ function StatsListCtrl($scope, TrelloList, TrelloUser) {
             if (!authors[ idAuthor]) {
                 authors[idAuthor] = { newsoriginal: 0, newstraduction: 0, articlesoriginal: 0, articlestraduction: 0};
             }
-            if (hasLabel(card, "Articles") && hasLabel(card, "Original")) {
+            if (StatsHelper.hasLabel(card, "Articles") && StatsHelper.hasLabel(card, "Original")) {
                 authors[idAuthor]["articlesoriginal"]++;
             }
-            if (hasLabel(card, "Articles") && hasLabel(card, "Traduction")) {
+            if (StatsHelper.hasLabel(card, "Articles") && StatsHelper.hasLabel(card, "Traduction")) {
                 authors[idAuthor]["articlestraduction"]++;
             }
-            if (hasLabel(card, "News") && hasLabel(card, "Original")) {
+            if (StatsHelper.hasLabel(card, "News") && StatsHelper.hasLabel(card, "Original")) {
                 authors[idAuthor]["newsoriginal"]++;
             }
-            if (hasLabel(card, "News") && hasLabel(card, "Traduction")) {
+            if (StatsHelper.hasLabel(card, "News") && StatsHelper.hasLabel(card, "Traduction")) {
                 authors[idAuthor]["newstraduction"]++;
             }
         }
