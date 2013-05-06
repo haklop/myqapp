@@ -3,6 +3,7 @@ package com.infoq.myqapp.service;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.TrelloLabel;
 import com.infoq.myqapp.repository.FeedRepository;
+import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.Board;
 import com.julienvey.trello.domain.Card;
@@ -12,6 +13,8 @@ import com.julienvey.trello.impl.TrelloImpl;
 import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,6 +32,11 @@ public class TrelloService {
     private FeedRepository feedRepository;
 
     public void addCardToTrello(FeedEntry feedEntry, Token accessToken) {
+        FeedEntry entry = feedRepository.findOne(feedEntry.getLink());
+        if (entry != null && entry.isAddedInTrello()) {
+            throw new CardConflictException();
+        }
+
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
         Board board = trelloApi.getBoard(TEST_EDITING_PROCESS_BOARD_ID);
 
@@ -52,9 +60,13 @@ public class TrelloService {
         return board.getLists();
     }
 
-    public Member getMember(String username, Token accessToken) {
+    private Member getMember(String username, Token accessToken) {
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
         return trelloApi.getBasicMemberInformation(username);
+    }
+
+    public Member getUserInfo(Token accessToken) {
+        return getMember("me", accessToken);
     }
 
     private Card buildCardFromFeedEntry(FeedEntry feedEntry) {

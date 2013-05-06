@@ -6,6 +6,7 @@ import com.infoq.myqapp.repository.FeedRepository;
 import com.infoq.myqapp.service.MemberService;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
+import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
 import org.scribe.model.Token;
@@ -40,21 +41,18 @@ public class TrelloController {
     @Resource
     private MemberService memberService;
 
-    @Resource
-    private FeedRepository feedRepository;
-
     @RequestMapping(method = RequestMethod.POST, value = "/card")
     public ResponseEntity addToTrello(@RequestBody FeedEntry feed, WebRequest request) {
         LOG.info("Adding card to Trello {}", feed.getTitle());
 
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
-        FeedEntry entry = feedRepository.findOne(feed.getLink());
-        if (entry != null && entry.isAddedInTrello()) {
+        try {
+            trelloService.addCardToTrello(feed, accessToken);
+        } catch (CardConflictException e) {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
 
-        trelloService.addCardToTrello(feed, accessToken);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -77,7 +75,7 @@ public class TrelloController {
         } else {
             // check if the token is not revoked
             try {
-                trelloService.getMember("me", accessToken);
+                trelloService.getUserInfo(accessToken);
             } catch (HttpClientErrorException e) {
                 hasToAuthenticate = true;
             }
@@ -119,7 +117,7 @@ public class TrelloController {
     public ResponseEntity getUserInfo(WebRequest request) {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
-        Member member = trelloService.getMember("me", accessToken);
+        Member member = trelloService.getUserInfo(accessToken);
         return new ResponseEntity<>(member, HttpStatus.OK);
     }
 
