@@ -3,17 +3,17 @@
         <thead>
         <tr>
             <th>Nom</th>
-            <th>Articles</th>
             <th>News</th>
+            <th>Articles</th>
             <th>Validations</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in users">
-            <td>{{user.fullName}}</td>
-            <td>{{countArticlesDone(user)}}</td>
-            <td>{{user.fullName}}</td>
-            <td>{{user.fullName}}</td>
+        <tr ng-repeat="(author, count) in authorStats">
+            <td>{{matchUserId(author).fullName}}</td>
+            <td><strong>{{count.newsoriginal + count.newstraduction}}</strong> ({{count.newsoriginal}} originales, {{count.newstraduction}} traductions)</td>
+            <td><strong>{{count.articlesoriginal + count.articlestraduction}}</strong> ({{count.articlesoriginal}} originaux, {{count.articlestraduction}} traductions)</td>
+            <td><strong>{{count.articlesvalids + count.newsvalids}} ({{count.articlesvalids}} articles, {{count.newsvalids}} news)</strong></td>
         </tr>
         </tbody>
     </table>

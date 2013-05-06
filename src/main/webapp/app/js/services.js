@@ -39,7 +39,7 @@ angularModule.factory('TrelloUser', function ($resource) {
 angularModule.factory('StatsHelper', function () {
     var statsHelperService = {};
 
-    statsHelperService.hasLabel = function(card, label) {
+    statsHelperService.hasLabel = function (card, label) {
         var labels = card.labels;
         for (var i = 0; i < labels.length; i++) {
             if (labels[i].name == label) {
@@ -107,6 +107,39 @@ angularModule.factory('StatsHelper', function () {
             }
         }
         return count;
+    };
+
+    statsHelperService.getAuthorsStats = function (cards) {
+        var authors = {};
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            var idAuthor = card.idMembers[0];
+            var idValidator = card.idMembers[1];
+
+            if (!authors[idAuthor]) {
+                authors[idAuthor] = { newsoriginal: 0, newstraduction: 0, articlesoriginal: 0, articlestraduction: 0, articlesvalids: 0, newsvalids: 0 };
+            }
+            if (!authors[idValidator]) {
+                authors[idValidator] = { newsoriginal: 0, newstraduction: 0, articlesoriginal: 0, articlestraduction: 0, articlesvalids: 0, newsvalids: 0 };
+            }
+            if (statsHelperService.hasLabel(card, "Articles") && statsHelperService.hasLabel(card, "Original")) {
+                authors[idAuthor]["articlesoriginal"]++;
+                authors[idValidator]["articlesvalids"]++;
+            }
+            if (statsHelperService.hasLabel(card, "Articles") && statsHelperService.hasLabel(card, "Traduction")) {
+                authors[idAuthor]["articlestraduction"]++;
+                authors[idValidator]["articlesvalids"]++;
+            }
+            if (statsHelperService.hasLabel(card, "News") && statsHelperService.hasLabel(card, "Original")) {
+                authors[idAuthor]["newsoriginal"]++;
+                authors[idValidator]["newsvalids"]++;
+            }
+            if (statsHelperService.hasLabel(card, "News") && statsHelperService.hasLabel(card, "Traduction")) {
+                authors[idAuthor]["newstraduction"]++;
+                authors[idValidator]["newsvalids"]++;
+            }
+        }
+        return authors;
     };
 
     return statsHelperService;
