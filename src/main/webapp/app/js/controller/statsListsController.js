@@ -20,29 +20,6 @@ function StatsListCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
     $scope.countArticlesTraduction = StatsHelper.countArticlesOriginal;
     $scope.countNews = StatsHelper.countNews;
 
-    $scope.getAuthors = function (cards) {
-        var authors = {};
-        for (var i = 0; i < cards.length; i++) {
-            var card = cards[i];
-            var idAuthor = card.idMembers[0];
-
-            if (!authors[ idAuthor]) {
-                authors[idAuthor] = { newsoriginal: 0, newstraduction: 0, articlesoriginal: 0, articlestraduction: 0};
-            }
-            if (StatsHelper.hasLabel(card, "Articles") && StatsHelper.hasLabel(card, "Original")) {
-                authors[idAuthor]["articlesoriginal"]++;
-            }
-            if (StatsHelper.hasLabel(card, "Articles") && StatsHelper.hasLabel(card, "Traduction")) {
-                authors[idAuthor]["articlestraduction"]++;
-            }
-            if (StatsHelper.hasLabel(card, "News") && StatsHelper.hasLabel(card, "Original")) {
-                authors[idAuthor]["newsoriginal"]++;
-            }
-            if (StatsHelper.hasLabel(card, "News") && StatsHelper.hasLabel(card, "Traduction")) {
-                authors[idAuthor]["newstraduction"]++;
-            }
-        }
-        return authors;
-    };
+    $scope.getAuthors = StatsHelper.getAuthorsStats;
 
 }
