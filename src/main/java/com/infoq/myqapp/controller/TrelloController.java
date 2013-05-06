@@ -2,8 +2,6 @@ package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.FeedEntry;
-import com.infoq.myqapp.repository.FeedRepository;
-import com.infoq.myqapp.service.MemberService;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
 import com.infoq.myqapp.service.exception.CardConflictException;
@@ -37,9 +35,6 @@ public class TrelloController {
 
     @Resource
     private TrelloService trelloService;
-
-    @Resource
-    private MemberService memberService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/card")
     public ResponseEntity addToTrello(@RequestBody FeedEntry feed, WebRequest request) {
@@ -125,7 +120,7 @@ public class TrelloController {
     public ResponseEntity getMembers(WebRequest request) {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
-        List<Member> members = memberService.getMembers(accessToken);
+        List<Member> members = trelloService.getMembers(accessToken);
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 

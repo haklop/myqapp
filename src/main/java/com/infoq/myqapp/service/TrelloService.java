@@ -65,6 +65,13 @@ public class TrelloService {
         return trelloApi.getBasicMemberInformation(username);
     }
 
+    public List<Member> getMembers(Token accessToken) {
+        Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
+        Board board = trelloApi.getBoard(TrelloService.EDITING_PROCESS_BOARD_ID);
+
+        return board.getMembers();
+    }
+
     public Member getUserInfo(Token accessToken) {
         return getMember("me", accessToken);
     }
