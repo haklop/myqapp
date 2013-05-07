@@ -9,11 +9,12 @@
 <div class="navbar navbar-static-top banner" ng-controller="HeaderController">
     <div class="navbar-inner">
         <a class="brand" href="#/">MyQ, The App for The Best</a>
-        {{userinfo.fullName}} ({{userinfo.username}})
         <ul class="nav pull-right">
+            <li><a href="">Bienvenue {{userinfo.fullName}}</a></li>
             <li ng-class="{active: isActive('/feed')}"><a href="#/feed">Flux</a></li>
             <li ng-class="{active: isActive('/stats')}"><a href="#/stats">Stats Listes</a></li>
             <li ng-class="{active: isActive('/users')}"><a href="#/users">Stats Contributeurs</a></li>
+
         </ul>
     </div>
 </div>
