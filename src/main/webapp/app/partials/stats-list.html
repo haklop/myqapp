@@ -14,15 +14,15 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>Auteur</th>
-                        <th>News</th>
-                        <th>Articless</th>
-                        <th>Validations</th>
-                        <th>Mentorats</th>
+                        <th><a href="" ng-click="order = name; reverse = !reverse;">Nom</a></th>
+                        <th><a href="" ng-click="order = news; reverse = !reverse;">News</a></th>
+                        <th><a href="" ng-click="order = articles; reverse = !reverse;">Articles</a></th>
+                        <th><a href="" ng-click="order = valids; reverse = !reverse;">Validations</a></th>
+                        <th><a href="" ng-click="order = mentors; reverse = !reverse;">Mentorats</a></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="stats in getAuthors(list.cards)">
+                    <tr ng-repeat="stats in getAuthors(list.cards) | orderBy:order:reverse">
                         <td>{{matchUserId(stats.user).fullName}}</td>
                         <td><strong>{{stats.newsoriginal + stats.newstraduction}}</strong> ({{stats.newsoriginal}} originales, {{stats.newstraduction}} traductions)</td>
                         <td><strong>{{stats.articlesoriginal + stats.articlestraduction}}</strong> ({{stats.articlesoriginal}} originaux, {{stats.articlestraduction}} traductions)</td>

@@ -22,7 +22,29 @@ function StatsListCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
 
     $scope.getAuthors = StatsHelper.getAuthorsStats;
 
-    $scope.orderby = '';
+
+    $scope.predicate = $scope.name;
     $scope.reverse = true;
+
+    $scope.news = function(stats) {
+        return stats.newsoriginal + stats.newstraduction;
+    };
+
+    $scope.articles = function(stats){
+        return stats.articlesoriginal + stats.articlestraduction;
+    }
+
+    $scope.valids = function(stats){
+        return stats.articlesvalids + stats.newsvalids;
+    }
+
+    $scope.mentors = function(stats){
+        return stats.newsmentor + stats.articlesmentor;
+    }
+
+    $scope.name = function(stats){
+        if($scope.matchUserId(stats.user))
+            return $scope.matchUserId(stats.user).fullName;
+    }
 
 }
