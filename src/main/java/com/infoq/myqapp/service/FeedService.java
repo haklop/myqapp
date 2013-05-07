@@ -9,6 +9,7 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,6 +24,9 @@ public class FeedService {
     @Resource
     private FeedRepository feedRepository;
 
+    @Value("${infoq.rss}")
+    private String rssFeedUrl;
+
     public List<FeedEntry> retrieveFeedTask() {
         try {
             List<FeedEntry> entries = readFeed();
@@ -35,7 +39,7 @@ public class FeedService {
     }
 
     private List<FeedEntry> readFeed() throws Exception {
-        URL url = new URL("http://www.infoq.com/rss/rss.action?token=ziwI7MykYwU7MxfdOUJtG2HZfe5boFWG");
+        URL url = new URL(rssFeedUrl);
         XmlReader reader = null;
 
         List<FeedEntry> feedEntries = new ArrayList<>();
