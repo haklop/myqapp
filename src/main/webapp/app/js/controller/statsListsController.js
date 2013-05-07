@@ -17,7 +17,7 @@ function StatsListCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
     $scope.countNewsTraduction = StatsHelper.countNewsTraduction;
     $scope.countArticles = StatsHelper.countArticles;
     $scope.countArticlesOriginal = StatsHelper.countArticlesOriginal;
-    $scope.countArticlesTraduction = StatsHelper.countArticlesOriginal;
+    $scope.countArticlesTraduction = StatsHelper.countArticlesTraduction;
     $scope.countNews = StatsHelper.countNews;
 
     $scope.getAuthors = StatsHelper.getAuthorsStats;
