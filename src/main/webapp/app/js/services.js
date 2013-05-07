@@ -110,10 +110,6 @@ angularModule.factory('StatsHelper', function () {
     };
 
     statsHelperService.getAuthorsStats = function (cards) {
-        if(statsHelperService.stats){
-            return statsHelperService.stats;
-        }
-
         var authors = {};
 
         function newStats() {
@@ -172,8 +168,7 @@ angularModule.factory('StatsHelper', function () {
             authors[key].user = key;
             array.push(authors[key]);
         }
-        statsHelperService.stats = array;
-        return statsHelperService.stats;
+        return array;
     };
 
     return statsHelperService;

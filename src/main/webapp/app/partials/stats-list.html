@@ -22,7 +22,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="stats in getAuthors(list.cards) | orderBy:order:reverse">
+                    <tr ng-repeat="stats in getAuthors(list) | orderBy:order:reverse">
                         <td>{{matchUserId(stats.user).fullName}}</td>
                         <td><strong>{{stats.newsoriginal + stats.newstraduction}}</strong> ({{stats.newsoriginal}} originales, {{stats.newstraduction}} traductions)</td>
                         <td><strong>{{stats.articlesoriginal + stats.articlestraduction}}</strong> ({{stats.articlesoriginal}} originaux, {{stats.articlestraduction}} traductions)</td>

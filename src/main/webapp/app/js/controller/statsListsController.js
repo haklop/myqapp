@@ -20,7 +20,18 @@ function StatsListCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
     $scope.countArticlesTraduction = StatsHelper.countArticlesTraduction;
     $scope.countNews = StatsHelper.countNews;
 
-    $scope.getAuthors = StatsHelper.getAuthorsStats;
+
+
+    $scope.getAuthors = function(list){
+        if($scope.statsList && $scope.statsList[list.name]){
+            return $scope.statsList[list.name];
+        } else {
+            if(!$scope.statsList){
+                $scope.statsList = {};
+            }
+            $scope.statsList[list.name] = StatsHelper.getAuthorsStats(list.cards);
+        }
+    }
 
 
     $scope.predicate = $scope.name;
