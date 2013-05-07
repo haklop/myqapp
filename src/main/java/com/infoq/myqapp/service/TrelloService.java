@@ -13,8 +13,7 @@ import com.julienvey.trello.impl.TrelloImpl;
 import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,8 +24,11 @@ public class TrelloService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrelloService.class);
 
-    public static final String TEST_EDITING_PROCESS_BOARD_ID = "5182683ef43ba8a401000160";
-    public static final String EDITING_PROCESS_BOARD_ID = "51499c4cb867d5eb5900678f";
+    @Value("${editingprocess.add.board.id}")
+    private String trelloBoardForAddingCardsId;
+
+    @Value("${editingprocess.stats.board.id}")
+    private String trelloBoardForStatsId;
 
     @Resource
     private FeedRepository feedRepository;
@@ -38,7 +40,7 @@ public class TrelloService {
         }
 
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
-        Board board = trelloApi.getBoard(TEST_EDITING_PROCESS_BOARD_ID);
+        Board board = trelloApi.getBoard(trelloBoardForAddingCardsId);
 
         List<TList> lists = board.getLists();
 
@@ -55,7 +57,7 @@ public class TrelloService {
 
     public List<TList> getLists(Token accessToken) {
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
-        Board board = trelloApi.getBoard(EDITING_PROCESS_BOARD_ID);
+        Board board = trelloApi.getBoard(trelloBoardForStatsId);
 
         return board.getLists();
     }
@@ -67,7 +69,7 @@ public class TrelloService {
 
     public List<Member> getMembers(Token accessToken) {
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
-        Board board = trelloApi.getBoard(TrelloService.EDITING_PROCESS_BOARD_ID);
+        Board board = trelloApi.getBoard(trelloBoardForStatsId);
 
         return board.getMembers();
     }
