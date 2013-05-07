@@ -10,12 +10,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="(author, count) in authorStats">
-            <td>{{matchUserId(author).fullName}}</td>
-            <td><strong>{{count.newsoriginal + count.newstraduction}}</strong> ({{count.newsoriginal}} originales, {{count.newstraduction}} traductions)</td>
-            <td><strong>{{count.articlesoriginal + count.articlestraduction}}</strong> ({{count.articlesoriginal}} originaux, {{count.articlestraduction}} traductions)</td>
-            <td><strong>{{count.articlesvalids + count.newsvalids}}</strong> ({{count.articlesvalids}} articles, {{count.newsvalids}} news)</td>
-            <td><strong>{{count.newsmentor + count.articlesmentor}}</strong> ({{count.articlesmentor}} articles, {{count.newsmentor}} news)</td>
+        <tr ng-repeat="stats in authorStats">
+            <td>{{matchUserId(stats.user).fullName}}</td>
+            <td><strong>{{stats.newsoriginal + stats.newstraduction}}</strong> ({{stats.newsoriginal}} originales, {{stats.newstraduction}} traductions)</td>
+            <td><strong>{{stats.articlesoriginal + stats.articlestraduction}}</strong> ({{stats.articlesoriginal}} originaux, {{stats.articlestraduction}} traductions)</td>
+            <td><strong>{{stats.articlesvalids + stats.newsvalids}}</strong> ({{stats.articlesvalids}} articles, {{stats.newsvalids}} news)</td>
+            <td><strong>{{stats.newsmentor + stats.articlesmentor}}</strong> ({{stats.articlesmentor}} articles, {{stats.newsmentor}} news)</td>
         </tr>
         </tbody>
     </table>

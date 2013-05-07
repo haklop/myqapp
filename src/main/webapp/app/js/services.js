@@ -162,7 +162,13 @@ angularModule.factory('StatsHelper', function () {
             }
 
         }
-        return authors;
+
+        var array = [];
+        for(key in authors) {
+            authors[key].user = key;
+            array.push(authors[key]);
+        }
+        return array;
     };
 
     return statsHelperService;

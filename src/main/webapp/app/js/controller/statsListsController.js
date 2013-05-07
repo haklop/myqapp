@@ -22,4 +22,7 @@ function StatsListCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
 
     $scope.getAuthors = StatsHelper.getAuthorsStats;
 
+    $scope.orderby = '';
+    $scope.reverse = true;
+
 }
