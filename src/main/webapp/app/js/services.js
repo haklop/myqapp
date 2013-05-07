@@ -164,9 +164,12 @@ angularModule.factory('StatsHelper', function () {
         }
 
         var array = [];
-        for(key in authors) {
+        for (key in authors) {
             authors[key].user = key;
-            array.push(authors[key]);
+            //We remove Al Amine from the display list "5024fa0753f944277fba9907"
+            if (key != "undefined" && key != "5024fa0753f944277fba9907") {
+                array.push(authors[key]);
+            }
         }
         return array;
     };
