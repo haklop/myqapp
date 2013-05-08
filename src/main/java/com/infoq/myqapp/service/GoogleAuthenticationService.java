@@ -1,12 +1,10 @@
 package com.infoq.myqapp.service;
 
 import com.infoq.myqapp.service.scribe.GoogleApiProvider;
-import com.infoq.myqapp.service.scribe.TrelloApiProvider;
 import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.GoogleApi;
-import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 import org.scribe.utils.OAuthEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Matcher;
@@ -15,16 +13,22 @@ import java.util.regex.Pattern;
 @Service
 public class GoogleAuthenticationService {
 
-    public static final String APPLICATION_KEY = "207009213428-etats02h37pkv8hhgav15i4k4rk2l744.apps.googleusercontent.com";
-    public static final String OAUTH_SECRET = "-KNjbAL9sRf_8pkumUS-gPwJ";
+    @Value("${google.oauth.key}")
+    private String applicationKey;
+
+    @Value("${google.oauth.secret}")
+    private String oauthSecret;
+
+    @Value("${google.oauth.callback}")
+    private String callback;
 
     public OAuthService getService() {
         return new ServiceBuilder()
                 .provider(GoogleApiProvider.class)
-                .apiKey(APPLICATION_KEY)
-                .apiSecret(OAUTH_SECRET)
+                .apiKey(applicationKey)
+                .apiSecret(oauthSecret)
                 .scope("openid email")
-                .callback("http://localhost:8080/api/google/callback")
+                .callback(callback)
                 .build();
     }
 
