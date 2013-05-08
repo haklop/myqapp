@@ -25,20 +25,46 @@ public class AuthenticationFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        Token accessToken = (Token) request.getSession().getAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN);
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (accessToken == null) {
+        Token googleAccessToken = (Token) request.getSession().getAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN);
+        Token trelloAccessToken = (Token) request.getSession().getAttribute(ATTR_OAUTH_ACCESS_TOKEN);
 
-        }
+        if ("/google-signin.html".equals(request.getServletPath()) && googleAccessToken != null) {
+            // already authenticated
+            response.sendRedirect("/");
 
-        if (!"/favicon.ico".equals(request.getServletPath()) && !"/google/login".equals(request.getPathInfo())
-                && !"/google/callback".equals(request.getPathInfo()) && accessToken == null) {
-            HttpServletResponse response = (HttpServletResponse) servletResponse;
+        } else if ("/trello-token.html".equals(request.getServletPath()) && googleAccessToken == null) {
+            response.sendRedirect("/google-signin.html");
+
+        } else if ("/favicon.ico".equals(request.getServletPath())
+                || "/error-403.html".equals(request.getServletPath())
+                || "/google-signin.html".equals(request.getServletPath())
+                || "/trello-token.html".equals(request.getServletPath())
+                || request.getServletPath().startsWith("/app")
+                || request.getServletPath().startsWith("/lib")) {
+            // don't care about authentication for these resources
+            filterChain.doFilter(servletRequest, servletResponse);
+
+        } else if (!"/google/login".equals(request.getPathInfo())
+                && !"/google/callback".equals(request.getPathInfo())
+                && googleAccessToken == null) {
 
             if ("/api".equals(request.getServletPath())) {
                 response.sendError(401);
             } else {
-                response.sendRedirect("/api/google/login");
+                response.sendRedirect("/google-signin.html");
+            }
+
+        } else if (!"/trello/login".equals(request.getPathInfo())
+                && !"/trello/callback".equals(request.getPathInfo())
+                && trelloAccessToken == null
+                && googleAccessToken != null) {
+
+            if ("/api".equals(request.getServletPath())) {
+                response.sendError(403);
+            } else {
+                response.sendRedirect("/trello-token.html");
             }
         } else {
             filterChain.doFilter(servletRequest, servletResponse);

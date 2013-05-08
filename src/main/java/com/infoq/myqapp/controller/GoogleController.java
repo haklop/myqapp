@@ -88,13 +88,13 @@ public class GoogleController {
         UserProfile profileFromMongo = userProfileRepository.findOne(profileFromGoogle.getEmail());
         if (profileFromMongo == null || profileFromMongo.getTokenTrello() == null) {
             if (!ALLOWED_EMAIL.contains(profileFromGoogle.getEmail())) {
-                throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+                return "redirect:/error-403.html";
             } else {
                 request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
                 request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
                 userProfileRepository.save(profileFromGoogle);
 
-                return "redirect:/api/trello/login";
+                return "redirect:/trello-token.html";
             }
 
         } else {
@@ -107,7 +107,7 @@ public class GoogleController {
                 request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, profileFromMongo.getTokenTrello(), RequestAttributes.SCOPE_SESSION);
 
             } catch (HttpClientErrorException e) {
-                return "redirect:/api/trello/login";
+                return "redirect:/trello-token.html";
             }
         }
 
