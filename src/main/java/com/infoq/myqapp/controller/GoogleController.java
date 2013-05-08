@@ -99,13 +99,14 @@ public class GoogleController {
 
         } else {
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
+            request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
 
             // check if the token is not revoked
             try {
                 trelloService.getUserInfo(profileFromMongo.getTokenTrello());
                 request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, profileFromMongo.getTokenTrello(), RequestAttributes.SCOPE_SESSION);
+
             } catch (HttpClientErrorException e) {
-                request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromMongo.getEmail(), RequestAttributes.SCOPE_SESSION);
                 return "redirect:/api/trello/login";
             }
         }

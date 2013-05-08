@@ -113,8 +113,16 @@ public class TrelloController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        Member member = trelloService.getUserInfo(accessToken);
-        return new ResponseEntity<>(member, HttpStatus.OK);
+        try {
+            Member member = trelloService.getUserInfo(accessToken);
+            return new ResponseEntity<>(member, HttpStatus.OK);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+            throw e;
+        }
+
     }
 
     @RequestMapping(value = "/member", method = RequestMethod.GET)

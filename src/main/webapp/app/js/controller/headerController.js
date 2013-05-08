@@ -5,13 +5,13 @@ function HeaderController($scope, $location, TrelloMember) {
 
     $scope.userinfo = TrelloMember.query();
 
-    $scope.$on('$routeChangeStart', function(next, current) {
-        TrelloMember.query(function(response) {
+    $scope.$on('$routeChangeStart', function (next, current) {
+        TrelloMember.query(function (response) {
             $scope.userinfo = response;
-        }, function(response) {
-            if (response.status === 400) {
+        }, function (response) {
+            if (response.status === 400 || response.status === 401) {
                 window.location = window.location.pathname + "api/google/login";
-            } else {
+            } else if (response.status === 403) {
                 window.location = window.location.pathname + "api/trello/login";
             }
         });
