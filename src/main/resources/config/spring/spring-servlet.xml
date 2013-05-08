@@ -10,6 +10,7 @@
                            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
                            http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
                            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter"
@@ -24,7 +25,7 @@
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
     </bean>
 
-    <bean id="feedService" class="com.infoq.myqapp.service.FeedService" />
+    <bean id="feedService" class="com.infoq.myqapp.service.FeedService"/>
 
     <task:executor id="executor" pool-size="1"/>
     <task:scheduler id="myScheduler" pool-size="10"/>

@@ -2,6 +2,8 @@ package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.FeedEntry;
+import com.infoq.myqapp.domain.UserProfile;
+import com.infoq.myqapp.repository.UserProfileRepository;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
 import com.infoq.myqapp.service.exception.CardConflictException;
@@ -36,6 +38,9 @@ public class TrelloController {
     @Resource
     private TrelloService trelloService;
 
+    @Resource
+    private UserProfileRepository userProfileRepository;
+
     @RequestMapping(method = RequestMethod.POST, value = "/card")
     public ResponseEntity addToTrello(@RequestBody FeedEntry feed, WebRequest request) {
         LOG.info("Adding card to Trello {}", feed.getTitle());
@@ -60,50 +65,43 @@ public class TrelloController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) {
-        Token requestToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
-        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
-        LOG.info("Login attempt with request and access token : {} {}", requestToken, accessToken);
+        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        LOG.info("Trying to retrieve a token for {}", email);
 
-        boolean hasToAuthenticate = false;
-        if (requestToken == null || accessToken == null) {
-            hasToAuthenticate = true;
-        } else {
-            // check if the token is not revoked
-            try {
-                trelloService.getUserInfo(accessToken);
-            } catch (HttpClientErrorException e) {
-                hasToAuthenticate = true;
-            }
+        UserProfile userProfile = userProfileRepository.findOne(email);
+        if (userProfile == null) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
 
-        if (hasToAuthenticate) {
-            // generate new request token
-            OAuthService service = trelloAuthenticationService.getService(httpServletRequest.getRequestURL()
-                    .toString().replace("/api/trello/login", "/api/trello/callback"));
+        OAuthService service = trelloAuthenticationService.getService(httpServletRequest.getRequestURL()
+                .toString().replace("/api/trello/login", "/api/trello/callback"));
 
-            requestToken = service.getRequestToken();
-            request.setAttribute(AuthenticationFilter.ATTR_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
+        Token requestToken = service.getRequestToken();
+        request.setAttribute(AuthenticationFilter.ATTR_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
 
-            // redirect to trello auth page
-            return "redirect:" + service.getAuthorizationUrl(requestToken);
-        }
-        return "redirect:/";
+        // redirect to trello auth page
+        return "redirect:" + service.getAuthorizationUrl(requestToken);
     }
 
     @RequestMapping(value = {"/callback"}, method = RequestMethod.GET)
     public String callback(@RequestParam(value = "oauth_verifier", required = false) String oauthVerifier, WebRequest request) {
+        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        UserProfile userProfile = userProfileRepository.findOne(email);
+        if (userProfile == null) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
 
-        // getting request tocken
         OAuthService service = trelloAuthenticationService.getService();
         Token requestToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
 
-        // getting access token
         Verifier verifier = new Verifier(oauthVerifier);
         Token accessToken = service.getAccessToken(requestToken, verifier);
-        LOG.info("Access Granted to Trello with token {}", accessToken);
+        LOG.info("Access Granted to Trello for {} with token {}", email, accessToken);
 
-        // store access token as a session attribute
         request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
+
+        userProfile.setTokenTrello(accessToken);
+        userProfileRepository.save(userProfile);
 
         return "redirect:/";
     }
@@ -111,6 +109,9 @@ public class TrelloController {
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
     public ResponseEntity getUserInfo(WebRequest request) {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+        if (accessToken == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
 
         Member member = trelloService.getUserInfo(accessToken);
         return new ResponseEntity<>(member, HttpStatus.OK);
@@ -125,7 +126,7 @@ public class TrelloController {
     }
 
     @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity handleUnauthorized(HttpClientErrorException e) {
+    public ResponseEntity handleClientException(HttpClientErrorException e) {
         return new ResponseEntity(e.getStatusCode());
     }
 }

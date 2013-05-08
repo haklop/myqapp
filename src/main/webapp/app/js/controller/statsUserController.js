@@ -31,15 +31,15 @@ function StatsUserCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
 
     $scope.articles = function(stats){
         return stats.articlesoriginal + stats.articlestraduction;
-    }
+    };
 
     $scope.valids = function(stats){
         return stats.articlesvalids + stats.newsvalids;
-    }
+    };
 
     $scope.mentors = function(stats){
         return stats.newsmentor + stats.articlesmentor;
-    }
+    };
 
     $scope.name = function(stats){
         if($scope.matchUserId(stats.user))

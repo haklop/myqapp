@@ -62,7 +62,7 @@ public class TrelloService {
         return board.getLists();
     }
 
-    private Member getMember(String username, Token accessToken) {
+    private Member getUserInfo(String username, Token accessToken) {
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
         return trelloApi.getBasicMemberInformation(username);
     }
@@ -75,7 +75,7 @@ public class TrelloService {
     }
 
     public Member getUserInfo(Token accessToken) {
-        return getMember("me", accessToken);
+        return getUserInfo("me", accessToken);
     }
 
     private Card buildCardFromFeedEntry(FeedEntry feedEntry) {

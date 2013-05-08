@@ -17,7 +17,7 @@ module.factory('http401Interceptor', function ($q) {
             return response;
         }, function (response) {
             if (response.status === 401) {
-                window.location = window.location.pathname + "api/trello/login";
+                window.location = window.location.pathname + "api/google/login";
             }
             // do something on error
             return $q.reject(response);

@@ -9,7 +9,11 @@ function HeaderController($scope, $location, TrelloMember) {
         TrelloMember.query(function(response) {
             $scope.userinfo = response;
         }, function(response) {
-            window.location = window.location.pathname + "api/trello/login";
+            if (response.status === 400) {
+                window.location = window.location.pathname + "api/google/login";
+            } else {
+                window.location = window.location.pathname + "api/trello/login";
+            }
         });
     });
 

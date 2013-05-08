@@ -12,6 +12,9 @@ public class AuthenticationFilter implements Filter {
     public static final String ATTR_OAUTH_REQUEST_TOKEN = "oauthrequestoken";
     public static final String ATTR_OAUTH_ACCESS_TOKEN = "oauthaccesstoken";
 
+    public static final String ATTR_GOOGLE_OAUTH_ACCESS_TOKEN = "googleoauthaccesstoken";
+    public static final String ATTR_GOOGLE_EMAIL = "googleemail";
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // nothing
@@ -22,17 +25,20 @@ public class AuthenticationFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        Token requestToken = (Token) request.getSession().getAttribute(ATTR_OAUTH_REQUEST_TOKEN);
-        Token accessToken = (Token) request.getSession().getAttribute(ATTR_OAUTH_ACCESS_TOKEN);
+        Token accessToken = (Token) request.getSession().getAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN);
 
-        if (!"/favicon.ico".equals(request.getServletPath()) && !"/trello/login".equals(request.getPathInfo())
-                && !"/trello/callback".equals(request.getPathInfo()) && (requestToken == null || accessToken == null)) {
+        if (accessToken == null) {
+
+        }
+
+        if (!"/favicon.ico".equals(request.getServletPath()) && !"/google/login".equals(request.getPathInfo())
+                && !"/google/callback".equals(request.getPathInfo()) && accessToken == null) {
             HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-            if (request.getServletPath().equals("/api")) {
+            if ("/api".equals(request.getServletPath())) {
                 response.sendError(401);
             } else {
-                response.sendRedirect("/api/trello/login");
+                response.sendRedirect("/api/google/login");
             }
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
