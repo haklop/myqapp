@@ -38,4 +38,9 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
+    <session-config>
+        <!--One day-->
+        <session-timeout>1440</session-timeout>
+    </session-config>
+
 </web-app>
