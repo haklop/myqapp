@@ -3,3 +3,12 @@
     margin-top: 10px;
     margin-right: 30px;
 }
+
+.conf-form .control-label {
+    width: auto;
+
+}
+
+.conf-form .controls {
+    margin-left: 50px;
+}

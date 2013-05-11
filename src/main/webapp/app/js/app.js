@@ -7,10 +7,9 @@ var module = angular.module('myqapp', ['myqapi', '$strap.directives']).
             when('/stats', {templateUrl: 'app/partials/stats-list.html',   controller: StatsListCtrl}).
             when('/users', {templateUrl: 'app/partials/stats-user.html',   controller: StatsUserCtrl}).
             when('/users/:user', {templateUrl: 'app/partials/user-detail.html',   controller: UserDetailCtrl}).
+            when('/conf', {templateUrl: 'app/partials/conf-list.html',   controller: ConfListCtrl}).
             otherwise({redirectTo: '/feed/0'});
     }]);
-
-
 
 module.factory('http401Interceptor', function ($q) {
     return function (promise) {

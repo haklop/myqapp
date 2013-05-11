@@ -1,0 +1,72 @@
+<div class="row-fluid">
+    <div class="span3">
+        <fieldset>
+            <legend>Ajouter une conférence</legend>
+            <form class="form-horizontal conf-form">
+                <div class="control-group">
+                    <label class="control-label" for="inputName">Nom</label>
+                    <div class="controls">
+                        <input type="text" id="inputName" placeholder="Nom de la conférence" ng-model="newconf.name">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputLocation">Lieux</label>
+                    <div class="controls">
+                        <input type="text" id="inputLocation" placeholder="Lieux de la conférence" ng-model="newconf.location">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputWebsite">URL</label>
+                    <div class="controls">
+                        <input type="text" id="inputWebsite" placeholder="Site web de la conférence" ng-model="newconf.website">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputStartDate">Début</label>
+                    <div class="controls">
+                        <input id="inputStartDate" class="input-small ng-pristine ng-valid" type="text" ng-model="newconf.startDate"
+                               data-date-format="dd/mm/yyyy" bs-datepicker data-toggle="datepicker">
+                        <button type="button" class="btn" data-toggle="datepicker"><i class="icon-calendar"></i></button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputEndDate">Fin</label>
+                    <div class="controls">
+                        <input id="inputEndDate" class="input-small ng-pristine ng-valid" type="text" ng-model="newconf.endStart"
+                               data-date-weekStart="1" data-date-startDate="15/06/2013" data-date-format="dd/mm/yyyy" bs-datepicker data-toggle="datepicker">
+                        <button type="button" class="btn" data-toggle="datepicker"><i class="icon-calendar"></i></button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-success">Ajouter</button>
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+    <div class="span9">
+        <div class="alerts">
+            <div class="alert fade" ng-repeat="alert in alerts" bs-alert="alert"></div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Lieu</th>
+                <th>Début</th>
+                <th>Fin</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="conf in confs">
+                <td><a ng-href="{{conf.url}}">{{conf.name}}</a></td>
+                <td>{{conf.location}}</td>
+                <td>{{conf.startDate | date:'dd/MM/yyyy'}}</td>
+                <td>{{conf.endDate | date:'dd/MM/yyyy'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

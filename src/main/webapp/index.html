@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap-datepicker/bootstrap-datepicker.css"/>
     <link rel="stylesheet" type="text/css" href="app/css/myqapp.css"/>
 </head>
 <body>
@@ -14,7 +15,7 @@
             <li ng-class="{active: isActive('/feed')}"><a href="#/feed">Flux</a></li>
             <li ng-class="{active: isActive('/stats')}"><a href="#/stats">Stats Listes</a></li>
             <li ng-class="{active: isActive('/users')}"><a href="#/users">Stats Contributeurs</a></li>
-
+            <li ng-class="{active: isActive('/conf')}"><a href="#/conf">Conférences</a></li>
         </ul>
     </div>
 </div>
@@ -28,6 +29,7 @@
 <script src="lib/angular/lib/angular-resource.min.js"></script>
 <script src="lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="lib/angular/lib/angularstrap.js"></script>
+<script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
 
 <script src="app/js/app.js"></script>
 <script src="app/js/services.js"></script>
@@ -36,5 +38,6 @@
 <script src="app/js/controller/statsListsController.js"></script>
 <script src="app/js/controller/statsUserController.js"></script>
 <script src="app/js/controller/userDetailController.js"></script>
+<script src="app/js/controller/confListController.js"></script>
 </body>
 </html>
