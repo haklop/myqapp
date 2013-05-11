@@ -11,7 +11,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="stats in authorStats | orderBy:order:reverse">
-            <td>{{matchUserId(stats.user).fullName}}</td>
+            <td><a href="#/users/{{stats.user}}">{{matchUserId(stats.user).fullName}}</a></td>
             <td><strong>{{stats.newsoriginal + stats.newstraduction}}</strong> ({{stats.newsoriginal}} originales, {{stats.newstraduction}} traductions)</td>
             <td><strong>{{stats.articlesoriginal + stats.articlestraduction}}</strong> ({{stats.articlesoriginal}} originaux, {{stats.articlestraduction}} traductions)</td>
             <td><strong>{{stats.articlesvalids + stats.newsvalids}}</strong> ({{stats.articlesvalids}} articles, {{stats.newsvalids}} news)</td>
