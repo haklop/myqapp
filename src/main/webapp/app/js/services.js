@@ -36,6 +36,18 @@ angularModule.factory('TrelloUser', function ($resource) {
     });
 });
 
+angularModule.factory('Confs', function ($resource) {
+    return $resource('api/conf', {}, {
+        query: {method: 'GET', isArray: true}
+    });
+});
+
+angularModule.factory('CreateConf', function ($resource) {
+    return $resource('api/conf', {}, {
+        query: {method: 'POST'}
+    });
+});
+
 angularModule.factory('StatsHelper', function () {
     var statsHelperService = {};
 
