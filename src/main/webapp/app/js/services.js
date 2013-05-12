@@ -47,7 +47,7 @@ angularModule.factory('StatsHelper', function () {
             }
         }
         return false;
-    }
+    };
 
     statsHelperService.countNews = function (cards) {
         var count = 0;
@@ -165,10 +165,12 @@ angularModule.factory('StatsHelper', function () {
 
         var array = [];
         for (key in authors) {
-            authors[key].user = key;
-            //We remove Al Amine from the display list "5024fa0753f944277fba9907"
-            if (key != "undefined" && key != "5024fa0753f944277fba9907") {
-                array.push(authors[key]);
+            if (authors.hasOwnProperty(key)) {
+                authors[key].user = key;
+                //We remove Al Amine from the display list "5024fa0753f944277fba9907"
+                if (key != "undefined" && key != "5024fa0753f944277fba9907") {
+                    array.push(authors[key]);
+                }
             }
         }
         return array;
