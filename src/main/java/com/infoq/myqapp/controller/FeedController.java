@@ -20,21 +20,18 @@ import java.util.List;
 public class FeedController {
 
     @Resource
-    private FeedRepository feedRepository;
-
-    @Resource
     private FeedService feedService;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Page<FeedEntry> getAllFeeds() {
-        return getPage(0);
+        return feedService.getPage(0);
     }
 
     @RequestMapping(value = "{page}", method = RequestMethod.GET)
     @ResponseBody
     public Page<FeedEntry> getPage(@PathVariable("page") int pageNumber) {
-        return feedRepository.findAll(new PageRequest(pageNumber, 20, Sort.Direction.DESC, "publishedDate"));
+        return feedService.getPage(pageNumber);
     }
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)

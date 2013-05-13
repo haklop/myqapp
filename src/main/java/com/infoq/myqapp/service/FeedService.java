@@ -10,7 +10,11 @@ import com.sun.syndication.io.XmlReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.annotation.Resource;
 import java.net.URL;
@@ -36,6 +40,10 @@ public class FeedService {
             LOG.error("Error while retrieving the feed", e);
             throw new RuntimeException(e);
         }
+    }
+
+    public Page<FeedEntry> getPage(int pageNumber) {
+        return feedRepository.findAll(new PageRequest(pageNumber, 20, Sort.Direction.DESC, "publishedDate"));
     }
 
     private List<FeedEntry> readFeed() throws Exception {
