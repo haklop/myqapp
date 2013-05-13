@@ -2,6 +2,7 @@ package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.domain.Conference;
 import com.infoq.myqapp.repository.ConferenceRepository;
+import com.infoq.myqapp.service.ConferenceService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +20,18 @@ import java.util.List;
 public class ConferenceController {
 
     @Resource
-    private ConferenceRepository conferenceRepository;
+    private ConferenceService conferenceService;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity createConf(@RequestBody Conference conference) {
-        // TODO check conference
-
-        conferenceRepository.save(conference);
+        conferenceService.createConf(conference);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<Conference> getAllConfs() {
-        return conferenceRepository.findAll(new Sort(Sort.Direction.DESC, "startDate"));
+        return conferenceService.getAllConfs();
     }
 }
