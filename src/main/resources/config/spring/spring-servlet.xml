@@ -26,11 +26,13 @@
     </bean>
 
     <bean id="feedService" class="com.infoq.myqapp.service.FeedService"/>
+    <bean id="statsService" class="com.infoq.myqapp.service.StatsService"/>
 
     <task:executor id="executor" pool-size="1"/>
     <task:scheduler id="myScheduler" pool-size="10"/>
     <task:scheduled-tasks scheduler="myScheduler">
         <task:scheduled ref="feedService" method="retrieveFeedTask" fixed-rate="3600000" initial-delay="10000"/>
+        <task:scheduled ref="statsService" method="calculateStats" fixed-rate="300000" initial-delay="10000"/>
     </task:scheduled-tasks>
 
     <context:annotation-config/>

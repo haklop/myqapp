@@ -10,12 +10,16 @@
     <packaging>war</packaging>
 
     <properties>
+        <!-- Configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jetty-maven-plugin.stopPort>9966</jetty-maven-plugin.stopPort>
+        <jetty-maven-plugin.stopKey>myqappStop</jetty-maven-plugin.stopKey>
+
+        <!-- Dependencies versions -->
         <spring.version>3.2.2.RELEASE</spring.version>
         <jackson.version>2.2.0</jackson.version>
         <logback.version>1.0.11</logback.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
         <jdk.version>1.7</jdk.version>
         <rome.version>1.0</rome.version>
         <junit.version>4.10</junit.version>
@@ -23,11 +27,17 @@
         <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
         <scribe.version>1.3.3</scribe.version>
         <trello-java-wrapper.version>1.0-SNAPSHOT</trello-java-wrapper.version>
+        <guava.version>14.0.1</guava.version>
+        <mongo-java-driver.version>2.10.1</mongo-java-driver.version>
+        <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>
+
+        <!-- Plugins versions -->
+        <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
+        <jetty-maven-plugin.version>8.1.10.v20130312</jetty-maven-plugin.version>
     </properties>
 
     <dependencies>
         <!-- Spring -->
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
@@ -56,11 +66,10 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
-            <version>1.2.0.RELEASE</version>
+            <version>${spring-data-mongodb.version}</version>
         </dependency>
 
         <!-- Jackson -->
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -78,11 +87,15 @@
         </dependency>
 
         <!-- Others -->
-
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>2.10.1</version>
+            <version>${mongo-java-driver.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -121,7 +134,7 @@
             <version>${trello-java-wrapper.version}</version>
         </dependency>
 
-        <!-- test -->
+        <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -141,10 +154,10 @@
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>8.1.10.v20130312</version>
+                <version>${jetty-maven-plugin.version}</version>
                 <configuration>
-                    <stopPort>9966</stopPort>
-                    <stopKey>myqappStop</stopKey>
+                    <stopPort>${jetty-maven-plugin.stopPort}</stopPort>
+                    <stopKey>${jetty-maven-plugin.stopKey}</stopKey>
                 </configuration>
             </plugin>
             <plugin>
