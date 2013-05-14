@@ -1,8 +1,12 @@
 package com.infoq.myqapp.domain;
 
 import com.julienvey.trello.domain.Member;
+import org.springframework.data.annotation.Id;
 
 public class UserStat {
+
+    @Id
+    private String id;
 
     private Member member;
 
@@ -19,6 +23,7 @@ public class UserStat {
 
     public UserStat(Member member, String listName) {
         this.member = member;
+        this.id = member.getId() + listName;
         this.listName = listName;
     }
 
@@ -100,5 +105,9 @@ public class UserStat {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public String getId() {
+        return id;
     }
 }

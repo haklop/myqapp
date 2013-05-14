@@ -3,7 +3,6 @@ package com.infoq.myqapp.service;
 import com.infoq.myqapp.domain.ListStat;
 import com.infoq.myqapp.domain.UserProfile;
 import com.infoq.myqapp.domain.UserStat;
-import com.infoq.myqapp.repository.UserProfileRepository;
 import com.infoq.myqapp.repository.UserStatRepository;
 import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
@@ -21,9 +20,6 @@ public class StatsService {
 
     @Resource
     private UserStatRepository userStatRepository;
-
-    @Resource
-    private UserProfileRepository userProfileRepository;
 
     @Resource
     private TrelloService trelloService;
@@ -118,7 +114,9 @@ public class StatsService {
             }
 
             for (UserStat stat : userStatMap.values()) {
-                userStatRepository.save(stat);
+                if (!(stat.getMember().getId().equals("None") || stat.getMember().getId().equals("5024fa0753f944277fba9907"))) {
+                    userStatRepository.save(stat);
+                }
             }
         }
     }
@@ -137,6 +135,9 @@ public class StatsService {
         for (Member member : members) {
             memberMap.put(member.getId(), member);
         }
+        Member noneMember = new Member();
+        noneMember.setId("None");
+        memberMap.put("None", noneMember);
         return memberMap;
     }
 }
