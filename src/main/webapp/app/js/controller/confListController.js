@@ -7,7 +7,7 @@ function ConfListCtrl($scope, $http, Confs, CreateConf) {
 
     $scope.createConf = function () {
         if ($scope.newconfForm.$valid) {
-            CreateConf.query($scope.newconf, function(result) {
+            Confs.save($scope.newconf, function(result) {
                 $scope.alerts.push({"title": "Conference ajoutée", "type": "success", "content": ""});
                 $scope.confs = Confs.query();
                 $scope.newconf = {};
