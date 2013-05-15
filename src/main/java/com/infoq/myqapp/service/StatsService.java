@@ -29,13 +29,16 @@ public class StatsService {
     public static final String EN_COURS_DE_VALIDATION = "En cours de validation";
     public static final String VALIDE = "Validé";
     public static final String PUBLIE = "Publié";
+
     public static final String ARTICLES = "Articles";
     public static final String MENTORAT = "Mentorat";
     public static final String ORIGINAL = "Original";
     public static final String TRADUCTION = "Traduction";
     public static final String NEWS = "News";
+
     public static final String NONE = "None";
     public static final String AL_AMINE_USER_ID = "5024fa0753f944277fba9907";
+
     @Resource
     private UserStatRepository userStatRepository;
 
@@ -156,12 +159,21 @@ public class StatsService {
                 if (!userStatMap.containsKey(idValidator)) {
                     userStatMap.put(idValidator, new UserStat(memberMap.get(idValidator), list.getName()));
                 }
+                if (!userStatMap.containsKey(NONE)) {
+                    userStatMap.put(NONE, new UserStat(memberMap.get(NONE), list.getName()));
+                }
 
                 UserStat author = userStatMap.get(idAuthor);
                 UserStat validator = userStatMap.get(idValidator);
+                UserStat noneStats = userStatMap.get(NONE);
                 if (hasLabel(card, ARTICLES)) {
                     if (hasLabel(card, MENTORAT)) {
                         author.incrementMentoredArticles();
+                        if (hasLabel(card, ORIGINAL)) {
+                            noneStats.incrementOriginalArticles();
+                        } else if (hasLabel(card, TRADUCTION)) {
+                            noneStats.incrementTranslatedArticles();
+                        }
                     } else {
                         validator.incrementValidatedArticles();
                         if (hasLabel(card, ORIGINAL)) {
@@ -173,6 +185,11 @@ public class StatsService {
                 } else if (hasLabel(card, NEWS)) {
                     if (hasLabel(card, MENTORAT)) {
                         author.incrementMentoredNews();
+                        if (hasLabel(card, ORIGINAL)) {
+                            noneStats.incrementOriginalNews();
+                        } else if (hasLabel(card, TRADUCTION)) {
+                            noneStats.incrementTranslatedNews();
+                        }
                     } else {
                         validator.incrementValidatedNews();
                         if (hasLabel(card, ORIGINAL)) {
