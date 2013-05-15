@@ -20,14 +20,12 @@ public class StatsController {
     @RequestMapping(method = RequestMethod.GET, value = "/users")
     @ResponseBody
     public ResponseEntity getUsersStats() {
-        statsService.getUsersStats();
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(statsService.getUsersStats(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lists")
     @ResponseBody
     public ResponseEntity getListsStats() {
-        statsService.getListsStats();
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(statsService.getListsStats(), HttpStatus.OK);
     }
 }

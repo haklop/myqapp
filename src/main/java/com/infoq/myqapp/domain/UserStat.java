@@ -23,9 +23,42 @@ public class UserStat {
 
     public UserStat(Member member, String listName) {
         this.member = member;
-        this.id = member.getId() + listName;
+        this.id = (member != null ? member.getId() : "None") + listName;
         this.listName = listName;
     }
+
+    public void incrementOriginalNews(){
+        originalNews++;
+    }
+
+    public void incrementOriginalArticles(){
+        originalArticles++;
+    }
+
+    public void incrementTranslatedNews(){
+        translatedNews++;
+    }
+
+    public void incrementTranslatedArticles(){
+        translatedArticles++;
+    }
+
+    public void incrementValidatedNews(){
+        validatedNews++;
+    }
+
+    public void incrementValidatedArticles(){
+        validatedArticles++;
+    }
+
+    public void incrementMentoredNews(){
+        mentoredNews++;
+    }
+
+    public void incrementMentoredArticles(){
+        mentoredArticles++;
+    }
+
 
     public int getOriginalNews() {
         return originalNews;

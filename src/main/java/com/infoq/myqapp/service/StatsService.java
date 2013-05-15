@@ -28,7 +28,7 @@ public class StatsService {
     private MongoTemplate mongoTemplate;
 
     public List<UserStat> getUsersStats() {
-        List<UserStat> userStats = mongoTemplate.find(query(where("listName").all("A Valider", "En cours de validation", "Validé", "Publié")), UserStat.class);
+        List<UserStat> userStats = mongoTemplate.find(query(where("listName").in("A Valider", "En cours de validation", "Validé", "Publié")), UserStat.class);
 
         return aggregateStats(userStats);
     }
@@ -48,7 +48,9 @@ public class StatsService {
             } else {
                 stat.setListName("Done");
             }
-            aggregatedStats.put(userId, stat);
+            if (!(userId.equals("None") || userId.equals("5024fa0753f944277fba9907"))) {
+                aggregatedStats.put(userId, stat);
+            }
         }
 
         return new ArrayList<>(aggregatedStats.values());
@@ -88,35 +90,35 @@ public class StatsService {
                     userStatMap.put(idValidator, new UserStat(memberMap.get(idValidator), list.getName()));
                 }
 
+                UserStat author = userStatMap.get(idAuthor);
+                UserStat validator = userStatMap.get(idValidator);
                 if (hasLabel(card, "Articles")) {
                     if (hasLabel(card, "Mentorat")) {
-                        userStatMap.get(idAuthor).setMentoredArticles(userStatMap.get(idAuthor).getMentoredArticles() + 1);
+                        author.incrementMentoredArticles();
                     } else {
-                        userStatMap.get(idValidator).setValidatedArticles(userStatMap.get(idValidator).getValidatedArticles() + 1);
+                        validator.incrementValidatedArticles();
                         if (hasLabel(card, "Original")) {
-                            userStatMap.get(idAuthor).setOriginalArticles(userStatMap.get(idAuthor).getOriginalArticles() + 1);
+                            author.incrementOriginalArticles();
                         } else if (hasLabel(card, "Traduction")) {
-                            userStatMap.get(idAuthor).setTranslatedArticles(userStatMap.get(idAuthor).getTranslatedArticles() + 1);
+                            author.incrementTranslatedArticles();
                         }
                     }
                 } else if (hasLabel(card, "News")) {
                     if (hasLabel(card, "Mentorat")) {
-                        userStatMap.get(idAuthor).setMentoredNews(userStatMap.get(idAuthor).getMentoredNews() + 1);
+                        author.incrementMentoredNews();
                     } else {
-                        userStatMap.get(idValidator).setValidatedNews(userStatMap.get(idValidator).getValidatedNews() + 1);
+                        validator.incrementValidatedNews();
                         if (hasLabel(card, "Original")) {
-                            userStatMap.get(idAuthor).setOriginalNews(userStatMap.get(idAuthor).getOriginalNews() + 1);
+                            author.incrementOriginalNews();
                         } else if (hasLabel(card, "Traduction")) {
-                            userStatMap.get(idAuthor).setTranslatedNews(userStatMap.get(idAuthor).getTranslatedNews() + 1);
+                            author.incrementTranslatedNews();
                         }
                     }
                 }
             }
 
             for (UserStat stat : userStatMap.values()) {
-                if (!(stat.getMember().getId().equals("None") || stat.getMember().getId().equals("5024fa0753f944277fba9907"))) {
-                    userStatRepository.save(stat);
-                }
+                userStatRepository.save(stat);
             }
         }
     }

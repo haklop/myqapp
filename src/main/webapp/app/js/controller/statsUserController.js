@@ -1,14 +1,7 @@
-function StatsUserCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
+function StatsUserCtrl($scope, TrelloUser, StatsUsers) {
 
     $scope.cardsDone = {};
-    $scope.authorStats = {};
-
-    TrelloList.query(function (lists) {
-        var cards = lists[2].cards;
-        cards = cards.concat(lists[3].cards);
-        cards = cards.concat(lists[4].cards);
-        $scope.authorStats = StatsHelper.getAuthorsStats(cards);
-    });
+    $scope.authorStats = StatsUsers.query();
 
     $scope.matchUserId = function (memberId) {
         return $scope.users[memberId];
@@ -21,6 +14,7 @@ function StatsUserCtrl($scope, TrelloList, TrelloUser, StatsHelper) {
         }
         $scope.users = userMap;
     });
+
 
     $scope.predicate = $scope.name;
     $scope.reverse = true;
