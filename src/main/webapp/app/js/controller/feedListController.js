@@ -34,22 +34,29 @@ function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello) {
         return s;
     };
 
+    $scope.addingToTrello = function (index) {
+        return $scope.feeds.content[index].addingToTrello ? 'disabled' : undefined;
+    }
+
     $scope.addToTrello = function (index) {
-        Trello.add($scope.feeds.content[index], function (result) {
+        if (!$scope.feeds.content[index].addingToTrello) {
+            $scope.feeds.content[index].addingToTrello = true;
+            Trello.add($scope.feeds.content[index], function (result) {
 
-            $scope.alerts.push({"title": "Carte créée dans Trello", "type": "success", "content": ""});
-            $scope.feeds = Feed.query({"page": feedPage}, function (f) {
-                $scope.feeds = f;
+                $scope.alerts.push({"title": "Carte créée dans Trello", "type": "success", "content": ""});
+                $scope.feeds = Feed.query({"page": feedPage}, function (f) {
+                    $scope.feeds = f;
+                });
+                $scope.feeds.content[index].addingToTrello = false;
+            }, function (response) {
+                if (response.status === 409) {
+                    $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "info", "content": "Carte déjà existante"});
+                } else {
+                    $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
+                }
+                $scope.feeds.content[index].addingToTrello = false;
             });
-
-        }, function (response) {
-            if (response.status === 409) {
-                $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "info", "content": "Carte déjà existante"});
-            } else {
-                $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
-            }
-
-        });
+        }
     };
 
     $scope.filterCategory = function (entryToFilter) {
