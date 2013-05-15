@@ -20,26 +20,22 @@ function StatsUserCtrl($scope, TrelloUser, StatsUsers) {
     $scope.reverse = true;
 
     $scope.news = function(stats) {
-        return stats.newsoriginal + stats.newstraduction;
+        return stats.originalNews + stats.translatedNews;
     };
 
     $scope.articles = function(stats){
-        return stats.articlesoriginal + stats.articlestraduction;
+        return stats.originalArticles + stats.translatedArticles;
     };
 
     $scope.valids = function(stats){
-        return stats.articlesvalids + stats.newsvalids;
+        return stats.validatedArticles + stats.validatedNews;
     };
 
     $scope.mentors = function(stats){
-        return stats.newsmentor + stats.articlesmentor;
+        return stats.mentoredNews + stats.mentoredArticles;
     };
 
     $scope.name = function(stats){
-        if($scope.matchUserId(stats.user))
-        return $scope.matchUserId(stats.user).fullName;
+        return stats.member.fullName;
     }
-
-
-
 }

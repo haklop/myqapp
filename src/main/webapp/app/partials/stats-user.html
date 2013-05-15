@@ -13,7 +13,7 @@
         <tr ng-repeat="stats in authorStats | orderBy:order:reverse">
             <td><a href="#/users/{{stats.user}}">{{stats.member.fullName}}</a></td>
             <td><strong>{{stats.originalNews + stats.translatedNews}}</strong> ({{stats.originalNews}} originales, {{stats.translatedNews}} traductions)</td>
-            <td><strong>{{stats.originalArticles + stats.originalNews}}</strong> ({{stats.originalArticles}} originaux, {{stats.originalNews}} traductions)</td>
+            <td><strong>{{stats.originalArticles + stats.translatedArticles}}</strong> ({{stats.originalArticles}} originaux, {{stats.translatedArticles}} traductions)</td>
             <td><strong>{{stats.validatedArticles + stats.validatedNews}}</strong> ({{stats.validatedArticles}} articles, {{stats.validatedNews}} news)</td>
             <td><strong>{{stats.mentoredArticles + stats.mentoredNews}}</strong> ({{stats.mentoredArticles}} articles, {{stats.mentoredNews}} news)</td>
         </tr>
