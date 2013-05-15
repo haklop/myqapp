@@ -1,4 +1,4 @@
-function ConfListCtrl($scope, $http, Confs, CreateConf) {
+function ConfListCtrl($scope, Confs) {
     $scope.alerts = [];
 
     $scope.newconf = {};
@@ -7,12 +7,12 @@ function ConfListCtrl($scope, $http, Confs, CreateConf) {
 
     $scope.createConf = function () {
         if ($scope.newconfForm.$valid) {
-            Confs.save($scope.newconf, function(result) {
+            Confs.save($scope.newconf, function() {
                 $scope.alerts.push({"title": "Conference ajoutée", "type": "success", "content": ""});
                 $scope.confs = Confs.query();
                 $scope.newconf = {};
 
-            }, function(response) {
+            }, function() {
                 $scope.alerts.push({"title": "Erreur lors de la création de la conference", "type": "error", "content": ""});
             });
         }
