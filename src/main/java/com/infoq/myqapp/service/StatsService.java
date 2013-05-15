@@ -1,5 +1,7 @@
 package com.infoq.myqapp.service;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.infoq.myqapp.domain.ListStat;
 import com.infoq.myqapp.domain.UserProfile;
 import com.infoq.myqapp.domain.UserStat;
@@ -11,13 +13,29 @@ import com.julienvey.trello.domain.TList;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 public class StatsService {
 
+    public static final String POOL_D_ARTICLES = "Pool d'Articles";
+    public static final String EN_COURS_D_ECRITURE_TRADUCTION = "En cours d'écriture / traduction";
+    public static final String A_VALIDER = "A Valider";
+    public static final String EN_COURS_DE_VALIDATION = "En cours de validation";
+    public static final String VALIDE = "Validé";
+    public static final String PUBLIE = "Publié";
+    public static final String ARTICLES = "Articles";
+    public static final String MENTORAT = "Mentorat";
+    public static final String ORIGINAL = "Original";
+    public static final String TRADUCTION = "Traduction";
+    public static final String NEWS = "News";
+    public static final String NONE = "None";
+    public static final String AL_AMINE_USER_ID = "5024fa0753f944277fba9907";
     @Resource
     private UserStatRepository userStatRepository;
 
@@ -28,7 +46,7 @@ public class StatsService {
     private MongoTemplate mongoTemplate;
 
     public List<UserStat> getUsersStats() {
-        List<UserStat> userStats = mongoTemplate.find(query(where("listName").in("A Valider", "En cours de validation", "Validé", "Publié")), UserStat.class);
+        List<UserStat> userStats = mongoTemplate.find(query(where("listName").in(A_VALIDER, EN_COURS_DE_VALIDATION, VALIDE, PUBLIE)), UserStat.class);
 
         return aggregateStats(userStats);
     }
@@ -48,7 +66,7 @@ public class StatsService {
             } else {
                 stat.setListName("Done");
             }
-            if (!(userId.equals("None") || userId.equals("5024fa0753f944277fba9907"))) {
+            if (!(userId.equals(NONE) || userId.equals("5024fa0753f944277fba9907"))) {
                 aggregatedStats.put(userId, stat);
             }
         }
@@ -57,14 +75,63 @@ public class StatsService {
     }
 
     public List<ListStat> getListsStats() {
-        ListStat poolList = new ListStat("Pool d'Articles", fetchListFromMongo("Pool d'Articles"));
-        ListStat inProgressList = new ListStat("En cours d'écriture / traduction", fetchListFromMongo("En cours d'écriture / traduction"));
-        ListStat toValidateList = new ListStat("A Valider", fetchListFromMongo("A Valider"));
-        ListStat validationInProgessList = new ListStat("En cours de validation", fetchListFromMongo("En cours de validation"));
-        ListStat validatedList = new ListStat("Validé", fetchListFromMongo("Validé"));
-        ListStat publishedList = new ListStat("Publié", fetchListFromMongo("Publié"));
+        String[] lists = new String[]{POOL_D_ARTICLES, EN_COURS_D_ECRITURE_TRADUCTION, A_VALIDER, EN_COURS_DE_VALIDATION, VALIDE, PUBLIE};
 
-        return Arrays.asList(poolList, inProgressList, toValidateList, validationInProgessList, validatedList, publishedList);
+        List<ListStat> listStats = new ArrayList<>();
+
+        for (String list : lists) {
+            List<UserStat> listFromMongo = fetchListFromMongo(list);
+            ListStat listStat = new ListStat(list, aggregateUserStats(listFromMongo));
+            listStat.setOriginalArticles(countOriginalArticles(listFromMongo));
+            listStat.setOriginalNews(countOriginalNews(listFromMongo));
+            listStat.setTranslatedArticles(countTranslatedArticles(listFromMongo));
+            listStat.setTranslatedNews(countTranslatedNews(listFromMongo));
+            listStats.add(listStat);
+        }
+
+        return listStats;
+    }
+
+    private int countTranslatedNews(List<UserStat> stats) {
+        int count = 0;
+        for(UserStat stat : stats){
+            count += stat.getTranslatedNews();
+        }
+        return count;
+    }
+
+    private int countTranslatedArticles(List<UserStat> stats) {
+        int count = 0;
+        for(UserStat stat : stats){
+            count += stat.getTranslatedArticles();
+        }
+        return count;
+    }
+
+    private int countOriginalNews(List<UserStat> stats) {
+        int count = 0;
+        for(UserStat stat : stats){
+            count += stat.getOriginalNews();
+        }
+        return count;
+    }
+
+    private int countOriginalArticles(List<UserStat> stats) {
+        int count = 0;
+        for(UserStat stat : stats){
+            count += stat.getOriginalArticles();
+        }
+        return count;
+    }
+
+    private List<UserStat> aggregateUserStats(List<UserStat> stats) {
+        return new ArrayList<>(Collections2.filter(stats, new Predicate<UserStat>() {
+            @Override
+            public boolean apply(UserStat stat) {
+                String userId = stat.getMember().getId();
+                return !(userId.equals(NONE) || userId.equals(AL_AMINE_USER_ID));
+            }
+        }));
     }
 
     private List<UserStat> fetchListFromMongo(String list) {
@@ -80,8 +147,8 @@ public class StatsService {
         for (TList list : lists) {
             Map<String, UserStat> userStatMap = new HashMap<>();
             for (Card card : list.getCards()) {
-                String idAuthor = card.getIdMembers().size() > 0 ? card.getIdMembers().get(0) : "None";
-                String idValidator = card.getIdMembers().size() > 1 ? card.getIdMembers().get(1) : "None";
+                String idAuthor = card.getIdMembers().size() > 0 ? card.getIdMembers().get(0) : NONE;
+                String idValidator = card.getIdMembers().size() > 1 ? card.getIdMembers().get(1) : NONE;
 
                 if (!userStatMap.containsKey(idAuthor)) {
                     userStatMap.put(idAuthor, new UserStat(memberMap.get(idAuthor), list.getName()));
@@ -92,25 +159,25 @@ public class StatsService {
 
                 UserStat author = userStatMap.get(idAuthor);
                 UserStat validator = userStatMap.get(idValidator);
-                if (hasLabel(card, "Articles")) {
-                    if (hasLabel(card, "Mentorat")) {
+                if (hasLabel(card, ARTICLES)) {
+                    if (hasLabel(card, MENTORAT)) {
                         author.incrementMentoredArticles();
                     } else {
                         validator.incrementValidatedArticles();
-                        if (hasLabel(card, "Original")) {
+                        if (hasLabel(card, ORIGINAL)) {
                             author.incrementOriginalArticles();
-                        } else if (hasLabel(card, "Traduction")) {
+                        } else if (hasLabel(card, TRADUCTION)) {
                             author.incrementTranslatedArticles();
                         }
                     }
-                } else if (hasLabel(card, "News")) {
-                    if (hasLabel(card, "Mentorat")) {
+                } else if (hasLabel(card, NEWS)) {
+                    if (hasLabel(card, MENTORAT)) {
                         author.incrementMentoredNews();
                     } else {
                         validator.incrementValidatedNews();
-                        if (hasLabel(card, "Original")) {
+                        if (hasLabel(card, ORIGINAL)) {
                             author.incrementOriginalNews();
-                        } else if (hasLabel(card, "Traduction")) {
+                        } else if (hasLabel(card, TRADUCTION)) {
                             author.incrementTranslatedNews();
                         }
                     }
@@ -138,8 +205,8 @@ public class StatsService {
             memberMap.put(member.getId(), member);
         }
         Member noneMember = new Member();
-        noneMember.setId("None");
-        memberMap.put("None", noneMember);
+        noneMember.setId(NONE);
+        memberMap.put(NONE, noneMember);
         return memberMap;
     }
 }

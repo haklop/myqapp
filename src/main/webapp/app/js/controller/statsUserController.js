@@ -1,20 +1,5 @@
-function StatsUserCtrl($scope, TrelloUser, StatsUsers) {
-
-    $scope.cardsDone = {};
+function StatsUserCtrl($scope, StatsUsers) {
     $scope.authorStats = StatsUsers.query();
-
-    $scope.matchUserId = function (memberId) {
-        return $scope.users[memberId];
-    };
-
-    TrelloUser.query(function (users) {
-        var userMap = {};
-        for (var i = 0; i < users.length; i++) {
-            userMap[users[i].id] = users[i];
-        }
-        $scope.users = userMap;
-    });
-
 
     $scope.predicate = $scope.name;
     $scope.reverse = true;

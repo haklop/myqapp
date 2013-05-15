@@ -2,12 +2,12 @@
     <div class="well well-small" ng-repeat="list in lists">
         <div class="row-fluid">
             <div class="span4">
-                <div><strong>{{list.name}}</strong> : {{list.cards.length}} items</div>
-                <div>News : {{countNews(list.cards)}} ({{countNewsOriginal(list.cards)}} original,
-                    {{countNewsTraduction(list.cards)}} traduction)
+                <div><strong>{{list.listName}}</strong> : {{list.originalNews + list.translatedNews + list.originalArticles + list.translatedArticles}} items</div>
+                <div>News : {{list.originalNews + list.translatedNews}} ({{list.originalNews}} original,
+                    {{list.translatedNews}} traduction)
                 </div>
-                <div>Articles : {{countArticles(list.cards)}} ({{countArticlesOriginal(list.cards)}} original,
-                    {{countArticlesTraduction(list.cards)}} traduction)
+                <div>Articles : {{list.originalArticles + list.translatedArticles}} ({{list.originalArticles}} original,
+                    {{list.translatedArticles}} traduction)
                 </div>
             </div>
             <div class="span8">
@@ -22,12 +22,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="stats in getAuthors(list) | orderBy:order:reverse">
-                        <td>{{matchUserId(stats.user).fullName}}</td>
-                        <td><strong>{{stats.newsoriginal + stats.newstraduction}}</strong> ({{stats.newsoriginal}} originales, {{stats.newstraduction}} traductions)</td>
-                        <td><strong>{{stats.articlesoriginal + stats.articlestraduction}}</strong> ({{stats.articlesoriginal}} originaux, {{stats.articlestraduction}} traductions)</td>
-                        <td><strong>{{stats.articlesvalids + stats.newsvalids}}</strong> ({{stats.articlesvalids}} articles, {{stats.newsvalids}} news)</td>
-                        <td><strong>{{stats.newsmentor + stats.articlesmentor}}</strong> ({{stats.articlesmentor}} articles, {{stats.newsmentor}} news)</td>
+                    <tr ng-repeat="stats in list.userStats | orderBy:order:reverse">
+                        <td><a href="#/users/{{stats.user}}">{{stats.member.fullName}}</a></td>
+                        <td><strong>{{stats.originalNews + stats.translatedNews}}</strong> ({{stats.originalNews}} originales, {{stats.translatedNews}} traductions)</td>
+                        <td><strong>{{stats.originalArticles + stats.translatedArticles}}</strong> ({{stats.originalArticles}} originaux, {{stats.translatedArticles}} traductions)</td>
+                        <td><strong>{{stats.validatedArticles + stats.validatedNews}}</strong> ({{stats.validatedArticles}} articles, {{stats.validatedNews}} news)</td>
+                        <td><strong>{{stats.mentoredArticles + stats.mentoredNews}}</strong> ({{stats.mentoredArticles}} articles, {{stats.mentoredNews}} news)</td>
                     </tr>
                     </tbody>
                 </table>
