@@ -73,7 +73,7 @@ function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello) {
     $scope.refreshFeed = function () {
         RefreshFeed.query(function (f) {
             $scope.feeds = f;
-            $scope.alerts.push({"title": "Mise à jour terminé", "type": "success", "content": ""});
+            $scope.alerts.push({"title": "Mise à jour terminée", "type": "success", "content": ""});
         });
     };
 }
