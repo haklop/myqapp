@@ -66,6 +66,8 @@ public class StatsService {
                 stat.setOriginalNews(currentStat.getOriginalNews() + stat.getOriginalNews());
                 stat.setTranslatedArticles(currentStat.getTranslatedArticles() + stat.getTranslatedArticles());
                 stat.setTranslatedNews(currentStat.getTranslatedNews() + stat.getTranslatedNews());
+                stat.setValidatedArticles(currentStat.getValidatedArticles() + stat.getValidatedArticles());
+                stat.setValidatedNews(currentStat.getValidatedNews() + stat.getValidatedNews());
             } else {
                 stat.setListName("Done");
             }
@@ -146,6 +148,8 @@ public class StatsService {
 
         Map<String, Member> memberMap = mapMemberList(trelloService.getMembers(adminUser.getTokenTrello()));
         List<TList> lists = trelloService.getLists(adminUser.getTokenTrello());
+
+        userStatRepository.deleteAll();
 
         for (TList list : lists) {
             Map<String, UserStat> userStatMap = new HashMap<>();

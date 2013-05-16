@@ -59,7 +59,6 @@ public class UserStat {
         mentoredArticles++;
     }
 
-
     public int getOriginalNews() {
         return originalNews;
     }
