@@ -23,6 +23,13 @@ public class StatsController {
         return new ResponseEntity(statsService.getUsersStats(), HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/refresh")
+    @ResponseBody
+    public ResponseEntity refreshStats() {
+        statsService.calculateStats();
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/lists")
     @ResponseBody
     public ResponseEntity getListsStats() {

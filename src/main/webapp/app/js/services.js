@@ -54,3 +54,9 @@ angularModule.factory('StatsLists', function ($resource) {
         query: {method: 'GET', isArray: true}
     });
 });
+
+angularModule.factory('Stats', function ($resource) {
+    return $resource('api/stats/refresh', {}, {
+        refresh: {method: 'GET', isArray: false}
+    });
+});
