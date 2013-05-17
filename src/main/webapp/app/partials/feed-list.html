@@ -29,7 +29,7 @@
             <tbody>
             <tr ng-repeat="feed in feeds.content | filter:filterCategory">
                 <td>{{feed.type}}</td>
-                <td><a href="{{feed.link}}">{{feed.title}}</a></td>
+                <td><a ng-href="{{feed.link}}">{{feed.title}}</a></td>
                 <td>{{feed.publishedDate | date:'dd/MM/yyyy'}}</td>
                 <td>{{formatCategories(feed.categories)}}</td>
                 <td>
@@ -37,7 +37,7 @@
                             class="btn btn-info" ng-click="addToTrello($index)" ng-class="addingToTrello($index)" ng-disabled="addingToTrello($index)">Add to Trello
                     </button>
 
-                    <a ng-show="feed.addedInTrello" href="{{feed.urlTrello}}" class="btn btn-success"
+                    <a ng-show="feed.addedInTrello" ng-href="{{feed.urlTrello}}" class="btn btn-success"
                        title="View on Trello" target="_blank">Added</a>
                 </td>
             </tr>
@@ -47,9 +47,9 @@
         <div class="pagination pagination-centered pagination-large">
             <ul>
                 <!-- FIXME rendre actif/inactif prev et next en fonction du contexte-->
-                <li><a href="#/feed/{{feeds.number - 1 }}">Prev</a></li>
+                <li><a ng-href="#/feed/{{feeds.number - 1 }}">Prev</a></li>
                 <li class="active"><a href="#">{{feeds.number}}</a></li>
-                <li><a href="#/feed/{{feeds.number + 1 }}">Next</a></li>
+                <li><a ng-href="#/feed/{{feeds.number + 1 }}">Next</a></li>
             </ul>
         </div>
     </div>
