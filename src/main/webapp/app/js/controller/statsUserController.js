@@ -27,13 +27,11 @@ function StatsUserCtrl($scope, StatsUsers, Stats) {
     $scope.refreshInProgress = false;
 
     $scope.refreshStats = function () {
-        if (!$scope.refreshInProgress) {
-            $scope.refreshInProgress = true;
-            Stats.refresh(function () {
-                $scope.authorStats = StatsUsers.query();
-                $scope.refreshInProgress = false;
-            });
-        }
+        $scope.refreshInProgress = true;
+        Stats.refresh(function () {
+            $scope.authorStats = StatsUsers.query();
+            $scope.refreshInProgress = false;
+        });
     }
 
     $scope.refreshing = function () {
