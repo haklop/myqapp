@@ -10,6 +10,7 @@ import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
+import com.julienvey.trello.utils.ArgUtils;
 import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.julienvey.trello.utils.ArgUtils.arg;
 
 @Service
 public class TrelloService {
@@ -42,7 +45,7 @@ public class TrelloService {
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
         Board board = trelloApi.getBoard(trelloBoardForAddingCardsId);
 
-        List<TList> lists = board.getLists();
+        List<TList> lists = board.fetchLists();
 
         Card cardToCreate = buildCardFromFeedEntry(feedEntry);
         Card card = lists.get(0).createCard(cardToCreate);
@@ -59,7 +62,7 @@ public class TrelloService {
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
         Board board = trelloApi.getBoard(trelloBoardForStatsId);
 
-        return board.getLists();
+        return board.fetchLists(arg("cards", "open"));
     }
 
     private Member getUserInfo(String username, Token accessToken) {
@@ -71,7 +74,7 @@ public class TrelloService {
         Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
         Board board = trelloApi.getBoard(trelloBoardForStatsId);
 
-        return board.getMembers();
+        return board.fetchMembers();
     }
 
     public Member getUserInfo(Token accessToken) {
