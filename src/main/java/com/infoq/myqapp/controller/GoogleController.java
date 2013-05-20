@@ -43,6 +43,8 @@ public class GoogleController {
         ALLOWED_EMAIL.add("vey.julien@gmail.com");
         ALLOWED_EMAIL.add("simon.basle@gmail.com");
         ALLOWED_EMAIL.add("al-amine.ousman@zenika.com");
+        ALLOWED_EMAIL.add("pierre@queinnec.org");
+        ALLOWED_EMAIL.add("pierre.queinnec@gmail.com");
     }
 
     @Resource
