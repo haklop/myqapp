@@ -28,7 +28,7 @@ public class ConferenceService {
         conferenceRepository.save(conference);
     }
 
-    public List<Conference> getAllConfs() {
+    public List<Conference> getAllFutureConfs() {
         return mongoTemplate.find(query(where("endDate").gte(yesterday())).with(new Sort(Sort.Direction.ASC, "startDate")), Conference.class);
     }
 

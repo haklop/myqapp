@@ -32,6 +32,6 @@ public class ConferenceController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<Conference> getAllConfs() {
-        return conferenceService.getAllConfs();
+        return conferenceService.getAllFutureConfs();
     }
 }
