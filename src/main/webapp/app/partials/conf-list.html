@@ -52,24 +52,9 @@
         <div class="alerts">
             <div class="alert fade" ng-repeat="alert in alerts" bs-alert="alert"></div>
         </div>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Lieu</th>
-                <th>Début</th>
-                <th>Fin</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="conf in confs">
-                <td><a ng-href="{{conf.website}}">{{conf.name}}</a></td>
-                <td>{{conf.location}}</td>
-                <td>{{conf.startDate | date:'dd/MM/yyyy'}}</td>
-                <td>{{conf.endDate | date:'dd/MM/yyyy'}}</td>
-            </tr>
-            </tbody>
-        </table>
+
+        <div id="conf-calendar">
+        </div>
     </div>
 
 </div>

@@ -35,4 +35,10 @@ public class ConferenceController {
     public List<Conference> getConfsByMonth(@PathVariable("year") int year, @PathVariable("month") int month) {
         return conferenceService.getConfsByMonth(year, month);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/period")
+    @ResponseBody
+    public List<Conference> getConfsByTimestamp(@RequestParam("start") long start, @RequestParam("end") long end) {
+        return conferenceService.getConfsByTimestamp(start, end);
+    }
 }

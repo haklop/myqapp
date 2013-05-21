@@ -49,6 +49,11 @@ public class ConferenceService {
         return mongoTemplate.find(query, Conference.class);
     }
 
+    public List<Conference> getConfsByTimestamp(long start, long end) {
+        Criteria criteria = where("startDate").gte(new Date(start)).orOperator(where("endDate").lte(new Date(end)));
+        return mongoTemplate.find(query(criteria), Conference.class);
+    }
+
     private Date yesterday() {
         return new Date(new Date().getTime() - (1000 * 60 * 60 * 24));
     }
