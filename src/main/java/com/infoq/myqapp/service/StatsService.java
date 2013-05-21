@@ -205,9 +205,7 @@ public class StatsService {
                 }
             }
 
-            for (UserStat stat : userStatMap.values()) {
-                userStatRepository.save(stat);
-            }
+            userStatRepository.save(userStatMap.values());
         }
     }
 
