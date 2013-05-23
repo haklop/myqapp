@@ -8,6 +8,7 @@ var module = angular.module('myqapp', ['myqapi', '$strap.directives']).
             when('/users', {templateUrl: 'app/partials/stats-user.html',   controller: StatsUserCtrl}).
             when('/users/:user', {templateUrl: 'app/partials/user-detail.html',   controller: UserDetailCtrl}).
             when('/conf', {templateUrl: 'app/partials/conf-list.html',   controller: ConfListCtrl}).
+            when('/markdown', {templateUrl: 'app/partials/markdown-generator.html',   controller: MarkdownGeneratorCtrl}).
             otherwise({redirectTo: '/feed/0'});
     }]);
 

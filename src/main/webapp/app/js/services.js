@@ -60,3 +60,9 @@ angularModule.factory('Stats', function ($resource) {
         refresh: {method: 'GET', isArray: false}
     });
 });
+
+angularModule.factory('MarkdownGenerator', function ($resource) {
+    return $resource('api/markdown', {}, {
+        generate: {method: 'POST'}
+    });
+});

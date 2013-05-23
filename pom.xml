@@ -30,6 +30,7 @@
         <guava.version>14.0.1</guava.version>
         <mongo-java-driver.version>2.10.1</mongo-java-driver.version>
         <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>
+        <pegdown.version>1.2.0</pegdown.version>
 
         <!-- Plugins versions -->
         <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
@@ -132,6 +133,11 @@
             <groupId>com.julienvey.trello</groupId>
             <artifactId>trello-java-wrapper</artifactId>
             <version>${trello-java-wrapper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>${pegdown.version}</version>
         </dependency>
 
         <!-- Test -->
