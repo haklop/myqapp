@@ -41,12 +41,14 @@ public class GoogleController {
     static {
         ALLOWED_EMAIL.add("eric.bellemon@gmail.com");
         ALLOWED_EMAIL.add("vey.julien@gmail.com");
-        ALLOWED_EMAIL.add("simon.basle@gmail.com");
+        ALLOWED_EMAIL.add("simon.basle@zenika.com");
         ALLOWED_EMAIL.add("al-amine.ousman@zenika.com");
         ALLOWED_EMAIL.add("pierre@queinnec.org");
         ALLOWED_EMAIL.add("pierre.queinnec@gmail.com");
         ALLOWED_EMAIL.add("mathieu.pousse@zenika.com");
         ALLOWED_EMAIL.add("hadrien.pierart@zenika.com");
+        ALLOWED_EMAIL.add("antoine.rouaze@gmail.com");
+        ALLOWED_EMAIL.add("benoit.nouyrigat@zenika.com");
     }
 
     @Resource
