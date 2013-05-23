@@ -10,7 +10,6 @@ import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
-import com.julienvey.trello.utils.ArgUtils;
 import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

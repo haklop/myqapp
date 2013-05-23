@@ -28,6 +28,8 @@ public class StatsService {
     public static final String A_VALIDER = "A Valider";
     public static final String EN_COURS_DE_VALIDATION = "En cours de validation";
     public static final String VALIDE = "Validé";
+    public static final String EN_COURS_PUBLICATION = "En cours de publication";
+    public static final String PROBLEME_FORMAT = "Problème format";
     public static final String PUBLIE = "Publié";
 
     public static final String ARTICLES = "Articles";
@@ -49,7 +51,7 @@ public class StatsService {
     private MongoTemplate mongoTemplate;
 
     public List<UserStat> getUsersStats() {
-        List<UserStat> userStats = mongoTemplate.find(query(where("listName").in(A_VALIDER, EN_COURS_DE_VALIDATION, VALIDE, PUBLIE)), UserStat.class);
+        List<UserStat> userStats = mongoTemplate.find(query(where("listName").in(A_VALIDER, EN_COURS_DE_VALIDATION, VALIDE, PUBLIE, EN_COURS_PUBLICATION, PROBLEME_FORMAT)), UserStat.class);
 
         return aggregateStats(userStats);
     }
@@ -80,7 +82,7 @@ public class StatsService {
     }
 
     public List<ListStat> getListsStats() {
-        String[] lists = new String[]{POOL_D_ARTICLES, EN_COURS_D_ECRITURE_TRADUCTION, A_VALIDER, EN_COURS_DE_VALIDATION, VALIDE, PUBLIE};
+        String[] lists = new String[]{POOL_D_ARTICLES, EN_COURS_D_ECRITURE_TRADUCTION, A_VALIDER, EN_COURS_DE_VALIDATION, VALIDE, EN_COURS_PUBLICATION, PROBLEME_FORMAT, PUBLIE};
 
         List<ListStat> listStats = new ArrayList<>();
 
