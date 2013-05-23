@@ -45,6 +45,8 @@ public class GoogleController {
         ALLOWED_EMAIL.add("al-amine.ousman@zenika.com");
         ALLOWED_EMAIL.add("pierre@queinnec.org");
         ALLOWED_EMAIL.add("pierre.queinnec@gmail.com");
+        ALLOWED_EMAIL.add("mathieu.pousse@zenika.com");
+        ALLOWED_EMAIL.add("hadrien.pierart@zenika.com");
     }
 
     @Resource
