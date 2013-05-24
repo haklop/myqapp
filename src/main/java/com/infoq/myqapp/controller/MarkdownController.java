@@ -1,8 +1,7 @@
 package com.infoq.myqapp.controller;
 
-import com.infoq.myqapp.domain.Conference;
 import com.infoq.myqapp.domain.GeneratedHtml;
-import com.infoq.myqapp.service.ConferenceService;
+import com.infoq.myqapp.domain.GitHubMarkdown;
 import com.infoq.myqapp.service.MarkdownService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +23,8 @@ public class MarkdownController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity generateHtml(@RequestBody String markdown) {
-        String html = markdownService.generateHtml(markdown);
-        return new ResponseEntity(new GeneratedHtml(html), HttpStatus.OK);
+        String html = markdownService.generateHtml(new GitHubMarkdown(markdown, "markdown", null));
+        return new ResponseEntity<>(new GeneratedHtml(html), HttpStatus.OK);
     }
 
 }
