@@ -30,6 +30,8 @@
         <guava.version>14.0.1</guava.version>
         <mongo-java-driver.version>2.10.1</mongo-java-driver.version>
         <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>
+        <jsoup.version>1.7.2</jsoup.version>
+        <txtmark.version>0.9</txtmark.version>
 
         <!-- Plugins versions -->
         <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
@@ -136,7 +138,12 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.7.2</version>
+            <version>${jsoup.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.rjeschke</groupId>
+            <artifactId>txtmark</artifactId>
+            <version>${txtmark.version}</version>
         </dependency>
 
         <!-- Test -->
