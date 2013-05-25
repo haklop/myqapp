@@ -1,17 +1,18 @@
-<textarea style="width: 100% !important; height: 300px;" ng-model="markdown"></textarea>
+<form class="form-horizontal" name="generateMarkdownForm" novalidate>
+    <textarea style="width: 100% !important; height: 300px;" ng-model="markdown.text"></textarea>
 
-<label class="radio inline">
-    <input type="radio" name="type" id="newsRadio" value="news"> News
-</label>
-<label class="radio inline">
-    <input type="radio" name="type" id="articleRadio" value="article"> Article
-</label>
-<label class="radio inline">
-    <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/"/>
-</label>
-<label class="radio inline">
-    <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
-</label>
-
+    <label class="radio inline">
+        <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
+    </label>
+    <label class="radio inline">
+        <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
+    </label>
+    <label class="radio inline">
+        <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/" ng-model="markdown.node" required />
+    </label>
+    <label class="radio inline">
+        <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
+    </label>
+</form>
 
 <textarea style="width: 100% !important; height: 300px;" ng-model="generated" disabled></textarea>

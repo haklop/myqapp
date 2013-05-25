@@ -1,5 +1,6 @@
 package com.infoq.myqapp.service;
 
+import com.infoq.myqapp.domain.MyQAppMarkdown;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class MarkdownServiceTest {
     public void testGeneration() {
         String markdown = "*Allo*";
 
-        String html = markdownService.generateHtml(markdown);
+        String html = markdownService.generateHtml(new MyQAppMarkdown(markdown, "articles", "node"));
 
         assertThat(html).contains("<p><em>Allo</em></p>");
     }

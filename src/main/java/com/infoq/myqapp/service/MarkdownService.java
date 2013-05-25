@@ -2,6 +2,7 @@ package com.infoq.myqapp.service;
 
 import com.github.rjeschke.txtmark.Processor;
 import com.infoq.myqapp.domain.GitHubMarkdown;
+import com.infoq.myqapp.domain.MyQAppMarkdown;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
@@ -22,12 +23,12 @@ public class MarkdownService {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    public String generateHtml(String markdown, boolean isAnArticle, String nodeName) {
-        String result = restTemplate.postForObject("https://api.github.com/markdown", new GitHubMarkdown(markdown, "markdown", null), String.class);
+    public String generateHtml(MyQAppMarkdown markdown) {
+        String result = restTemplate.postForObject("https://api.github.com/markdown", new GitHubMarkdown(markdown.getText(), "markdown", null), String.class);
 
-        List<String> imagesSources = getImageSources(markdown);
+        List<String> imagesSources = getImageSources(markdown.getText());
 
-        return processHtml(result, imagesSources, isAnArticle, nodeName);
+        return processHtml(result, imagesSources, markdown.isAnArticle(), markdown.getNode());
     }
 
     private List<String> getImageSources(String markdown) {
@@ -111,10 +112,7 @@ public class MarkdownService {
                 textNode.replaceWith(new DataNode(textNode.outerHtml().replace(" ", "&nbsp;").replace("\n", "<br/>"), ""));
             }
 
-            Element parent = pre.parent();
-            if ("highlight".equals(parent.className())) {
-                parent.replaceWith(pre);
-            }
+            
 
         }
     }
