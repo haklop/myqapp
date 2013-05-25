@@ -42,7 +42,9 @@ public class MarkdownService {
 
     private String processHtml(String html, List<String> imageSources) {
 
-        Document myAmazingContent = Jsoup.parse(html);
+        String input = html.replaceAll(" \\?", "&nbsp?").replaceAll(" :", "&nbsp:").replaceAll(" !", "&nbsp!");
+
+        Document myAmazingContent = Jsoup.parse(input);
 
         removeOcticonSpan(myAmazingContent);
 
@@ -53,6 +55,8 @@ public class MarkdownService {
         parseHighlight(myAmazingContent);
 
         parseImages(imageSources, myAmazingContent);
+
+
 
         return removeBody(myAmazingContent);
     }
