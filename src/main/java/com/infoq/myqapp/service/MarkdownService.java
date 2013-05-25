@@ -33,10 +33,7 @@ public class MarkdownService {
 
         String txtMarkHtml = Processor.process(markdown);
         Document txtMarkDocument = Jsoup.parse(txtMarkHtml);
-        Elements img = txtMarkDocument.getElementsByTag("img");
-        Iterator<Element> iterator = img.iterator();
-        while (iterator.hasNext()) {
-            Element next = iterator.next();
+        for (Element next : txtMarkDocument.getElementsByTag("img")) {
             String src = next.attr("src");
             imagesSources.add(src);
         }
