@@ -18,14 +18,16 @@ import java.util.List;
 @Service
 public class MarkdownService {
 
+    private static final String IMAGE_SRC_PREFIX = "/mag4media/repositories/fs/";
+
     private RestTemplate restTemplate = new RestTemplate();
 
-    public String generateHtml(String markdown) {
+    public String generateHtml(String markdown, boolean isAnArticle, String nodeName) {
         String result = restTemplate.postForObject("https://api.github.com/markdown", new GitHubMarkdown(markdown, "markdown", null), String.class);
 
         List<String> imagesSources = getImageSources(markdown);
 
-        return processHtml(result, imagesSources);
+        return processHtml(result, imagesSources, isAnArticle, nodeName);
     }
 
     private List<String> getImageSources(String markdown) {
@@ -40,52 +42,60 @@ public class MarkdownService {
         return imagesSources;
     }
 
-    private String processHtml(String html, List<String> imageSources) {
+    private String processHtml(String html, List<String> imageSources, boolean isAnArticle, String nodeName) {
 
         String input = html.replaceAll(" \\?", "&nbsp?").replaceAll(" :", "&nbsp:").replaceAll(" !", "&nbsp!");
 
         Document myAmazingContent = Jsoup.parse(input);
 
         removeOcticonSpan(myAmazingContent);
-
         removeAnchors(myAmazingContent);
-
         highlightPre(myAmazingContent);
-
-        parseHighlight(myAmazingContent);
-
-        parseImages(imageSources, myAmazingContent);
+        parseImages(imageSources, myAmazingContent, isAnArticle, nodeName);
 
 
 
         return removeBody(myAmazingContent);
     }
 
-    private void parseImages(List<String> imageSources, Document myAmazingContent) {
-        Elements img = myAmazingContent.getElementsByTag("img");
-        Iterator<Element> iterator = img.iterator();
-        Iterator<String> iteratorSource = imageSources.iterator();
-        while (iterator.hasNext() && iteratorSource.hasNext()) {
-            Element next = iterator.next();
-            String nextSource = iteratorSource.next();
-            next.attr("src", parseImageSource(nextSource));
+    private void parseImages(List<String> imageSources, Document myAmazingContent, boolean isAnArticle, String nodeName) {
+        Elements images = myAmazingContent.getElementsByTag("img");
+        Iterator<Element> imagesIterator = images.iterator();
+        Iterator<String> sourceIterator = imageSources.iterator();
+        while (imagesIterator.hasNext() && sourceIterator.hasNext()) {
+            Element image = imagesIterator.next();
+            String source = sourceIterator.next();
+            parseImageSource(image, source, isAnArticle, nodeName);
         }
     }
 
-    private String parseImageSource(String nextSource) {
-        //TODO appliquer la regle des images
-        return nextSource;
+    private void parseImageSource(Element image, String source, boolean isAnArticle, String nodeName) {
+        String resourceName = source.substring(source.lastIndexOf("/") + 1);
+        if (resourceName.contains(";jsessionid=")) {
+            resourceName = resourceName.substring(0, resourceName.indexOf(";jsessionid="));
+        }
+
+        String src = IMAGE_SRC_PREFIX;
+        if (isAnArticle) {
+            src += "articles/";
+        } else {
+            src += "news/";
+        }
+        src += nodeName + "/fr/resources/" + resourceName;
+
+        image.attr("src", src);
+        image.attr("_href", "img://" + resourceName);
+        image.removeAttr("style");
+
+        //remove the link to akamai
+        Element parent = image.parent();
+        if ("a".equals(parent.tagName()) && parent.attr("href").contains("akamai") && parent.attr("href").contains("github")) {
+            image.parent().replaceWith(image);
+        }
     }
 
     private String removeBody(Document myAmazingContent) {
         return myAmazingContent.body().outerHtml().replace("<body>", "").replace("</body>", "");
-    }
-
-    private void parseHighlight(Document myAmazingContent) {
-        for (Element highlight : myAmazingContent.select("div.highlight")) {
-            highlight.tagName("p");
-            highlight.removeAttr("class");
-        }
     }
 
     private void highlightPre(Document myAmazingContent) {
@@ -98,11 +108,14 @@ public class MarkdownService {
             }
 
             for (TextNode textNode : pre.textNodes()) {
-                String text = textNode.text();
-                String outerHtml = textNode.outerHtml();
                 textNode.replaceWith(new DataNode(textNode.outerHtml().replace(" ", "&nbsp;").replace("\n", "<br/>"), ""));
             }
-            pre.outerHtml();
+
+            Element parent = pre.parent();
+            if ("highlight".equals(parent.className())) {
+                parent.replaceWith(pre);
+            }
+
         }
     }
 

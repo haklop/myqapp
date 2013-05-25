@@ -1,4 +1,17 @@
 <textarea style="width: 100% !important; height: 300px;" ng-model="markdown"></textarea>
-<button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
+
+<label class="radio inline">
+    <input type="radio" name="type" id="newsRadio" value="news"> News
+</label>
+<label class="radio inline">
+    <input type="radio" name="type" id="articleRadio" value="article"> Article
+</label>
+<label class="radio inline">
+    <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/"/>
+</label>
+<label class="radio inline">
+    <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
+</label>
+
 
 <textarea style="width: 100% !important; height: 300px;" ng-model="generated" disabled></textarea>

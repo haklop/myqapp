@@ -22,7 +22,7 @@ public class MarkdownController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity generateHtml(@RequestBody String markdown) {
-        String html = markdownService.generateHtml(markdown);
+        String html = markdownService.generateHtml(markdown, true, "graph-nosql-neo4j");
         return new ResponseEntity<>(new GeneratedHtml(html), HttpStatus.OK);
     }
 
