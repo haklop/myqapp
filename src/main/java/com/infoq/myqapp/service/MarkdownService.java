@@ -25,7 +25,6 @@ public class MarkdownService {
 
         List<String> imagesSources = getImageSources(markdown);
 
-
         return processHtml(result, imagesSources);
     }
 
@@ -36,7 +35,7 @@ public class MarkdownService {
         Document txtMarkDocument = Jsoup.parse(txtMarkHtml);
         Elements img = txtMarkDocument.getElementsByTag("img");
         Iterator<Element> iterator = img.iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Element next = iterator.next();
             String src = next.attr("src");
             imagesSources.add(src);
@@ -45,6 +44,7 @@ public class MarkdownService {
     }
 
     private String processHtml(String html, List<String> imageSources) {
+
         Document myAmazingContent = Jsoup.parse(html);
 
         removeOcticonSpan(myAmazingContent);
@@ -55,9 +55,25 @@ public class MarkdownService {
 
         parseHighlight(myAmazingContent);
 
-        // TODO: image
+        parseImages(imageSources, myAmazingContent);
 
         return removeBody(myAmazingContent);
+    }
+
+    private void parseImages(List<String> imageSources, Document myAmazingContent) {
+        Elements img = myAmazingContent.getElementsByTag("img");
+        Iterator<Element> iterator = img.iterator();
+        Iterator<String> iteratorSource = imageSources.iterator();
+        while (iterator.hasNext() && iteratorSource.hasNext()) {
+            Element next = iterator.next();
+            String nextSource = iteratorSource.next();
+            next.attr("src", parseImageSource(nextSource));
+        }
+    }
+
+    private String parseImageSource(String nextSource) {
+        //TODO appliquer la regle des images
+        return nextSource;
     }
 
     private String removeBody(Document myAmazingContent) {
