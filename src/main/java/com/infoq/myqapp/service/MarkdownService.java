@@ -4,11 +4,9 @@ import com.github.rjeschke.txtmark.Processor;
 import com.infoq.myqapp.domain.GitHubMarkdown;
 import com.infoq.myqapp.domain.MyQAppMarkdown;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.DataNode;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
+import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
+import org.jsoup.select.NodeVisitor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -108,11 +106,22 @@ public class MarkdownService {
                 span.attr("color", HighlightClass.getFontColorFromClassName(spanClass));
             }
 
-            for (TextNode textNode : pre.textNodes()) {
+            final List<TextNode> textNodes = new ArrayList<>();
+            pre.traverse(new NodeVisitor() {
+                public void head(Node node, int depth) {
+                    if (node instanceof TextNode) {
+                        textNodes.add((TextNode) node);
+                    }
+                }
+
+                public void tail(Node node, int depth) {
+                    // nothing to do
+                }
+            });
+
+            for (TextNode textNode : textNodes) {
                 textNode.replaceWith(new DataNode(textNode.outerHtml().replace(" ", "&nbsp;").replace("\n", "<br/>"), ""));
             }
-
-            
 
         }
     }
