@@ -1,36 +1,77 @@
 package com.infoq.myqapp.service;
 
+import com.github.rjeschke.txtmark.Processor;
 import com.infoq.myqapp.domain.GitHubMarkdown;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class MarkdownService {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    public String generateHtml(GitHubMarkdown markdown) {
-        String result = restTemplate.postForObject("https://api.github.com/markdown", markdown, String.class);
+    public String generateHtml(String markdown) {
+        String result = restTemplate.postForObject("https://api.github.com/markdown", new GitHubMarkdown(markdown, "markdown", null), String.class);
 
-        return processHtml(result);
+        List<String> imagesSources = getImageSources(markdown);
+
+
+        return processHtml(result, imagesSources);
     }
 
-    private String processHtml(String html) {
+    private List<String> getImageSources(String markdown) {
+        List<String> imagesSources = new ArrayList<>();
+
+        String txtMarkHtml = Processor.process(markdown);
+        Document txtMarkDocument = Jsoup.parse(txtMarkHtml);
+        Elements img = txtMarkDocument.getElementsByTag("img");
+        Iterator<Element> iterator = img.iterator();
+        while(iterator.hasNext()){
+            Element next = iterator.next();
+            String src = next.attr("src");
+            imagesSources.add(src);
+        }
+        return imagesSources;
+    }
+
+    private String processHtml(String html, List<String> imageSources) {
         Document myAmazingContent = Jsoup.parse(html);
 
-        for (Element octiconSpan : myAmazingContent.select("span.octicon")) {
-            octiconSpan.remove();
-        }
+        removeOcticonSpan(myAmazingContent);
 
-        for (Element anchor : myAmazingContent.select("a.anchor")) {
-            anchor.remove();
-        }
+        removeAnchors(myAmazingContent);
 
+        highlightPre(myAmazingContent);
+
+        parseHighlight(myAmazingContent);
+
+        // TODO: image
+
+        return removeBody(myAmazingContent);
+    }
+
+    private String removeBody(Document myAmazingContent) {
+        return myAmazingContent.body().outerHtml().replace("<body>", "").replace("</body>", "");
+    }
+
+    private void parseHighlight(Document myAmazingContent) {
+        for (Element highlight : myAmazingContent.select("div.highlight")) {
+            highlight.tagName("p");
+            highlight.removeAttr("class");
+        }
+    }
+
+    private void highlightPre(Document myAmazingContent) {
         for (Element pre : myAmazingContent.select("pre")) {
             for (Element span : myAmazingContent.getElementsByTag("span")) {
                 String spanClass = span.className();
@@ -46,15 +87,18 @@ public class MarkdownService {
             }
             pre.outerHtml();
         }
+    }
 
-        for (Element highlight : myAmazingContent.select("div.highlight")) {
-            highlight.tagName("p");
-            highlight.removeAttr("class");
+    private void removeAnchors(Document myAmazingContent) {
+        for (Element anchor : myAmazingContent.select("a.anchor")) {
+            anchor.remove();
         }
+    }
 
-        // TODO: image
-
-        return myAmazingContent.body().outerHtml().replace("<body>", "").replace("</body>", "");
+    private void removeOcticonSpan(Document myAmazingContent) {
+        for (Element octiconSpan : myAmazingContent.select("span.octicon")) {
+            octiconSpan.remove();
+        }
     }
 
     private static enum HighlightClass {

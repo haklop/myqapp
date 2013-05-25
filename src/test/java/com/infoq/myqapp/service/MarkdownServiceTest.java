@@ -1,6 +1,5 @@
 package com.infoq.myqapp.service;
 
-import com.infoq.myqapp.domain.GitHubMarkdown;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,8 @@ public class MarkdownServiceTest {
     public void testGeneration() {
         String markdown = "*Allo*";
 
-        String html = markdownService.generateHtml(new GitHubMarkdown(markdown, "markdown", null));
+        String html = markdownService.generateHtml(markdown);
 
-        assertThat(html).isEqualTo("<p><em>Allo</em></p>");
+        assertThat(html).contains("<p><em>Allo</em></p>");
     }
 }
