@@ -41,6 +41,6 @@ public class MyQAppMarkdown {
     }
 
     public boolean isAnArticle() {
-        return "articles".equals(type);
+        return "article".equals(type);
     }
 }
