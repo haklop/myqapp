@@ -52,8 +52,6 @@ public class MarkdownService {
         highlightPre(myAmazingContent);
         parseImages(imageSources, myAmazingContent, isAnArticle, nodeName);
 
-
-
         return removeBody(myAmazingContent);
     }
 
@@ -121,6 +119,11 @@ public class MarkdownService {
 
             for (TextNode textNode : textNodes) {
                 textNode.replaceWith(new DataNode(textNode.outerHtml().replace(" ", "&nbsp;").replace("\n", "<br/>"), ""));
+            }
+
+            Element parent = pre.parent();
+            if (parent.className().equals("highlight") && "div".equals(parent.tagName())) {
+                parent.replaceWith(pre);
             }
 
         }
