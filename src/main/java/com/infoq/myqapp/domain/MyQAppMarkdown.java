@@ -7,7 +7,6 @@ public class MyQAppMarkdown {
     private String node;
 
     public MyQAppMarkdown() {
-
     }
 
     public MyQAppMarkdown(String text, String type, String node) {

@@ -19,8 +19,8 @@ angularModule.factory('Trello', function ($resource) {
 });
 
 angularModule.factory('TrelloList', function ($resource) {
-    return $resource('api/trello/lists', {}, {
-        query: {method: 'GET', isArray: true}
+    return $resource('api/trello/list/:id', {}, {
+        query: {method: 'GET', isArray: false}
     });
 });
 

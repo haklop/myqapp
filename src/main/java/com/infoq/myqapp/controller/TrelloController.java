@@ -63,6 +63,14 @@ public class TrelloController {
         return new ResponseEntity<>(trelloService.getLists(accessToken), HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/list/{listId}")
+    @ResponseBody
+    public ResponseEntity<TList> getListById(@PathVariable String listId, WebRequest request) {
+        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+
+        return new ResponseEntity<>(trelloService.getList(accessToken, listId), HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) {
         String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);

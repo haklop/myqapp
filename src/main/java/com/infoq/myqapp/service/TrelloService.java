@@ -10,6 +10,7 @@ import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
+import com.julienvey.trello.utils.ArgUtils;
 import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,5 +86,10 @@ public class TrelloService {
         cardToCreate.setName(feedEntry.getTitle());
         cardToCreate.setDesc(feedEntry.getLink());
         return cardToCreate;
+    }
+
+    public TList getList(Token accessToken, String listId) {
+        Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
+        return trelloApi.getList(listId, arg("cards", "open"));
     }
 }

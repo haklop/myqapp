@@ -1,18 +1,35 @@
-<form class="form-horizontal" name="generateMarkdownForm" novalidate>
-    <textarea style="width: 100% !important; height: 300px;" ng-model="markdown.text"></textarea>
+<div class="row-fluid">
+    <div class="span4">
+        <div ng-repeat="card in cards">
+            <a href="{{card.url}}">{{card.name}}</a>
+        </div>
 
-    <label class="radio inline">
-        <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
-    </label>
-    <label class="radio inline">
-        <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
-    </label>
-    <label class="radio inline">
-        <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/" ng-model="markdown.node" required />
-    </label>
-    <label class="radio inline">
-        <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
-    </label>
-</form>
+        <hr>
 
-<textarea style="width: 100% !important; height: 300px;" ng-model="generated" disabled></textarea>
+        <div ng-repeat="card in cardsNoGithub">
+            <a href="{{card.url}}">{{card.name}}</a>
+        </div>
+    </div>
+    <div class="span8">
+        <form class="form-horizontal" name="generateMarkdownForm" novalidate>
+            <textarea style="width: 100% !important; height: 300px;" ng-model="markdown.text"></textarea>
+
+            <label class="radio inline">
+                <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
+            </label>
+            <label class="radio inline">
+                <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
+            </label>
+            <label class="radio inline">
+                <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/"
+                       ng-model="markdown.node" required/>
+            </label>
+            <label class="radio inline">
+                <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
+            </label>
+        </form>
+
+        <textarea style="width: 100% !important; height: 300px;" ng-model="generated" disabled></textarea>
+    </div>
+
+</div>
