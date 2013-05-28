@@ -106,6 +106,9 @@ public class GoogleController {
             if (!ALLOWED_EMAIL.contains(profileFromGoogle.getEmail())) {
                 return "redirect:/error-403.html";
             } else {
+                request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
+                request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
+                userProfileRepository.save(profileFromGoogle);
                 return "redirect:/github-token.html";
             }
         } else {
