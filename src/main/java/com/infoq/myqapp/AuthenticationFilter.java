@@ -33,8 +33,6 @@ public class AuthenticationFilter implements Filter {
         Token trelloAccessToken = (Token) request.getSession().getAttribute(ATTR_OAUTH_ACCESS_TOKEN);
         Token githubAccessToken = (Token) request.getSession().getAttribute(ATTR_GITHUB_OAUTH_ACCESS_TOKEN);
 
-        System.out.println(githubAccessToken);
-
         if ("/google-signin.html".equals(request.getServletPath()) && googleAccessToken != null) {
             // already authenticated
             response.sendRedirect("/");
@@ -70,7 +68,9 @@ public class AuthenticationFilter implements Filter {
             } else {
                 response.sendRedirect("/trello-token.html");
             }
-        } else if (!"/github/login".equals(request.getPathInfo())
+        } else if (!"/trello/login".equals(request.getPathInfo())
+                && !"/trello/callback".equals(request.getPathInfo())
+                && !"/github/login".equals(request.getPathInfo())
                 && !"/github/callback".equals(request.getPathInfo())
                 && githubAccessToken == null
                 && googleAccessToken != null) {

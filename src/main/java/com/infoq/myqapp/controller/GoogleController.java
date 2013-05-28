@@ -92,7 +92,7 @@ public class GoogleController {
         UserProfile profileFromGoogle = mapper.readValue(decodedIdString, UserProfile.class);
 
         UserProfile profileFromMongo = userProfileRepository.findOne(profileFromGoogle.getEmail());
-        if (profileFromMongo == null || profileFromMongo.getTokenTrello() == null) {
+        if (profileFromMongo == null || profileFromMongo.getTokenTrello() == null || profileFromMongo.getTokenGithub() == null) {
             if (!ALLOWED_EMAIL.contains(profileFromGoogle.getEmail())) {
                 return "redirect:/error-403.html";
             } else {
@@ -100,16 +100,11 @@ public class GoogleController {
                 request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
                 userProfileRepository.save(profileFromGoogle);
 
-                return "redirect:/trello-token.html";
-            }
-        } else if (profileFromMongo.getTokenGithub() == null) {
-            if (!ALLOWED_EMAIL.contains(profileFromGoogle.getEmail())) {
-                return "redirect:/error-403.html";
-            } else {
-                request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
-                request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
-                userProfileRepository.save(profileFromGoogle);
-                return "redirect:/github-token.html";
+                if (profileFromMongo.getTokenTrello() == null) {
+                    return "redirect:/trello-token.html";
+                } else {
+                    return "redirect:/github-token.html";
+                }
             }
         } else {
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
