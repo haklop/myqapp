@@ -1,13 +1,17 @@
 package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.AuthenticationFilter;
+import com.infoq.myqapp.domain.ValueObject;
 import com.infoq.myqapp.service.GithubAuthenticationService;
+import com.infoq.myqapp.service.GithubService;
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +31,9 @@ public class GithubController {
 
     @Resource
     private GithubAuthenticationService githubAuthenticationService;
+
+    @Resource
+    private GithubService githubService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) {
@@ -54,5 +61,13 @@ public class GithubController {
         request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
 
         return "redirect:/";
+    }
+
+    @RequestMapping(value = {"/raw"}, method = RequestMethod.GET)
+    public ResponseEntity<ValueObject> getRaw(@RequestParam(value = "url", required = false) String url, WebRequest request){
+
+        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+
+        return new ResponseEntity<>(githubService.getRaw(url, accessToken), HttpStatus.OK);
     }
 }

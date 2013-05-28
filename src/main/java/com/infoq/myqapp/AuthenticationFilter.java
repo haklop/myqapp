@@ -33,6 +33,8 @@ public class AuthenticationFilter implements Filter {
         Token trelloAccessToken = (Token) request.getSession().getAttribute(ATTR_OAUTH_ACCESS_TOKEN);
         Token githubAccessToken = (Token) request.getSession().getAttribute(ATTR_GITHUB_OAUTH_ACCESS_TOKEN);
 
+        System.out.println(githubAccessToken);
+
         if ("/google-signin.html".equals(request.getServletPath()) && googleAccessToken != null) {
             // already authenticated
             response.sendRedirect("/");
