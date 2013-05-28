@@ -1,8 +1,9 @@
 <div class="row-fluid">
     <div class="span4">
+        <input ng-model="gitHubFilter" placeholder="Filter">
         <table class="table table-striped">
             <tbody>
-            <tr ng-repeat="card in cards">
+            <tr ng-repeat="card in cards | filter:gitHubFilter ">
                 <td><a href="{{card.githubUrl}}">{{card.name}}</a></td>
                 <td><button class="btn btn-success" ng-click="fetchRaw(card.githubUrl)">Fetch</button></td>
             </tr>
@@ -10,6 +11,7 @@
         </table>
         <hr>
 
+        Sans lien GitHub dans la description de la carte sur Trello
         <table class="table table-striped">
             <tbody>
             <tr ng-repeat="card in cardsNoGithub">
