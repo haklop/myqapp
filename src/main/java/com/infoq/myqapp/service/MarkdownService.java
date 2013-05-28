@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,8 +22,15 @@ public class MarkdownService {
 
     private RestTemplate restTemplate = new RestTemplate();
 
+    @Value("${github.oauth.client.id}")
+    private String clientId;
+
+    @Value("${github.oauth.client.secret}")
+    private String clientSecret;
+
     public String generateHtml(MyQAppMarkdown markdown) {
-        String result = restTemplate.postForObject("https://api.github.com/markdown", new GitHubMarkdown(markdown.getText(), "markdown", null), String.class);
+        String result = restTemplate.postForObject("https://api.github.com/markdown?client_id={clientId}&client_secret={clientSecret}",
+                new GitHubMarkdown(markdown.getText(), "markdown", null), String.class, clientId, clientSecret);
 
         List<String> imagesSources = getImageSources(markdown.getText());
 
@@ -125,7 +133,6 @@ public class MarkdownService {
             if (parent.className().equals("highlight") && "div".equals(parent.tagName())) {
                 parent.replaceWith(pre);
             }
-
         }
     }
 

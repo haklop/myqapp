@@ -15,6 +15,8 @@ public class AuthenticationFilter implements Filter {
     public static final String ATTR_GOOGLE_OAUTH_ACCESS_TOKEN = "googleoauthaccesstoken";
     public static final String ATTR_GOOGLE_EMAIL = "googleemail";
 
+    public static final String ATTR_GITHUB_OAUTH_ACCESS_TOKEN = "githuboauthaccesstoken";
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // nothing
@@ -29,23 +31,24 @@ public class AuthenticationFilter implements Filter {
 
         Token googleAccessToken = (Token) request.getSession().getAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN);
         Token trelloAccessToken = (Token) request.getSession().getAttribute(ATTR_OAUTH_ACCESS_TOKEN);
+        Token githubAccessToken = (Token) request.getSession().getAttribute(ATTR_GITHUB_OAUTH_ACCESS_TOKEN);
 
         if ("/google-signin.html".equals(request.getServletPath()) && googleAccessToken != null) {
             // already authenticated
             response.sendRedirect("/");
-
         } else if ("/trello-token.html".equals(request.getServletPath()) && googleAccessToken == null) {
             response.sendRedirect("/google-signin.html");
-
+        } else if ("/github-token.html".equals(request.getServletPath()) && googleAccessToken == null) {
+            response.sendRedirect("/google-signin.html");
         } else if ("/favicon.ico".equals(request.getServletPath())
                 || "/error-403.html".equals(request.getServletPath())
                 || "/google-signin.html".equals(request.getServletPath())
                 || "/trello-token.html".equals(request.getServletPath())
+                || "/github-token.html".equals(request.getServletPath())
                 || request.getServletPath().startsWith("/app")
                 || request.getServletPath().startsWith("/lib")) {
             // don't care about authentication for these resources
             filterChain.doFilter(servletRequest, servletResponse);
-
         } else if (!"/google/login".equals(request.getPathInfo())
                 && !"/google/callback".equals(request.getPathInfo())
                 && googleAccessToken == null) {
@@ -55,7 +58,6 @@ public class AuthenticationFilter implements Filter {
             } else {
                 response.sendRedirect("/google-signin.html");
             }
-
         } else if (!"/trello/login".equals(request.getPathInfo())
                 && !"/trello/callback".equals(request.getPathInfo())
                 && trelloAccessToken == null
@@ -66,10 +68,19 @@ public class AuthenticationFilter implements Filter {
             } else {
                 response.sendRedirect("/trello-token.html");
             }
+        } else if (!"/github/login".equals(request.getPathInfo())
+                && !"/github/callback".equals(request.getPathInfo())
+                && githubAccessToken == null
+                && googleAccessToken != null) {
+
+            if ("/api".equals(request.getServletPath())) {
+                response.sendError(403);
+            } else {
+                response.sendRedirect("/github-token.html");
+            }
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
-
     }
 
     @Override

@@ -9,6 +9,7 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList) {
         }
     }
 
+//    FIXME Ne pas mettre cet ID en dur ici
     TrelloList.query({id:"51499c4cb867d5eb59006794"}, function (result) {
         $scope.cards = [];
         $scope.cardsNoGithub = [];
