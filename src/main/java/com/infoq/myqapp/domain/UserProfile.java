@@ -11,6 +11,8 @@ public class UserProfile {
     private String email;
     private String tokenTrello;
     private String secretTrello;
+    private String tokenGithub;
+    private String secretGithub;
 
     public String getEmail() {
         return email;
@@ -30,5 +32,17 @@ public class UserProfile {
     public void setTokenTrello(Token tokenTrello) {
         this.tokenTrello = tokenTrello.getToken();
         this.secretTrello = tokenTrello.getSecret();
+    }
+
+    public Token getTokenGithub() {
+        if (tokenGithub == null || secretGithub == null) {
+            return null;
+        }
+        return new Token(tokenGithub, secretGithub);
+    }
+
+    public void setTokenGithub(Token tokenGithub) {
+        this.tokenGithub = tokenGithub.getToken();
+        this.secretGithub = tokenGithub.getSecret();
     }
 }

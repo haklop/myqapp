@@ -13,7 +13,6 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -103,7 +102,12 @@ public class GoogleController {
 
                 return "redirect:/trello-token.html";
             }
-
+        } else if (profileFromMongo.getTokenGithub() == null) {
+            if (!ALLOWED_EMAIL.contains(profileFromGoogle.getEmail())) {
+                return "redirect:/error-403.html";
+            } else {
+                return "redirect:/github-token.html";
+            }
         } else {
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
@@ -112,7 +116,7 @@ public class GoogleController {
             try {
                 trelloService.getUserInfo(profileFromMongo.getTokenTrello());
                 request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, profileFromMongo.getTokenTrello(), RequestAttributes.SCOPE_SESSION);
-
+                request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, profileFromMongo.getTokenGithub(), RequestAttributes.SCOPE_SESSION);
             } catch (HttpClientErrorException e) {
                 return "redirect:/trello-token.html";
             }
@@ -125,5 +129,4 @@ public class GoogleController {
     public ResponseEntity handleClientErrorException(HttpClientErrorException e) {
         return new ResponseEntity(e.getStatusCode());
     }
-
 }
