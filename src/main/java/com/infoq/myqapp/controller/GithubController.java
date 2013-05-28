@@ -1,6 +1,7 @@
 package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.AuthenticationFilter;
+import com.infoq.myqapp.domain.GitHubContent;
 import com.infoq.myqapp.domain.UserProfile;
 import com.infoq.myqapp.domain.ValueObject;
 import com.infoq.myqapp.repository.UserProfileRepository;
@@ -80,7 +81,7 @@ public class GithubController {
     }
 
     @RequestMapping(value = {"/raw"}, method = RequestMethod.GET)
-    public ResponseEntity<ValueObject> getRaw(@RequestParam(value = "url", required = false) String url, WebRequest request){
+    public ResponseEntity<GitHubContent> getRaw(@RequestParam(value = "url", required = false) String url, WebRequest request){
 
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 

@@ -1,7 +1,8 @@
 package com.infoq.myqapp.service;
 
+import com.infoq.myqapp.domain.GitHubContent;
 import com.infoq.myqapp.domain.GitHubUser;
-import com.infoq.myqapp.domain.ValueObject;
+import org.apache.commons.codec.binary.Base64;
 import org.scribe.model.Token;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -9,15 +10,18 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class GithubService {
 
-    public ValueObject getRaw(String url, Token accessToken) {
-        String rawUrl = getRawUrl(url).concat("?login={login}&token={token}");
+    private static final String GITHUB_API_REPO_URL = "https://api.github.com/repos/Zenika/TheQ/contents/";
+    private static final String ACCESS_TOKEN_QUERY_STRING = "?access_token={accessToken}";
 
-        GitHubUser user = getUser(accessToken);
+    public GitHubContent getRaw(String url, Token accessToken) {
+        String rawUrl = getRawUrl(url);
 
         RestTemplate restTemplate = new RestTemplate();
-        String raw = restTemplate.getForObject(rawUrl, String.class, user.getLogin(), accessToken.getToken());
+        GitHubContent content = restTemplate.getForObject(GITHUB_API_REPO_URL + rawUrl + ACCESS_TOKEN_QUERY_STRING, GitHubContent.class, accessToken.getToken());
 
-        return new ValueObject(raw);
+        content.setContent(new String(Base64.decodeBase64(content.getContent())));
+
+        return content;
     }
 
     public GitHubUser getUser(Token accessToken) {
@@ -26,6 +30,6 @@ public class GithubService {
     }
 
     private String getRawUrl(String url) {
-        return url.replace("github.com/Zenika/TheQ/blob/master/", "raw.github.com/Zenika/TheQ/master/");
+        return url.replace("https://github.com/Zenika/TheQ/blob/master/", "");
     }
 }

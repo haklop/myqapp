@@ -11,7 +11,7 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw)
 
     $scope.fetchRaw = function(githubUrl) {
         GithubRaw.query({url: githubUrl}, function(result){
-            $scope.markdown.text = result.value;
+            $scope.markdown.text = result.content;
         })
     }
 
