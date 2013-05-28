@@ -100,7 +100,7 @@ public class GoogleController {
                 request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
                 userProfileRepository.save(profileFromGoogle);
 
-                if (profileFromMongo.getTokenTrello() == null) {
+                if (profileFromMongo == null || profileFromMongo.getTokenTrello() == null) {
                     return "redirect:/trello-token.html";
                 } else {
                     return "redirect:/github-token.html";
