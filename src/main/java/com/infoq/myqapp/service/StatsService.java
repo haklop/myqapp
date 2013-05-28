@@ -59,7 +59,7 @@ public class StatsService {
     private List<UserStat> aggregateStats(List<UserStat> userStats) {
         Map<String, UserStat> aggregatedStats = new HashMap<>();
         for (UserStat stat : userStats) {
-            String userId = stat.getMember().getId();
+            String userId = stat.getMemberId();
             if (aggregatedStats.containsKey(userId)) {
                 UserStat currentStat = aggregatedStats.get(userId);
                 stat.setMentoredArticles(currentStat.getMentoredArticles() + stat.getMentoredArticles());
@@ -135,7 +135,7 @@ public class StatsService {
         return new ArrayList<>(Collections2.filter(stats, new Predicate<UserStat>() {
             @Override
             public boolean apply(UserStat stat) {
-                String userId = stat.getMember().getId();
+                String userId = stat.getMemberId();
                 return !(userId.equals(NONE) || userId.equals(AL_AMINE_USER_ID));
             }
         }));
@@ -160,13 +160,21 @@ public class StatsService {
                 String idValidator = card.getIdMembers().size() > 1 ? card.getIdMembers().get(1) : NONE;
 
                 if (!userStatMap.containsKey(idAuthor)) {
-                    userStatMap.put(idAuthor, new UserStat(memberMap.get(idAuthor), list.getName()));
+                    Member member = memberMap.get(idAuthor);
+                    if(member == null){
+                        member = new Member();
+                    }
+                    userStatMap.put(idAuthor, new UserStat(member.getId(), member.getFullName(), list.getName()));
                 }
                 if (!userStatMap.containsKey(idValidator)) {
-                    userStatMap.put(idValidator, new UserStat(memberMap.get(idValidator), list.getName()));
+                    Member member = memberMap.get(idValidator);
+                    if(member == null){
+                        member = new Member();
+                    }
+                    userStatMap.put(idValidator, new UserStat(member.getId(), member.getFullName(), list.getName()));
                 }
                 if (!userStatMap.containsKey(NONE)) {
-                    userStatMap.put(NONE, new UserStat(memberMap.get(NONE), list.getName()));
+                    userStatMap.put(NONE, new UserStat(NONE, null, list.getName()));
                 }
 
                 UserStat author = userStatMap.get(idAuthor);

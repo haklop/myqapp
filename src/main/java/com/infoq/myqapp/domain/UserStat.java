@@ -1,6 +1,5 @@
 package com.infoq.myqapp.domain;
 
-import com.julienvey.trello.domain.Member;
 import org.springframework.data.annotation.Id;
 
 public class UserStat {
@@ -8,11 +7,12 @@ public class UserStat {
     @Id
     private String id;
 
-    private Member member;
-
     private String listName;
 
     private int originalNews;
+
+    private String memberId;
+    private String memberFullName;
     private int originalArticles;
     private int translatedNews;
     private int translatedArticles;
@@ -21,41 +21,42 @@ public class UserStat {
     private int mentoredNews;
     private int mentoredArticles;
 
-    public UserStat(Member member, String listName) {
-        this.member = member;
-        this.id = (member != null ? member.getId() : "None") + listName;
+    public UserStat(String memberId, String memberFullName, String listName) {
+        this.memberId = memberId;
+        this.memberFullName = memberFullName;
+        this.id = memberId + listName;
         this.listName = listName;
     }
 
-    public void incrementOriginalNews(){
+    public void incrementOriginalNews() {
         originalNews++;
     }
 
-    public void incrementOriginalArticles(){
+    public void incrementOriginalArticles() {
         originalArticles++;
     }
 
-    public void incrementTranslatedNews(){
+    public void incrementTranslatedNews() {
         translatedNews++;
     }
 
-    public void incrementTranslatedArticles(){
+    public void incrementTranslatedArticles() {
         translatedArticles++;
     }
 
-    public void incrementValidatedNews(){
+    public void incrementValidatedNews() {
         validatedNews++;
     }
 
-    public void incrementValidatedArticles(){
+    public void incrementValidatedArticles() {
         validatedArticles++;
     }
 
-    public void incrementMentoredNews(){
+    public void incrementMentoredNews() {
         mentoredNews++;
     }
 
-    public void incrementMentoredArticles(){
+    public void incrementMentoredArticles() {
         mentoredArticles++;
     }
 
@@ -131,15 +132,23 @@ public class UserStat {
         this.listName = listName;
     }
 
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
     public String getId() {
         return id;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getMemberFullName() {
+        return memberFullName;
+    }
+
+    public void setMemberFullName(String memberFullName) {
+        this.memberFullName = memberFullName;
     }
 }

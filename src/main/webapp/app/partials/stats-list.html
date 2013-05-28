@@ -24,7 +24,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="stats in list.userStats | orderBy:order:reverse">
-                        <td><a ng-href="#/users/{{stats.member.id}}">{{stats.member.fullName}}</a></td>
+                        <td><a ng-href="#/users/{{stats.member.id}}">{{stats.memberFullName}}</a></td>
                         <td>
                             <strong>{{stats.originalNews + stats.translatedNews}}</strong>
                             ({{stats.originalNews}} <ng-pluralize count="stats.originalNews" when="{0:'originale', one:'originale', other:'originales'}"></ng-pluralize>,
