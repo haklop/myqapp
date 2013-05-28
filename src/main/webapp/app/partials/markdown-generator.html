@@ -1,14 +1,22 @@
 <div class="row-fluid">
     <div class="span4">
-        <div ng-repeat="card in cards">
-            <a href="{{card.githubUrl}}">{{card.name}}</a>
-        </div>
-
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="card in cards">
+                <td><a href="{{card.githubUrl}}">{{card.name}}</a></td>
+                <td><button class="btn btn-success">Fetch</button></td>
+            </tr>
+            </tbody>
+        </table>
         <hr>
 
-        <div ng-repeat="card in cardsNoGithub">
-            <a href="{{card.url}}">{{card.name}}</a>
-        </div>
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="card in cardsNoGithub">
+                <td><a href="{{card.url}}">{{card.name}}</a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div class="span8">
         <form class="form-horizontal" name="generateMarkdownForm" novalidate>
