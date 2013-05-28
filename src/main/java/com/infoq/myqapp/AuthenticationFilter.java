@@ -60,6 +60,8 @@ public class AuthenticationFilter implements Filter {
             }
         } else if (!"/trello/login".equals(request.getPathInfo())
                 && !"/trello/callback".equals(request.getPathInfo())
+                && !"/github/login".equals(request.getPathInfo())
+                && !"/github/callback".equals(request.getPathInfo())
                 && trelloAccessToken == null
                 && googleAccessToken != null) {
 
