@@ -4,7 +4,7 @@
             <tbody>
             <tr ng-repeat="card in cards">
                 <td><a href="{{card.githubUrl}}">{{card.name}}</a></td>
-                <td><button class="btn btn-success">Fetch</button></td>
+                <td><button class="btn btn-success" ng-click="fetchRaw(card.githubUrl)">Fetch</button></td>
             </tr>
             </tbody>
         </table>

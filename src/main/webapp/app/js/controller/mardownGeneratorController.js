@@ -1,4 +1,4 @@
-function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList) {
+function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw) {
     $scope.markdown = {};
 
     $scope.generateHtml = function () {
@@ -7,6 +7,12 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList) {
                 $scope.generated = result.value;
             });
         }
+    }
+
+    $scope.fetchRaw = function(githubUrl) {
+        GithubRaw.query({url: githubUrl}, function(result){
+            $scope.markdown.text = result.value;
+        })
     }
 
 //    FIXME Ne pas mettre cet ID en dur ici

@@ -66,3 +66,9 @@ angularModule.factory('MarkdownGenerator', function ($resource) {
         generate: {method: 'POST'}
     });
 });
+
+angularModule.factory('GithubRaw', function ($resource) {
+    return $resource('api/github/raw', {}, {
+        query: {method: 'GET', isArray: false}
+    });
+});
