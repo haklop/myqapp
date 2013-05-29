@@ -9,9 +9,22 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw)
         }
     }
 
-    $scope.fetchRaw = function(githubUrl) {
+    $scope.cardType = function(card) {
+        for(var i =0; i< card.labels.length; i++){
+            var label = card.labels[i];
+            if(label.name === "Articles"){
+                return "article"
+            } else if(label.name === "News"){
+                return "news";
+            }
+        }
+        return "";
+    }
+
+    $scope.fetchRaw = function(githubUrl, type) {
         GithubRaw.query({url: githubUrl}, function(result){
             $scope.markdown.text = result.content;
+            $scope.markdown.type = type;
         })
     }
 
