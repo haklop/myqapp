@@ -37,7 +37,7 @@
                             class="btn btn-info" ng-click="addToTrello($index)" ng-class="addingToTrello($index)" ng-disabled="addingToTrello($index)">Add to Trello
                     </button>
 
-                    <a ng-show="feed.addedInTrello" ng-href="{{feed.urlTrello}}" class="btn btn-success"
+                    <a ng-show="feed.addedInTrello" ng-href="{{feed.urlTrello}}" class="btn disabled"
                        title="View on Trello" target="_blank">Added</a>
                 </td>
             </tr>
