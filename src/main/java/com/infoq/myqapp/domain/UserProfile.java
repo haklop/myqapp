@@ -1,5 +1,6 @@
 package com.infoq.myqapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.scribe.model.Token;
 import org.springframework.data.annotation.Id;
@@ -9,9 +10,17 @@ public class UserProfile {
 
     @Id
     private String email;
+
+    private String firstName;
+    private String lastName;
+
+    @JsonIgnore
     private String tokenTrello;
+    @JsonIgnore
     private String secretTrello;
+    @JsonIgnore
     private String tokenGithub;
+    @JsonIgnore
     private String secretGithub;
 
     public String getEmail() {
@@ -44,5 +53,21 @@ public class UserProfile {
     public void setTokenGithub(Token tokenGithub) {
         this.tokenGithub = tokenGithub.getToken();
         this.secretGithub = tokenGithub.getSecret();
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }

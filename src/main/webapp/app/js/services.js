@@ -72,3 +72,9 @@ angularModule.factory('GithubRaw', function ($resource) {
         query: {method: 'GET', isArray: false}
     });
 });
+
+angularModule.factory('User', function ($resource) {
+    return $resource('api/user/', {}, {
+        findAll: {method: 'GET', isArray: true}
+    });
+});

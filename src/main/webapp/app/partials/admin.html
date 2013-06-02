@@ -1,0 +1,22 @@
+<div ng-repeat="user in users">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th width="20px"></th>
+            <th width="20px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.email}}</td>
+            <td><a href="" class="icon-pencil"></a></td>
+            <td><a href="" class="icon-trash"></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
