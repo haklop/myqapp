@@ -1,0 +1,36 @@
+<!-- Modal -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">{{title}}</h3>
+</div>
+<div class="modal-body">
+    <fieldset>
+        <form class="form-horizontal user-form" name="newconfForm" ng-submit="createConf()" novalidate>
+            <div class="control-group">
+                <label class="control-label"  for="inputName">Prénom</label>
+                <div class="controls">
+                    <input type="text" id="inputName" placeholder="Nom de la conférence" ng-model="newconf.name" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputLocation">Nom</label>
+                <div class="controls">
+                    <input type="text" id="inputLocation" placeholder="Lieux de la conférence" ng-model="newconf.location" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputWebsite">Email</label>
+                <div class="controls">
+                    <input type="url" id="inputWebsite" placeholder="Site web de la conférence" ng-model="newconf.website" required>
+                </div>
+            </div>
+            <div ng-show="newconfForm.$invalid">
+                Formulaire invalide !
+            </div>
+        </form>
+    </fieldset>
+</div>
+<div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
+    <button class="btn btn-primary" ng-click="sendScenario()">{{action}}</button>
+</div>

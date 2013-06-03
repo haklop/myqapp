@@ -4,11 +4,16 @@
     margin-right: 30px;
 }
 
-.conf-form .control-label {
+.conf-form .control-label,
+.user-form .control-label {
     width: auto;
-
 }
 
 .conf-form .controls {
     margin-left: 50px;
+}
+
+.user-form .controls {
+    margin-left: 70px;
+
 }

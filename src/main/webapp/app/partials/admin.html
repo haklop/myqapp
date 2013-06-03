@@ -1,3 +1,5 @@
+<a type="button" class="btn" bs-modal="'app/partials/userCreationModal.html'" ng-controller="UserCreationCtrl">Nouvel utilisateur</a>
+
 <div ng-repeat="user in users">
     <table class="table table-striped">
         <thead>
@@ -14,7 +16,7 @@
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.email}}</td>
-            <td><a href="" class="icon-pencil"></a></td>
+            <td><a href="" class="icon-pencil" bs-modal="'app/partials/userCreationModal.html'" ng-controller="UserModificationCtrl"></a></td>
             <td><a href="" class="icon-trash"></a></td>
         </tr>
         </tbody>
