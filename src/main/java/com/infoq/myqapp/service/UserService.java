@@ -20,4 +20,13 @@ public class UserService {
     public void create(UserProfile userProfile) {
         userProfileRepository.save(userProfile);
     }
+
+    public void delete(String userId) {
+        userProfileRepository.delete(userId);
+    }
+
+    public void update(String userId, UserProfile userProfile) {
+        userProfileRepository.delete(userId);
+        userProfileRepository.save(userProfile);
+    }
 }

@@ -78,6 +78,7 @@ angularModule.factory('User', function ($resource) {
         findAll: {method: 'GET', isArray: true},
         query: {method: 'GET', isArray: false},
         create: {method: 'POST'},
-        update: {method: 'PUT'}
+        update: {method: 'PUT'},
+        remove: {method: 'DELETE'}
     });
 });

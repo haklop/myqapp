@@ -5,10 +5,7 @@ import com.infoq.myqapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -30,6 +27,20 @@ public class UserController {
     public ResponseEntity create(@RequestBody UserProfile userProfile) {
         userService.create(userProfile);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{userId:.+}")
+    @ResponseBody
+    public ResponseEntity update(@PathVariable String userId, @RequestBody UserProfile userProfile) {
+        userService.update(userId, userProfile);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{userId:.+}")
+    @ResponseBody
+    public ResponseEntity create(@PathVariable String userId) {
+        userService.delete(userId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
