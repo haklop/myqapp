@@ -5,26 +5,26 @@
 </div>
 <div class="modal-body">
     <fieldset>
-        <form class="form-horizontal user-form" name="newconfForm" ng-submit="createConf()" novalidate>
+        <form class="form-horizontal user-form" name="newUserForm" ng-submit="doWithUser()" novalidate>
             <div class="control-group">
-                <label class="control-label"  for="inputName">Prénom</label>
+                <label class="control-label" for="inputFirstName">Prénom</label>
                 <div class="controls">
-                    <input type="text" id="inputName" placeholder="Nom de la conférence" ng-model="newconf.name" required>
+                    <input type="text" id="inputFirstName" placeholder="Nom de la conférence" ng-model="newuser.firstName" required>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputLocation">Nom</label>
+                <label class="control-label" for="inputLastName">Nom</label>
                 <div class="controls">
-                    <input type="text" id="inputLocation" placeholder="Lieux de la conférence" ng-model="newconf.location" required>
+                    <input type="text" id="inputLastName" placeholder="Lieux de la conférence" ng-model="newuser.lastName" required>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputWebsite">Email</label>
+                <label class="control-label" for="inputEmail">Email</label>
                 <div class="controls">
-                    <input type="url" id="inputWebsite" placeholder="Site web de la conférence" ng-model="newconf.website" required>
+                    <input type="email" id="inputEmail" placeholder="Site web de la conférence" ng-model="newuser.email" required>
                 </div>
             </div>
-            <div ng-show="newconfForm.$invalid">
+            <div ng-show="newUserForm.$invalid">
                 Formulaire invalide !
             </div>
         </form>
@@ -32,5 +32,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
-    <button class="btn btn-primary" ng-click="sendScenario()">{{action}}</button>
+    <button class="btn btn-primary" ng-click="doWithUser()">{{action}}</button>
 </div>

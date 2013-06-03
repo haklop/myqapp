@@ -16,4 +16,8 @@ public class UserService {
     public List<UserProfile> getAllUsers() {
         return userProfileRepository.findAll();
     }
+
+    public void create(UserProfile userProfile) {
+        userProfileRepository.save(userProfile);
+    }
 }

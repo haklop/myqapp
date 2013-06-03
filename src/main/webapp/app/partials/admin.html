@@ -1,6 +1,6 @@
 <a type="button" class="btn" bs-modal="'app/partials/userCreationModal.html'" ng-controller="UserCreationCtrl">Nouvel utilisateur</a>
 
-<div ng-repeat="user in users">
+<div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr ng-repeat="user in users">
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.email}}</td>

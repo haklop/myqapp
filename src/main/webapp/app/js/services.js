@@ -74,7 +74,10 @@ angularModule.factory('GithubRaw', function ($resource) {
 });
 
 angularModule.factory('User', function ($resource) {
-    return $resource('api/user/', {}, {
-        findAll: {method: 'GET', isArray: true}
+    return $resource('api/user/:userId', {}, {
+        findAll: {method: 'GET', isArray: true},
+        query: {method: 'GET', isArray: false},
+        create: {method: 'POST'},
+        update: {method: 'PUT'}
     });
 });
