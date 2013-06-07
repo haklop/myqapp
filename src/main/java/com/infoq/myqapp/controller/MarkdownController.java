@@ -1,7 +1,7 @@
 package com.infoq.myqapp.controller;
 
-import com.infoq.myqapp.domain.ValueObject;
 import com.infoq.myqapp.domain.MyQAppMarkdown;
+import com.infoq.myqapp.domain.ValueObject;
 import com.infoq.myqapp.service.MarkdownService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,5 @@ public class MarkdownController {
         String html = markdownService.generateHtml(markdown);
         return new ResponseEntity<>(new ValueObject(html), HttpStatus.OK);
     }
-
-
 
 }
