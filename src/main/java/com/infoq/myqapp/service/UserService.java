@@ -29,4 +29,17 @@ public class UserService {
         userProfileRepository.delete(userId);
         userProfileRepository.save(userProfile);
     }
+
+    public boolean isAuthorized(String email){
+        UserProfile one = userProfileRepository.findOne(email);
+        return one != null;
+    }
+
+    public UserProfile get(String email) {
+        return userProfileRepository.findOne(email);
+    }
+
+    public void save(UserProfile profileFromGoogle) {
+        userProfileRepository.save(profileFromGoogle);
+    }
 }

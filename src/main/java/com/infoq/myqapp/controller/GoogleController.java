@@ -3,9 +3,9 @@ package com.infoq.myqapp.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.UserProfile;
-import com.infoq.myqapp.repository.UserProfileRepository;
 import com.infoq.myqapp.service.GoogleAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
+import com.infoq.myqapp.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.Token;
@@ -25,8 +25,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/google")
@@ -34,29 +32,14 @@ public class GoogleController {
 
     private static final Logger LOG = LoggerFactory.getLogger(GoogleController.class);
 
-    private static final Set<String> ALLOWED_EMAIL = new HashSet<>();
-
-    static {
-        ALLOWED_EMAIL.add("eric.bellemon@gmail.com");
-        ALLOWED_EMAIL.add("vey.julien@gmail.com");
-        ALLOWED_EMAIL.add("simon.basle@zenika.com");
-        ALLOWED_EMAIL.add("al-amine.ousman@zenika.com");
-        ALLOWED_EMAIL.add("pierre@queinnec.org");
-        ALLOWED_EMAIL.add("pierre.queinnec@gmail.com");
-        ALLOWED_EMAIL.add("mathieu.pousse@zenika.com");
-        ALLOWED_EMAIL.add("hadrien.pierart@zenika.com");
-        ALLOWED_EMAIL.add("antoine.rouaze@gmail.com");
-        ALLOWED_EMAIL.add("benoit.nouyrigat@zenika.com");
-    }
+    @Resource
+    private UserService userService;
 
     @Resource
     private GoogleAuthenticationService googleAuthenticationService;
 
     @Resource
     private TrelloService trelloService;
-
-    @Resource
-    private UserProfileRepository userProfileRepository;
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request) {
@@ -90,20 +73,8 @@ public class GoogleController {
         String decodedIdString = new String(decodedId);
         UserProfile profileFromGoogle = mapper.readValue(decodedIdString, UserProfile.class);
 
-        UserProfile profileFromMongo = userProfileRepository.findOne(profileFromGoogle.getEmail());
-
-        if (profileFromMongo == null) {
-            // first connection
-            if (!ALLOWED_EMAIL.contains(profileFromGoogle.getEmail())) {
-                return "redirect:/error-403.html";
-            } else {
-                request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
-                request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
-                userProfileRepository.save(profileFromGoogle);
-
-                return "redirect:/trello-token.html";
-            }
-        } else {
+        if (userService.isAuthorized(profileFromGoogle.getEmail())) {
+            UserProfile profileFromMongo = userService.get(profileFromGoogle.getEmail());
             Token tokenTrello = profileFromMongo.getTokenTrello();
             Token tokenGithub = profileFromMongo.getTokenGithub();
 
@@ -129,7 +100,8 @@ public class GoogleController {
                     return "redirect:/trello-token.html";
                 }
             }
-
+        } else {
+            return "redirect:/error-403.html";
         }
 
         return "redirect:/";
