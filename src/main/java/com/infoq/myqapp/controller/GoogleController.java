@@ -111,7 +111,7 @@ public class GoogleController {
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
 
             if (tokenTrello != null) {
-                request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, tokenTrello, RequestAttributes.SCOPE_SESSION);
+                request.setAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, tokenTrello, RequestAttributes.SCOPE_SESSION);
             }
             if (tokenGithub != null) {
                 request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, tokenGithub, RequestAttributes.SCOPE_SESSION);
