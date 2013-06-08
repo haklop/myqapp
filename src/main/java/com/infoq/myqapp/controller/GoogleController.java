@@ -24,7 +24,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -60,7 +59,7 @@ public class GoogleController {
     private UserProfileRepository userProfileRepository;
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
-    public String login(WebRequest request, HttpServletRequest httpServletRequest) {
+    public String login(WebRequest request) {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
         LOG.info("Login attempt with access token : {} ", accessToken);
 
@@ -92,7 +91,9 @@ public class GoogleController {
         UserProfile profileFromGoogle = mapper.readValue(decodedIdString, UserProfile.class);
 
         UserProfile profileFromMongo = userProfileRepository.findOne(profileFromGoogle.getEmail());
-        if (profileFromMongo == null || profileFromMongo.getTokenTrello() == null || profileFromMongo.getTokenGithub() == null) {
+
+        if (profileFromMongo == null) {
+            // first connection
             if (!ALLOWED_EMAIL.contains(profileFromGoogle.getEmail())) {
                 return "redirect:/error-403.html";
             } else {
@@ -100,24 +101,35 @@ public class GoogleController {
                 request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
                 userProfileRepository.save(profileFromGoogle);
 
-                if (profileFromMongo == null || profileFromMongo.getTokenTrello() == null) {
-                    return "redirect:/trello-token.html";
-                } else {
-                    return "redirect:/github-token.html";
-                }
+                return "redirect:/trello-token.html";
             }
         } else {
+            Token tokenTrello = profileFromMongo.getTokenTrello();
+            Token tokenGithub = profileFromMongo.getTokenGithub();
+
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
 
-            // check if the token is not revoked
-            try {
-                trelloService.getUserInfo(profileFromMongo.getTokenTrello());
-                request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, profileFromMongo.getTokenTrello(), RequestAttributes.SCOPE_SESSION);
-                request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, profileFromMongo.getTokenGithub(), RequestAttributes.SCOPE_SESSION);
-            } catch (HttpClientErrorException e) {
-                return "redirect:/trello-token.html";
+            if (tokenTrello != null) {
+                request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, tokenTrello, RequestAttributes.SCOPE_SESSION);
             }
+            if (tokenGithub != null) {
+                request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, tokenGithub, RequestAttributes.SCOPE_SESSION);
+            }
+
+            if (tokenTrello == null) {
+                return "redirect:/trello-token.html";
+            } else if (tokenGithub == null) {
+                return "redirect:/github-token.html";
+            } else {
+                // check if the token is not revoked
+                try {
+                    trelloService.getUserInfo(profileFromMongo.getTokenTrello());
+                } catch (HttpClientErrorException e) {
+                    return "redirect:/trello-token.html";
+                }
+            }
+
         }
 
         return "redirect:/";
