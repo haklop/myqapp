@@ -20,8 +20,25 @@ public class ConferenceController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity createConf(@RequestBody Conference conference) {
-        conferenceService.createConf(conference);
+        conferenceService.createOrUpdate(conference);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{confId:.+}")
+    @ResponseBody
+    public ResponseEntity updateConf(@RequestBody Conference conference, @PathVariable String confId) {
+        if (!conference.getId().equals(confId)) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        conferenceService.createOrUpdate(conference);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{confId:.+}")
+    @ResponseBody
+    public ResponseEntity deleteConf(@PathVariable String confId) {
+        conferenceService.delete(confId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
