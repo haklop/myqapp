@@ -36,9 +36,11 @@ Required:
 
 Configure [deploy.sh](https://github.com/haklop/myqapp/blob/master/deploy.sh):
 
-	HOME=~
-	WORKSPACE_MYQAPP=$HOME/infoq/myqapp
-	WORKSPACE_WRAPPER=$HOME/infoq/trello-java-wrapper
-	JETTY_HOME=$HOME/jetty
+```bash
+HOME=~
+WORKSPACE_MYQAPP=$HOME/infoq/myqapp
+WORKSPACE_WRAPPER=$HOME/infoq/trello-java-wrapper
+JETTY_HOME=$HOME/jetty
+```
 
 Execute deploy.sh
