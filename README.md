@@ -9,10 +9,11 @@ Use [maven-jgitflow-plugin](https://bitbucket.org/atlassian/maven-jgitflow-plugi
 You may also need to provide a plugin group in your /.m2/settings.xml to be able to use the short name of the plugin on the command line.
 
 To do so, simply add the following to your settings.xml:
-
-	<pluginGroups>
-    	<pluginGroup>com.atlassian.maven.plugins</pluginGroup>
-	</pluginGroups>
+```xml
+<pluginGroups>
+  <pluginGroup>com.atlassian.maven.plugins</pluginGroup>
+</pluginGroups>
+```
 
 ### Workflow
 
