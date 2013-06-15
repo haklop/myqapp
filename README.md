@@ -32,6 +32,7 @@ Required:
 
 - java7+
 - jetty8+
+- mongodb
 
 Configure [deploy.sh](https://github.com/haklop/myqapp/blob/master/deploy.sh):
 
