@@ -1,5 +1,6 @@
 package com.infoq.myqapp.service;
 
+import com.github.rjeschke.txtmark.DefaultDecorator;
 import com.github.rjeschke.txtmark.Processor;
 import com.infoq.myqapp.domain.GitHubMarkdown;
 import com.infoq.myqapp.domain.MyQAppMarkdown;
@@ -40,13 +41,10 @@ public class MarkdownService {
     private List<String> getImageSources(String markdown) {
         List<String> imagesSources = new ArrayList<>();
 
-        String txtMarkHtml = Processor.process(markdown);
-        Document txtMarkDocument = Jsoup.parse(txtMarkHtml);
-        for (Element next : txtMarkDocument.getElementsByTag("img")) {
-            String src = next.attr("src");
-            imagesSources.add(src);
-        }
-        return imagesSources;
+        ExtractImageDecorator extractImageDecorator = new ExtractImageDecorator();
+        String txtMarkHtml = Processor.process(markdown, extractImageDecorator);
+
+        return extractImageDecorator.images;
     }
 
     private String processHtml(String html, List<String> imageSources, boolean isAnArticle, String nodeName) {
@@ -213,6 +211,26 @@ public class MarkdownService {
             } catch (IllegalArgumentException e) {
                 return "000000"; //return black by default
             }
+        }
+    }
+
+    private static class ExtractImageDecorator extends DefaultDecorator {
+
+        private List<String> images = new ArrayList<>();
+
+        @Override
+        public void closeImage(StringBuilder out) {
+            images.add(extractImageSrc(out.toString()));
+            super.closeImage(out);
+        }
+
+        private String extractImageSrc(String value) {
+            int firstQuoteIndex = value.indexOf('"');
+            value = value.substring(firstQuoteIndex + 1);
+
+            int secondQuoteIndex = value.indexOf('"');
+            value = value.substring(0, secondQuoteIndex);
+            return value;
         }
     }
 }
