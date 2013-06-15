@@ -25,3 +25,19 @@ Finish the release and set the next snapshot version. Release-finish creates the
 	mvn jgitflow:release-finish
 	
 When something is pushed to master, the application is automatically deployed on the server.
+
+## Install on server
+
+Required:
+
+- java7+
+- jetty8+
+
+Configure [deploy.sh](https://github.com/haklop/myqapp/blob/master/deploy.sh):
+
+	HOME=~
+	WORKSPACE_MYQAPP=$HOME/infoq/myqapp
+	WORKSPACE_WRAPPER=$HOME/infoq/trello-java-wrapper
+	JETTY_HOME=$HOME/jetty
+
+Execute deploy.sh
