@@ -14,6 +14,11 @@ import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +45,9 @@ public class GoogleController {
 
     @Resource
     private TrelloService trelloService;
+
+    @Resource
+    private AuthenticationManager authenticationManager;
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request) {
@@ -73,7 +81,11 @@ public class GoogleController {
         String decodedIdString = new String(decodedId);
         UserProfile profileFromGoogle = mapper.readValue(decodedIdString, UserProfile.class);
 
-        if (userService.isAuthorized(profileFromGoogle.getEmail())) {
+        try {
+            Authentication authenticationRequest = new PreAuthenticatedAuthenticationToken(profileFromGoogle.getEmail(), null);
+            Authentication result = authenticationManager.authenticate(authenticationRequest);
+            SecurityContextHolder.getContext().setAuthentication(result);
+
             UserProfile profileFromMongo = userService.get(profileFromGoogle.getEmail());
             Token tokenTrello = profileFromMongo.getTokenTrello();
             Token tokenGithub = profileFromMongo.getTokenGithub();
@@ -100,7 +112,8 @@ public class GoogleController {
                     return "redirect:/trello-token.html";
                 }
             }
-        } else {
+
+        } catch (AuthenticationException e) {
             return "redirect:/error-403.html";
         }
 

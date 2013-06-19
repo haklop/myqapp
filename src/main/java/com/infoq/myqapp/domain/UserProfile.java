@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.scribe.model.Token;
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserProfile {
 
@@ -13,6 +15,7 @@ public class UserProfile {
 
     private String firstName;
     private String lastName;
+    private List<String> authorities;
 
     @JsonIgnore
     private String tokenTrello;
@@ -69,5 +72,13 @@ public class UserProfile {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public List<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
     }
 }

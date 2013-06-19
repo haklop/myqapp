@@ -32,6 +32,7 @@
         <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>
         <jsoup.version>1.7.2</jsoup.version>
         <txtmark.version>0.9</txtmark.version>
+        <spring-security.version>3.1.4.RELEASE</spring-security.version>
 
         <!-- Plugins versions -->
         <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
@@ -74,6 +75,28 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
             <version>${spring-data-mongodb.version}</version>
+        </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring-security.version}</version>
         </dependency>
 
         <!-- Jackson -->
