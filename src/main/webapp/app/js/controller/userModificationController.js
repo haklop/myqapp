@@ -15,9 +15,9 @@ function UserModificationCtrl($scope, User) {
     }
 
     $scope.roles = [
-        { name: 'Visitor', checked: hasAuthority("Visitor") },
-        { name: 'Editor', checked: hasAuthority("Editor") },
-        { name: 'Admin', checked: hasAuthority("Admin") }
+        { name: 'Visitor', checked: hasAuthority("ROLE_VISITOR") },
+        { name: 'Editor', checked: hasAuthority("ROLE_EDITOR") },
+        { name: 'Admin', checked: hasAuthority("ROLE_ADMIN") }
     ];
 
     $scope.doWithUser = function () {

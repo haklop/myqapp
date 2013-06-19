@@ -3,9 +3,9 @@ function UserCreationCtrl($scope, User) {
     $scope.action = "Ajouter";
 
     $scope.roles = [
-        { name: 'Visitor',    checked: false },
-        { name: 'Editor',   checked: false },
-        { name: 'Admin',     checked: false }
+        { name: 'Visitor', checked: hasAuthority("ROLE_VISITOR") },
+        { name: 'Editor', checked: hasAuthority("ROLE_EDITOR") },
+        { name: 'Admin', checked: hasAuthority("ROLE_ADMIN") }
     ];
 
     $scope.doWithUser = function () {
