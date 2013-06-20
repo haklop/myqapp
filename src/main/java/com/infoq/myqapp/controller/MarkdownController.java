@@ -5,6 +5,7 @@ import com.infoq.myqapp.domain.ValueObject;
 import com.infoq.myqapp.service.MarkdownService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class MarkdownController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
+    @Secured("ROLE_EDITOR")
     public ResponseEntity generateHtml(@RequestBody MyQAppMarkdown markdown) {
         String html = markdownService.generateHtml(markdown);
         return new ResponseEntity<>(new ValueObject(html), HttpStatus.OK);

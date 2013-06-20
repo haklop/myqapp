@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -42,6 +43,7 @@ public class TrelloController {
     private UserProfileRepository userProfileRepository;
 
     @RequestMapping(method = RequestMethod.POST, value = "/card")
+    @Secured("ROLE_EDITOR")
     public ResponseEntity addToTrello(@RequestBody FeedEntry feed, WebRequest request) {
         LOG.info("Adding card to Trello {}", feed.getTitle());
 

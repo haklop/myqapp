@@ -24,7 +24,7 @@
 
     <security:http auto-config="true" use-expressions="true" />
 
-    <bean id="authenticationManager" class="com.infoq.myqapp.service.AppAuthenticationManager" />
+    <bean id="authenticationManager" class="com.infoq.myqapp.service.security.AppAuthenticationManager" />
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="authenticationManager" />

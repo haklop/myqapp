@@ -6,6 +6,7 @@ import com.infoq.myqapp.service.FeedService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ public class FeedController {
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)
     @ResponseBody
+    @Secured("ROLE_EDITOR")
     public Page<FeedEntry> refreshAndGetNewFeed() {
         feedService.retrieveFeedTask();
         return getAllFeeds();

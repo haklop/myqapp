@@ -1,5 +1,6 @@
-package com.infoq.myqapp.service;
+package com.infoq.myqapp.service.security;
 
+import com.infoq.myqapp.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -40,6 +41,8 @@ public class AppAuthenticationManager implements AuthenticationManager, UserDeta
                 authorities.add(new SimpleGrantedAuthority(authority));
             }
         }
+        authorities.add(new SimpleGrantedAuthority("ANONYMOUS"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
         return authorities;
     }
 
