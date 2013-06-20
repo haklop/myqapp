@@ -14,9 +14,8 @@ function UserCreationCtrl($scope, User) {
     }
 
     $scope.roles = [
-        { name: 'Visitor', checked: hasAuthority("ROLE_VISITOR") },
-        { name: 'Editor', checked: hasAuthority("ROLE_EDITOR") },
-        { name: 'Admin', checked: hasAuthority("ROLE_ADMIN") }
+        { name: 'ROLE_EDITOR', checked: hasAuthority("ROLE_EDITOR") },
+        { name: 'ROLE_ADMIN', checked: hasAuthority("ROLE_ADMIN") }
     ];
 
     $scope.doWithUser = function () {
