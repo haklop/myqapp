@@ -82,3 +82,32 @@ angularModule.factory('User', function ($resource) {
         remove: {method: 'DELETE'}
     });
 });
+
+angularModule.service('UserService', function (TrelloMember) {
+
+    this.query = function () {
+        if (!this.member) {
+            this.member = TrelloMember.query();
+        }
+        return this.member
+    }
+
+    this.isEditor = function () {
+        return hasAuthority(this.member, "ROLE_EDITOR")
+    }
+
+    this.isAdmin = function () {
+        return hasAuthority(this.member, "ROLE_ADMIN")
+    }
+
+    this.hasAuthority = function(user, authority) {
+        if (user && user.authorities) {
+            for (var i = 0; i < user.authorities.length; i++) {
+                if (user.authorities[i] === authority) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+});

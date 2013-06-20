@@ -1,12 +1,12 @@
-function HeaderController($scope, $location, TrelloMember) {
+function HeaderController($scope, $location, UserService) {
     $scope.isActive = function (route) {
         return $location.path().indexOf(route) === 0;
     };
 
-    $scope.userinfo = TrelloMember.query();
+    $scope.userinfo = UserService.query();
 
     $scope.$on('$routeChangeStart', function (next, current) {
-        TrelloMember.query(function (response) {
+        UserService.query(function (response) {
             $scope.userinfo = response;
         }, function (response) {
             if (response.status === 400 || response.status === 401) {
