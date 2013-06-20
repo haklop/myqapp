@@ -2,6 +2,17 @@ function UserCreationCtrl($scope, User) {
     $scope.title = "Ajouter un nouvel utilisateur";
     $scope.action = "Ajouter";
 
+    function hasAuthority(s) {
+        if ($scope.user && $scope.user.authorities) {
+            for (var i = 0; i < $scope.user.authorities.length; i++) {
+                if ($scope.user.authorities[i] === s) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     $scope.roles = [
         { name: 'Visitor', checked: hasAuthority("ROLE_VISITOR") },
         { name: 'Editor', checked: hasAuthority("ROLE_EDITOR") },

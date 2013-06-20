@@ -5,9 +5,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -15,8 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Service
-public class AppAuthenticationManager implements AuthenticationManager {
+public class AppAuthenticationManager implements AuthenticationManager, UserDetailsService {
 
     @Resource
     private UserService userService;
@@ -39,5 +41,10 @@ public class AppAuthenticationManager implements AuthenticationManager {
             }
         }
         return authorities;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return new User(username, null, getAuthorities(username));
     }
 }

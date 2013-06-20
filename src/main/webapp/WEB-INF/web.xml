@@ -8,16 +8,32 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:config/spring/spring-*.xml</param-value>
     </context-param>
+    <context-param>
+        <param-name>spring.profiles.default</param-name>
+        <param-value>dev</param-value>
+    </context-param>
 
     <filter>
         <filter-name>Authentication</filter-name>
         <filter-class>com.infoq.myqapp.AuthenticationFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
     <filter-mapping>
         <filter-name>Authentication</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
     <servlet>
         <servlet-name>api</servlet-name>
@@ -25,10 +41,6 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:config/spring/spring-*.xml</param-value>
-        </init-param>
-        <init-param>
-            <param-name>spring.profiles.default</param-name>
-            <param-value>dev</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -42,5 +54,7 @@
         <!--One day-->
         <session-timeout>1440</session-timeout>
     </session-config>
+
+
 
 </web-app>
