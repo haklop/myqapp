@@ -17,8 +17,8 @@
             <li ng-class="{active: isActive('/stats')}"><a href="#/stats">Stats Listes</a></li>
             <li ng-class="{active: isActive('/users')}"><a href="#/users">Stats Contributeurs</a></li>
             <li ng-class="{active: isActive('/conf')}"><a href="#/conf">Conférences</a></li>
-            <li ng-class="{active: isActive('/markdown')}"><a href="#/markdown">Markdown</a></li>
-            <li ng-class="{active: isActive('/admin')}"><a href="#/admin">Admin</a></li>
+            <li ng-show="isEditor()" ng-class="{active: isActive('/markdown')}"><a href="#/markdown">Markdown</a></li>
+            <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}"><a href="#/admin">Admin</a></li>
         </ul>
     </div>
 </div>

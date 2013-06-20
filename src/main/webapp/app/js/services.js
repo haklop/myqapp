@@ -85,19 +85,26 @@ angularModule.factory('User', function ($resource) {
 
 angularModule.service('UserService', function (TrelloMember) {
 
+    var self = this;
+    this._isEditor = true;
+    this._isEditor = true;
+
     this.query = function () {
         if (!this.member) {
-            this.member = TrelloMember.query();
+            this.member = TrelloMember.query(function(result){
+                self._isEditor = self.hasAuthority(result, "ROLE_EDITOR");
+                self._isAdmin = self.hasAuthority(result, "ROLE_ADMIN");
+            });
         }
         return this.member
     }
 
     this.isEditor = function () {
-        return hasAuthority(this.member, "ROLE_EDITOR")
+       return self._isEditor;
     }
 
     this.isAdmin = function () {
-        return hasAuthority(this.member, "ROLE_ADMIN")
+        return self._isAdmin;
     }
 
     this.hasAuthority = function(user, authority) {

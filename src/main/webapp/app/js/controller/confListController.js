@@ -1,9 +1,11 @@
-function ConfListCtrl($scope, Confs) {
+function ConfListCtrl($scope, Confs, UserService) {
     $scope.alerts = [];
 
     $scope.newconf = {};
 
     $scope.confs = Confs.query();
+
+    $scope.isEditor = UserService.isEditor;
 
     $scope.createConf = function () {
         if ($scope.newconfForm.$valid) {

@@ -1,4 +1,4 @@
-<button class="btn" style="margin-bottom: 15px" ng-click="refreshStats()" ng-class="refreshing()" ng-disabled="refreshing()">Rafraichir les stats</button>
+<button class="btn" style="margin-bottom: 15px" ng-click="refreshStats()" ng-class="refreshing()" ng-disabled="refreshing()" ng-show="isEditor()">Rafraichir les stats</button>
 <div>
     <div class="well well-small" ng-repeat="list in lists">
         <div class="row-fluid">

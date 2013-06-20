@@ -1,4 +1,4 @@
-function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello) {
+function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello, UserService) {
     var types = [
         {"name": "News", "selected": true},
         {"name": "Article", "selected": true},
@@ -6,6 +6,8 @@ function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello) {
         {"name": "Presentation", "selected": true}
     ];
     $scope.types = types;
+
+    $scope.isEditor = UserService.isEditor;
 
     var feedPage;
     if ($routeParams.page) {

@@ -9,7 +9,7 @@
 
         <fieldset>
             <legend>Actions</legend>
-            <button class="btn" ng-click="refreshFeed()">Rafraichir le feed</button>
+            <button class="btn" ng-click="refreshFeed()" ng-show="isEditor()">Rafraichir le feed</button>
         </fieldset>
     </div>
     <div class="span9">
@@ -23,7 +23,7 @@
                 <th>Title</th>
                 <th>Date</th>
                 <th width="30%">Categories</th>
-                <th width="120px">Add to Trello</th>
+                <th width="120px" ng-show="isEditor()">Add to Trello</th>
             </tr>
             </thead>
             <tbody>
@@ -32,7 +32,7 @@
                 <td><a ng-href="{{feed.link}}" target="_blank">{{feed.title}}</a></td>
                 <td>{{feed.publishedDate | date:'dd/MM/yyyy'}}</td>
                 <td>{{formatCategories(feed.categories)}}</td>
-                <td>
+                <td ng-show="isEditor()">
                     <button ng-show="(feed.type == 'Article' || feed.type == 'News') && !feed.addedInTrello"
                             class="btn btn-info" ng-click="addToTrello($index)" ng-class="addingToTrello($index)" ng-disabled="addingToTrello($index)">Add to Trello
                     </button>
