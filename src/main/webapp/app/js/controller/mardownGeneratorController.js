@@ -25,6 +25,10 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw)
         GithubRaw.query({url: githubUrl}, function (result) {
             $scope.markdown.text = result.content;
             $scope.markdown.type = type;
+        }, function(error){
+            if(error.status == 412){
+                alert("Le contenu recupéré n'appartient pas à la branche master, veuillez mettre à jour l'URL dans Trello");
+            }
         })
     };
 
