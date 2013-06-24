@@ -4,7 +4,7 @@
 
     <groupId>com.infoq.myqapp</groupId>
     <artifactId>myqapp</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
 
     <properties>
@@ -40,7 +40,7 @@
 
     <scm>
         <developerConnection>scm:git:git@github.com:haklop/myqapp.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>1.0.0</tag>
   </scm>
 
     <dependencies>
