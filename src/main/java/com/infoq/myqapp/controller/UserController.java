@@ -19,7 +19,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity list() {
-        return new ResponseEntity(userService.getAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)

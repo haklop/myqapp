@@ -126,7 +126,8 @@ public class MarkdownService {
             });
 
             for (TextNode textNode : textNodes) {
-                textNode.replaceWith(new DataNode(textNode.outerHtml().replace(" ", "&nbsp;").replace("\n", "<br/>"), ""));
+                String code = " " + textNode.outerHtml();
+                textNode.replaceWith(new DataNode(code.replace(" ", "&nbsp;").replace("\n", "<br/>"), ""));
             }
 
             Element parent = pre.parent();

@@ -3,9 +3,9 @@ package com.infoq.myqapp.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.UserProfile;
-import com.infoq.myqapp.repository.UserProfileRepository;
 import com.infoq.myqapp.service.GoogleAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
+import com.infoq.myqapp.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.Token;
@@ -14,6 +14,11 @@ import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +29,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/google")
@@ -35,20 +37,8 @@ public class GoogleController {
 
     private static final Logger LOG = LoggerFactory.getLogger(GoogleController.class);
 
-    private static final Set<String> ALLOWED_EMAIL = new HashSet<>();
-
-    static {
-        ALLOWED_EMAIL.add("eric.bellemon@gmail.com");
-        ALLOWED_EMAIL.add("vey.julien@gmail.com");
-        ALLOWED_EMAIL.add("simon.basle@zenika.com");
-        ALLOWED_EMAIL.add("al-amine.ousman@zenika.com");
-        ALLOWED_EMAIL.add("pierre@queinnec.org");
-        ALLOWED_EMAIL.add("pierre.queinnec@gmail.com");
-        ALLOWED_EMAIL.add("mathieu.pousse@zenika.com");
-        ALLOWED_EMAIL.add("hadrien.pierart@zenika.com");
-        ALLOWED_EMAIL.add("antoine.rouaze@gmail.com");
-        ALLOWED_EMAIL.add("benoit.nouyrigat@zenika.com");
-    }
+    @Resource
+    private UserService userService;
 
     @Resource
     private GoogleAuthenticationService googleAuthenticationService;
@@ -57,10 +47,10 @@ public class GoogleController {
     private TrelloService trelloService;
 
     @Resource
-    private UserProfileRepository userProfileRepository;
+    private AuthenticationManager authenticationManager;
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
-    public String login(WebRequest request, HttpServletRequest httpServletRequest) {
+    public String login(WebRequest request) {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
         LOG.info("Login attempt with access token : {} ", accessToken);
 
@@ -91,33 +81,40 @@ public class GoogleController {
         String decodedIdString = new String(decodedId);
         UserProfile profileFromGoogle = mapper.readValue(decodedIdString, UserProfile.class);
 
-        UserProfile profileFromMongo = userProfileRepository.findOne(profileFromGoogle.getEmail());
-        if (profileFromMongo == null || profileFromMongo.getTokenTrello() == null || profileFromMongo.getTokenGithub() == null) {
-            if (!ALLOWED_EMAIL.contains(profileFromGoogle.getEmail())) {
-                return "redirect:/error-403.html";
-            } else {
-                request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
-                request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
-                userProfileRepository.save(profileFromGoogle);
+        try {
+            Authentication authenticationRequest = new PreAuthenticatedAuthenticationToken(profileFromGoogle.getEmail(), null);
+            Authentication result = authenticationManager.authenticate(authenticationRequest);
+            SecurityContextHolder.getContext().setAuthentication(result);
 
-                if (profileFromMongo == null || profileFromMongo.getTokenTrello() == null) {
-                    return "redirect:/trello-token.html";
-                } else {
-                    return "redirect:/github-token.html";
-                }
-            }
-        } else {
+            UserProfile profileFromMongo = userService.get(profileFromGoogle.getEmail());
+            Token tokenTrello = profileFromMongo.getTokenTrello();
+            Token tokenGithub = profileFromMongo.getTokenGithub();
+
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
 
-            // check if the token is not revoked
-            try {
-                trelloService.getUserInfo(profileFromMongo.getTokenTrello());
-                request.setAttribute(AuthenticationFilter.ATTR_OAUTH_ACCESS_TOKEN, profileFromMongo.getTokenTrello(), RequestAttributes.SCOPE_SESSION);
-                request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, profileFromMongo.getTokenGithub(), RequestAttributes.SCOPE_SESSION);
-            } catch (HttpClientErrorException e) {
-                return "redirect:/trello-token.html";
+            if (tokenTrello != null) {
+                request.setAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, tokenTrello, RequestAttributes.SCOPE_SESSION);
             }
+            if (tokenGithub != null) {
+                request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, tokenGithub, RequestAttributes.SCOPE_SESSION);
+            }
+
+            if (tokenTrello == null) {
+                return "redirect:/trello-token.html";
+            } else if (tokenGithub == null) {
+                return "redirect:/github-token.html";
+            } else {
+                // check if the token is not revoked
+                try {
+                    trelloService.getUserInfo(profileFromMongo.getTokenTrello());
+                } catch (HttpClientErrorException e) {
+                    return "redirect:/trello-token.html";
+                }
+            }
+
+        } catch (AuthenticationException e) {
+            return "redirect:/error-403.html";
         }
 
         return "redirect:/";

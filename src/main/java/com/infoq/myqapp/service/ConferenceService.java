@@ -25,10 +25,14 @@ public class ConferenceService {
     @Resource
     private MongoTemplate mongoTemplate;
 
-    public void createConf(Conference conference) {
+    public void createOrUpdate(Conference conference) {
         // TODO check conference
 
         conferenceRepository.save(conference);
+    }
+
+    public void delete(String conferenceId) {
+        conferenceRepository.delete(conferenceId);
     }
 
     public List<Conference> getAllFutureConfs() {

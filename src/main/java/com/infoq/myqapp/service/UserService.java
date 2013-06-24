@@ -26,7 +26,23 @@ public class UserService {
     }
 
     public void update(String userId, UserProfile userProfile) {
+        UserProfile old = userProfileRepository.findOne(userId);
+        userProfile.setTokenGithub(old.getTokenGithub());
+        userProfile.setTokenTrello(old.getTokenTrello());
         userProfileRepository.delete(userId);
         userProfileRepository.save(userProfile);
+    }
+
+    public boolean isAuthorized(String email){
+        UserProfile one = userProfileRepository.findOne(email);
+        return one != null;
+    }
+
+    public UserProfile get(String email) {
+        return userProfileRepository.findOne(email);
+    }
+
+    public void save(UserProfile profileFromGoogle) {
+        userProfileRepository.save(profileFromGoogle);
     }
 }

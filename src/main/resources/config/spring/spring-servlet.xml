@@ -5,11 +5,13 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
                            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
                            http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
-                           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+                           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+                           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
@@ -17,6 +19,16 @@
                   class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+    <security:global-method-security secured-annotations="enabled" />
+
+    <security:http auto-config="true" use-expressions="true" />
+
+    <bean id="authenticationManager" class="com.infoq.myqapp.service.AppAuthenticationManager" />
+
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="authenticationManager" />
+    </security:authentication-manager>
 
     <mongo:mongo/>
     <mongo:repositories base-package="com.infoq.myqapp.repository"/>

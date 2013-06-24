@@ -6,7 +6,7 @@
 
     <groupId>com.infoq.myqapp</groupId>
     <artifactId>myqapp</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
@@ -32,11 +32,17 @@
         <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>
         <jsoup.version>1.7.2</jsoup.version>
         <txtmark.version>0.9</txtmark.version>
+        <spring-security.version>3.1.4.RELEASE</spring-security.version>
 
         <!-- Plugins versions -->
         <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
         <jetty-maven-plugin.version>8.1.10.v20130312</jetty-maven-plugin.version>
+        <maven-jgitflow-plugin.version>1.0-alpha8</maven-jgitflow-plugin.version>
     </properties>
+
+    <scm>
+        <developerConnection>scm:git:git@github.com:haklop/myqapp.git</developerConnection>
+    </scm>
 
     <dependencies>
         <!-- Spring -->
@@ -69,6 +75,28 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
             <version>${spring-data-mongodb.version}</version>
+        </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring-security.version}</version>
         </dependency>
 
         <!-- Jackson -->
@@ -179,6 +207,20 @@
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>maven-jgitflow-plugin</artifactId>
+                <version>${maven-jgitflow-plugin.version}</version>
+                <configuration>
+                    <flowInitContext>
+                        <developBranchName>dev</developBranchName>
+                        <versionTagPrefix>v</versionTagPrefix>
+                    </flowInitContext>
+                    <noDeploy>true</noDeploy>
+                    <pushChanges>true</pushChanges>
+                    <allowSnapshots>true</allowSnapshots> <!-- Allow only because com.julienvey.trello:trello-java-wrapper is a snapshot -->
                 </configuration>
             </plugin>
         </plugins>
