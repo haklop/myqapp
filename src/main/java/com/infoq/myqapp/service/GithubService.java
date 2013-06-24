@@ -14,6 +14,9 @@ public class GithubService {
     private static final String ACCESS_TOKEN_QUERY_STRING = "?access_token={accessToken}";
 
     public GitHubContent getRaw(String url, Token accessToken) {
+        if (!url.startsWith("https://github.com/Zenika/TheQ/blob/master/")) {
+            throw new IllegalStateException("Fetched content should be taken from branch master");
+        }
         String rawUrl = getRawUrl(url);
 
         RestTemplate restTemplate = new RestTemplate();

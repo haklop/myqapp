@@ -1,8 +1,10 @@
-function StatsListCtrl($scope, StatsLists, Stats) {
+function StatsListCtrl($scope, StatsLists, Stats, UserService) {
     $scope.lists = StatsLists.query();
 
     $scope.predicate = $scope.name;
     $scope.reverse = true;
+
+    $scope.isEditor = UserService.isEditor;
 
     $scope.news = function (stats) {
         return stats.originalNews + stats.translatedNews;

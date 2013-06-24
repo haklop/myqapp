@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.infoq.myqapp</groupId>
     <artifactId>myqapp</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
 
     <properties>
@@ -31,7 +29,7 @@
         <mongo-java-driver.version>2.10.1</mongo-java-driver.version>
         <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>
         <jsoup.version>1.7.2</jsoup.version>
-        <txtmark.version>0.9</txtmark.version>
+        <txtmark.version>0.10</txtmark.version>
         <spring-security.version>3.1.4.RELEASE</spring-security.version>
 
         <!-- Plugins versions -->
@@ -42,7 +40,8 @@
 
     <scm>
         <developerConnection>scm:git:git@github.com:haklop/myqapp.git</developerConnection>
-    </scm>
+        <tag>1.0.0</tag>
+  </scm>
 
     <dependencies>
         <!-- Spring -->

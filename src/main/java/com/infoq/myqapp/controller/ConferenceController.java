@@ -4,6 +4,7 @@ import com.infoq.myqapp.domain.Conference;
 import com.infoq.myqapp.service.ConferenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class ConferenceController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
+    @Secured("ROLE_EDITOR")
     public ResponseEntity createConf(@RequestBody Conference conference) {
         conferenceService.createOrUpdate(conference);
         return new ResponseEntity(HttpStatus.CREATED);
@@ -26,6 +28,7 @@ public class ConferenceController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{confId:.+}")
     @ResponseBody
+    @Secured("ROLE_EDITOR")
     public ResponseEntity updateConf(@RequestBody Conference conference, @PathVariable String confId) {
         if (!conference.getId().equals(confId)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -36,6 +39,7 @@ public class ConferenceController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{confId:.+}")
     @ResponseBody
+    @Secured("ROLE_EDITOR")
     public ResponseEntity deleteConf(@PathVariable String confId) {
         conferenceService.delete(confId);
         return new ResponseEntity(HttpStatus.OK);

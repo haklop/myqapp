@@ -1,6 +1,6 @@
 <div class="row-fluid">
-    <div class="span3">
-        <fieldset>
+    <div class="span3" >
+        <fieldset ng-show="isEditor()">
             <legend>Ajouter une conférence</legend>
             <form class="form-horizontal conf-form" name="newconfForm" ng-submit="createConf()" novalidate>
                 <div class="control-group">

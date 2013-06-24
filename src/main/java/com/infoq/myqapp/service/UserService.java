@@ -42,7 +42,7 @@ public class UserService {
         return userProfileRepository.findOne(email);
     }
 
-    public void save(UserProfile profileFromGoogle) {
-        userProfileRepository.save(profileFromGoogle);
+    public void save(UserProfile profile) {
+        userProfileRepository.save(profile);
     }
 }
