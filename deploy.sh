@@ -2,6 +2,7 @@
 
 HOME=~
 WORKSPACE_MYQAPP=$HOME/infoq/myqapp
+MYQAPP_PROPS=$HOME/infoq/myqapp-props
 WORKSPACE_WRAPPER=$HOME/infoq/trello-java-wrapper
 JETTY_HOME=$HOME/jetty
 
@@ -41,5 +42,5 @@ java -jar start.jar -DSTOP.PORT=9966 -DSTOP.KEY=myqappStop --stop
 
 cp $WORKSPACE_MYQAPP/target/myqapp-*.war $JETTY_HOME/webapps/ROOT.war
 
-java -jar start.jar jetty.port=2305  -Dspring.profiles.active="prod" -DSTOP.PORT=9966 -DSTOP.KEY=myqappStop --daemon &
+java -jar start.jar jetty.port=2305 -Dmyqapp.home=$MYQAPP_PROPS -Dspring.profiles.active="prod" -DSTOP.PORT=9966 -DSTOP.KEY=myqappStop --daemon &
 
