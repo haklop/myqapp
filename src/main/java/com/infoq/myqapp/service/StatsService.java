@@ -219,7 +219,7 @@ public class StatsService {
         }
     }
 
-    private boolean hasLabel(Card card, String label) {
+	public static boolean hasLabel(Card card, String label) {
         for (Label l : card.getLabels()) {
             if (l.getName().equals(label)) {
                 return true;
