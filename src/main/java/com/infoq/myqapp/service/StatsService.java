@@ -1,25 +1,31 @@
 package com.infoq.myqapp.service;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Resource;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.infoq.myqapp.domain.ListStat;
+import com.infoq.myqapp.domain.TrelloActivity;
+import com.infoq.myqapp.domain.TrelloHeartbeat;
 import com.infoq.myqapp.domain.UserProfile;
 import com.infoq.myqapp.domain.UserStat;
+import com.infoq.myqapp.repository.UserActivityRepository;
 import com.infoq.myqapp.repository.UserStatRepository;
 import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
-import org.springframework.data.mongodb.core.MongoTemplate;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 public class StatsService {
 
@@ -44,37 +50,41 @@ public class StatsService {
     @Resource
     private UserStatRepository userStatRepository;
 
+	@Resource
+	private UserActivityRepository userActivityRepository;
+
     @Resource
     private TrelloService trelloService;
 
     @Resource
     private MongoTemplate mongoTemplate;
 
-    public List<UserStat> getUsersStats() {
+    public List<TrelloActivity> getUsersStats() {
         List<UserStat> userStats = mongoTemplate.find(query(where("listName").in(A_VALIDER, EN_COURS_DE_VALIDATION, VALIDE, PUBLIE, EN_COURS_PUBLICATION, PROBLEME_FORMAT)), UserStat.class);
 
         return aggregateStats(userStats);
     }
 
-    private List<UserStat> aggregateStats(List<UserStat> userStats) {
-        Map<String, UserStat> aggregatedStats = new HashMap<>();
+    private List<TrelloActivity> aggregateStats(List<UserStat> userStats) {
+        Map<String, TrelloActivity> aggregatedStats = new HashMap<>();
+        List<TrelloActivity> allActivities = mongoTemplate.findAll(TrelloActivity.class);
+        for (TrelloActivity activity : allActivities) {
+			aggregatedStats.put(activity.getMemberId(), activity);
+		}
+        
         for (UserStat stat : userStats) {
             String userId = stat.getMemberId();
-            if (aggregatedStats.containsKey(userId)) {
-                UserStat currentStat = aggregatedStats.get(userId);
-                stat.setMentoredArticles(currentStat.getMentoredArticles() + stat.getMentoredArticles());
-                stat.setMentoredNews(currentStat.getMentoredNews() + stat.getMentoredNews());
-                stat.setOriginalArticles(currentStat.getOriginalArticles() + stat.getOriginalArticles());
-                stat.setOriginalNews(currentStat.getOriginalNews() + stat.getOriginalNews());
-                stat.setTranslatedArticles(currentStat.getTranslatedArticles() + stat.getTranslatedArticles());
-                stat.setTranslatedNews(currentStat.getTranslatedNews() + stat.getTranslatedNews());
-                stat.setValidatedArticles(currentStat.getValidatedArticles() + stat.getValidatedArticles());
-                stat.setValidatedNews(currentStat.getValidatedNews() + stat.getValidatedNews());
-            } else {
-                stat.setListName("Done");
-            }
-            if (!(userId.equals(NONE) || userId.equals("5024fa0753f944277fba9907"))) {
-                aggregatedStats.put(userId, stat);
+            
+            TrelloActivity currentStat = aggregatedStats.get(userId);
+            if (currentStat != null && !(userId.equals(NONE) || userId.equals("5024fa0753f944277fba9907"))) {
+            	currentStat.setMentoredArticles(currentStat.getMentoredArticles() + stat.getMentoredArticles());
+            	currentStat.setMentoredNews(currentStat.getMentoredNews() + stat.getMentoredNews());
+            	currentStat.setOriginalArticles(currentStat.getOriginalArticles() + stat.getOriginalArticles());
+            	currentStat.setOriginalNews(currentStat.getOriginalNews() + stat.getOriginalNews());
+            	currentStat.setTranslatedArticles(currentStat.getTranslatedArticles() + stat.getTranslatedArticles());
+            	currentStat.setTranslatedNews(currentStat.getTranslatedNews() + stat.getTranslatedNews());
+            	currentStat.setValidatedArticles(currentStat.getValidatedArticles() + stat.getValidatedArticles());
+            	currentStat.setValidatedNews(currentStat.getValidatedNews() + stat.getValidatedNews());
             }
         }
 
@@ -152,6 +162,7 @@ public class StatsService {
         List<TList> lists = trelloService.getLists(adminUser.getTokenTrello());
 
         userStatRepository.deleteAll();
+		userActivityRepository.deleteAll();
 
         for (TList list : lists) {
             Map<String, UserStat> userStatMap = new HashMap<>();
@@ -215,7 +226,18 @@ public class StatsService {
                 }
             }
 
-            userStatRepository.save(userStatMap.values());
+			userStatRepository.save(userStatMap.values());
+
+			// get the heartbeat for each members
+			List<TrelloActivity> activities = new ArrayList<>(memberMap.size());
+			for (Entry<String, Member> entry : memberMap.entrySet()) {
+				List<TrelloHeartbeat> hb = trelloService.getMemberHeartbeat(entry.getValue(),
+						adminUser.getTokenTrello());
+				activities.add(new TrelloActivity(entry.getKey(), entry.getValue().getFullName(),
+						"Done", hb));
+			}
+
+			userActivityRepository.save(activities);
         }
     }
 

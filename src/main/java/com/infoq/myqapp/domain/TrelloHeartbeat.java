@@ -8,23 +8,35 @@ import com.julienvey.trello.domain.Member;
 
 public class TrelloHeartbeat {
 
-	private Card card;
-	private Member user;
+	private String cardName;
+	private String userName;
+	private String userLogin;
+	private String userEmail;
 	private Date heartbeatDate;
 
 	public TrelloHeartbeat(Card card, Member user, Date heartbeatDate) {
 		super();
-		this.card = card;
-		this.user = user;
+		this.cardName = card.getName();
+		this.userName = user.getFullName();
+		this.userLogin = user.getUsername();
+		this.userEmail = user.getEmail();
 		this.heartbeatDate = heartbeatDate;
 	}
 
-	public Card getCard() {
-		return card;
+	public String getCardName() {
+		return cardName;
 	}
 
-	public Member getUser() {
-		return user;
+	public String getUserName() {
+		return userName;
+	}
+
+	public String getUserLogin() {
+		return userLogin;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
 	}
 
 	public Date getHeartbeatDate() {

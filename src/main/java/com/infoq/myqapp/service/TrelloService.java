@@ -98,7 +98,7 @@ public class TrelloService {
 		for (CardWithActions card : cards) {
 			if (result.size() >= 5)
 				break;
-			
+
 			// some false positives are to be expected... resolve them below
 			// exclude mentored content
 			if (StatsService.hasLabel(card, StatsService.MENTORAT))
@@ -108,13 +108,12 @@ public class TrelloService {
 			if (card.getIdMembers().size() < 1 || card.getIdMembers().get(0).equals(member.getId()))
 				continue;
 
-
 			for (Action action : card.getActions()) {
 				Data data = action.getData();
 				// include only content where card was moved to A_VALIDER list
 				if (data.getListAfter() != null
 						&& data.getListAfter().getName().equals(StatsService.A_VALIDER)) {
-					
+
 					TrelloHeartbeat hb = new TrelloHeartbeat(card, member, action.getDate());
 					result.add(hb);
 				}
