@@ -3,7 +3,6 @@ package com.infoq.myqapp.service;
 import static com.julienvey.trello.utils.ArgUtils.arg;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.infoq.myqapp.domain.FeedEntry;
+import com.infoq.myqapp.domain.TrelloHeartbeat;
 import com.infoq.myqapp.domain.TrelloLabel;
 import com.infoq.myqapp.repository.FeedRepository;
 import com.infoq.myqapp.service.exception.CardConflictException;
@@ -87,15 +87,18 @@ public class TrelloService {
         return getUserInfo("me", accessToken);
     }
 
-	public List<Date> getMemberHeartbeat(Member member, Token accessToken) {
+	public List<TrelloHeartbeat> getMemberHeartbeat(Member member, Token accessToken) {
 		Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY,
 				accessToken.getToken());
 
 		// get a list of all card moving actions where the member is involved
 		List<CardWithActions> cards = trelloApi.getBoardMemberActivity(trelloBoardForStatsId,
 				member.getId(), "updateCard:idList");
-		List<Date> result = new ArrayList<>(cards.size());
+		List<TrelloHeartbeat> result = new ArrayList<>(cards.size());
 		for (CardWithActions card : cards) {
+			if (result.size() >= 5)
+				break;
+			
 			// some false positives are to be expected... resolve them below
 			// exclude mentored content
 			if (StatsService.hasLabel(card, StatsService.MENTORAT))
@@ -111,7 +114,9 @@ public class TrelloService {
 				// include only content where card was moved to A_VALIDER list
 				if (data.getListAfter() != null
 						&& data.getListAfter().getName().equals(StatsService.A_VALIDER)) {
-					result.add(action.getDate());
+					
+					TrelloHeartbeat hb = new TrelloHeartbeat(card, member, action.getDate());
+					result.add(hb);
 				}
 			}
 		}
