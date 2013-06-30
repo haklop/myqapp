@@ -1,5 +1,14 @@
 #myqapp
 
+## Install on dev mode
+
+- Start mongodb on port 27017
+- Use of port 8080 is mandatory. 8080 is used by the Google Authentication callback
+- Insert your user on mongodb (install script is upcoming)
+- mvn jetty:run
+
+**Always commit on branch dev**
+
 ## Release and deploy
 
 ### Config
