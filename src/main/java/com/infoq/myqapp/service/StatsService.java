@@ -228,17 +228,20 @@ public class StatsService {
 
 			userStatRepository.save(userStatMap.values());
 
-			// get the heartbeat for each members
-			List<TrelloActivity> activities = new ArrayList<>(memberMap.size());
-			for (Entry<String, Member> entry : memberMap.entrySet()) {
-				List<TrelloHeartbeat> hb = trelloService.getMemberHeartbeat(entry.getValue(),
-						adminUser.getTokenTrello());
-				activities.add(new TrelloActivity(entry.getKey(), entry.getValue().getFullName(),
-						"Done", hb));
-			}
-
-			userActivityRepository.save(activities);
         }
+		// get the heartbeat for each members
+		List<TrelloActivity> activities = new ArrayList<>(memberMap.size());
+		for (Entry<String, Member> entry : memberMap.entrySet()) {
+			String id = entry.getKey();
+			Member member = entry.getValue();
+			if (NONE.equals(member.getId()) || AL_AMINE_USER_ID.equals(id))
+				continue;
+			List<TrelloHeartbeat> hb = trelloService.getMemberHeartbeat(member,
+					adminUser.getTokenTrello());
+			activities.add(new TrelloActivity(id, member.getFullName(), "Done", hb));
+		}
+
+		userActivityRepository.save(activities);
     }
 
 	public static boolean hasLabel(Card card, String label) {
