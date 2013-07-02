@@ -14,12 +14,41 @@ public class TrelloHeartbeat {
 	private String userEmail;
 	private Date heartbeatDate;
 
-	public TrelloHeartbeat(Card card, Member user, Date heartbeatDate) {
+	public TrelloHeartbeat(String cardName, String userName, String userLogin, String userEmail,
+			Date heartbeatDate) {
 		super();
-		this.cardName = card.getName();
-		this.userName = user.getFullName();
-		this.userLogin = user.getUsername();
-		this.userEmail = user.getEmail();
+		this.cardName = cardName;
+		this.userName = userName;
+		this.userLogin = userLogin;
+		this.userEmail = userEmail;
+		this.heartbeatDate = heartbeatDate;
+	}
+
+	public TrelloHeartbeat(Card card, Member user, Date heartbeatDate) {
+		this(card.getName(), user.getFullName(), user.getUsername(), user.getEmail(), heartbeatDate);
+	}
+
+	public TrelloHeartbeat() {
+		super();
+	}
+
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setUserLogin(String userLogin) {
+		this.userLogin = userLogin;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
+	public void setHeartbeatDate(Date heartbeatDate) {
 		this.heartbeatDate = heartbeatDate;
 	}
 
