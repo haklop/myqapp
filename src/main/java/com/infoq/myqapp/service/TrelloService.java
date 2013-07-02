@@ -105,7 +105,8 @@ public class TrelloService {
 				continue;
 
 			// exclude content where member is not the author (1st position in card)
-			if (card.getIdMembers().size() < 1 || card.getIdMembers().get(0).equals(member.getId()))
+			if (card.getIdMembers().size() < 1
+					|| !card.getIdMembers().get(0).equals(member.getId()))
 				continue;
 
 			for (Action action : card.getActions()) {
