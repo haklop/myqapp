@@ -34,7 +34,7 @@
                 <td>{{formatCategories(feed.categories)}}</td>
                 <td ng-show="isEditor()">
                     <button ng-show="(feed.type == 'Article' || feed.type == 'News') && !feed.addedInTrello"
-                            class="btn btn-info" ng-click="addToTrello($index)" ng-class="addingToTrello($index)" ng-disabled="addingToTrello($index)">Add to Trello
+                            class="btn btn-info" ng-click="addToTrello(feed)" ng-class="addingToTrello(feed)" ng-disabled="addingToTrello(feed)">Add to Trello
                     </button>
 
                     <a ng-show="feed.addedInTrello" ng-href="{{feed.urlTrello}}" class="btn disabled"
