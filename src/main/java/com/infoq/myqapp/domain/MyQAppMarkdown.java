@@ -1,8 +1,13 @@
 package com.infoq.myqapp.domain;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class MyQAppMarkdown {
 
+    @NotBlank
     private String text;
+
+    @NotBlank
     private String type;
     private String node;
 

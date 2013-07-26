@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -21,7 +22,7 @@ public class ConferenceController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @Secured("ROLE_EDITOR")
-    public ResponseEntity createConf(@RequestBody Conference conference) {
+    public ResponseEntity createConf(@RequestBody @Valid Conference conference) {
         conferenceService.createOrUpdate(conference);
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -29,7 +30,7 @@ public class ConferenceController {
     @RequestMapping(method = RequestMethod.PUT, value = "/{confId:.+}")
     @ResponseBody
     @Secured("ROLE_EDITOR")
-    public ResponseEntity updateConf(@RequestBody Conference conference, @PathVariable String confId) {
+    public ResponseEntity updateConf(@RequestBody @Valid Conference conference, @PathVariable String confId) {
         if (!conference.getId().equals(confId)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/markdown")
@@ -24,7 +25,7 @@ public class MarkdownController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @Secured("ROLE_EDITOR")
-    public ResponseEntity generateHtml(@RequestBody MyQAppMarkdown markdown) {
+    public ResponseEntity generateHtml(@RequestBody @Valid MyQAppMarkdown markdown) {
         String html = markdownService.generateHtml(markdown);
         return new ResponseEntity<>(new ValueObject(html), HttpStatus.OK);
     }

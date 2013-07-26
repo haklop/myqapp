@@ -1,19 +1,34 @@
 package com.infoq.myqapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.ScriptAssert;
+import org.hibernate.validator.constraints.URL;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ScriptAssert(lang = "javascript", script = "_this.startDate.before(_this.endDate)")
 public class Conference {
 
     private String id;
 
+    @NotBlank
     private String name;
+
+    @NotBlank
+    @URL
     private String website;
+
+    @NotBlank
     private String location;
 
+    @NotNull
     private Date startDate;
+
+    @NotNull
     private Date endDate;
 
     public String getName() {

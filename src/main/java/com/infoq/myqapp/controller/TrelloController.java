@@ -25,6 +25,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -44,7 +45,7 @@ public class TrelloController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/card")
     @Secured("ROLE_EDITOR")
-    public ResponseEntity addToTrello(@RequestBody FeedEntry feed, WebRequest request) {
+    public ResponseEntity addToTrello(@RequestBody @Valid FeedEntry feed, WebRequest request) {
         LOG.info("Adding card to Trello {}", feed.getTitle());
 
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
