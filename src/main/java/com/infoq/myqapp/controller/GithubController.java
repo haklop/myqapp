@@ -3,9 +3,9 @@ package com.infoq.myqapp.controller;
 import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.GitHubContent;
 import com.infoq.myqapp.domain.UserProfile;
-import com.infoq.myqapp.repository.UserProfileRepository;
 import com.infoq.myqapp.service.GithubAuthenticationService;
 import com.infoq.myqapp.service.GithubService;
+import com.infoq.myqapp.service.UserService;
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
@@ -40,10 +40,10 @@ public class GithubController {
     private GithubService githubService;
 
     @Resource
-    private UserProfileRepository userProfileRepository;
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
-    public String login(WebRequest request, HttpServletRequest httpServletRequest) {
+    public String login(WebRequest request) {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
         logger.info("Github Login attempt with access token : {} ", accessToken);
 
@@ -61,7 +61,7 @@ public class GithubController {
     public String callback(@RequestParam(value = "code", required = false) String oauthVerifier, WebRequest request) throws IOException {
         String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
 
-        UserProfile userProfile = userProfileRepository.findOne(email);
+        UserProfile userProfile = userService.get(email);
         if (userProfile == null) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
@@ -75,7 +75,7 @@ public class GithubController {
         request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
 
         userProfile.setTokenGithub(accessToken);
-        userProfileRepository.save(userProfile);
+        userService.save(userProfile);
 
         return "redirect:/";
     }
