@@ -35,7 +35,7 @@ import java.io.IOException;
 @RequestMapping("/google")
 public class GoogleController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GoogleController.class);
+    private static final Logger logger = LoggerFactory.getLogger(GoogleController.class);
 
     @Resource
     private UserService userService;
@@ -52,7 +52,7 @@ public class GoogleController {
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request) {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
-        LOG.info("Login attempt with access token : {} ", accessToken);
+        logger.info("Login attempt with access token : {} ", accessToken);
 
         if (accessToken == null) {
             // generate new request token
@@ -71,7 +71,7 @@ public class GoogleController {
 
         Verifier verifier = new Verifier(oauthVerifier);
         Token accessToken = service.getAccessToken(OAuthConstants.EMPTY_TOKEN, verifier);
-        LOG.info("Access Granted to Google with token {}", accessToken);
+        logger.info("Access Granted to Google with token {}", accessToken);
 
         String idToken = googleAuthenticationService.getIdToken(accessToken.getRawResponse());
         String userIdToken = idToken.split("\\.")[1];

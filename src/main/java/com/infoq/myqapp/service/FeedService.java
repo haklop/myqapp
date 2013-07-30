@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.annotation.Resource;
 import java.net.URL;
@@ -23,7 +21,7 @@ import java.util.List;
 
 public class FeedService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FeedService.class);
+    private static final Logger logger = LoggerFactory.getLogger(FeedService.class);
 
     @Resource
     private FeedRepository feedRepository;
@@ -37,7 +35,7 @@ public class FeedService {
             feedRepository.save(entries);
             return entries;
         } catch (Exception e) {
-            LOG.error("Error while retrieving the feed", e);
+            logger.error("Error while retrieving the feed", e);
             throw new RuntimeException(e);
         }
     }
@@ -54,14 +52,14 @@ public class FeedService {
         try {
             reader = new XmlReader(url);
             SyndFeed feed = new SyndFeedInput().build(reader);
-            LOG.info("Syndication FeedEntry retrieved, author is: {}", feed.getAuthor());
+            logger.info("Syndication FeedEntry retrieved, author is: {}", feed.getAuthor());
 
             for (Object syndEntry : feed.getEntries()) {
                 SyndEntry syndFeedEntry = (SyndEntry) syndEntry;
 
                 FeedEntry entry = feedRepository.findOne(syndFeedEntry.getLink());
                 if (entry == null) {
-                    LOG.info("New FeedEntry retrieved: {}, {}", syndFeedEntry.getTitle(), syndFeedEntry.getLink());
+                    logger.info("New FeedEntry retrieved: {}, {}", syndFeedEntry.getTitle(), syndFeedEntry.getLink());
                     feedEntries.add(buildFeedEntry(syndFeedEntry));
                 }
 

@@ -32,7 +32,7 @@ import java.util.List;
 @RequestMapping("/trello")
 public class TrelloController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TrelloController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TrelloController.class);
 
     @Resource
     private TrelloAuthenticationService trelloAuthenticationService;
@@ -46,7 +46,7 @@ public class TrelloController {
     @RequestMapping(method = RequestMethod.POST, value = "/card")
     @Secured("ROLE_EDITOR")
     public ResponseEntity addToTrello(@RequestBody @Valid FeedEntry feed, WebRequest request) {
-        LOG.info("Adding card to Trello {}", feed.getTitle());
+        logger.info("Adding card to Trello {}", feed.getTitle());
 
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
 
@@ -77,7 +77,7 @@ public class TrelloController {
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) {
         String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
-        LOG.info("Trying to retrieve a token for {}", email);
+        logger.info("Trying to retrieve a token for {}", email);
 
         UserProfile userProfile = userService.get(email);
         if (userProfile == null) {
@@ -107,7 +107,7 @@ public class TrelloController {
 
         Verifier verifier = new Verifier(oauthVerifier);
         Token accessToken = service.getAccessToken(requestToken, verifier);
-        LOG.info("Access Granted to Trello for {} with token {}", email, accessToken);
+        logger.info("Access Granted to Trello for {} with token {}", email, accessToken);
 
         request.setAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
 

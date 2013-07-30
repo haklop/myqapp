@@ -31,7 +31,7 @@ import java.io.IOException;
 @RequestMapping("/github")
 public class GithubController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GithubController.class);
+    private static final Logger logger = LoggerFactory.getLogger(GithubController.class);
 
     @Resource
     private GithubAuthenticationService githubAuthenticationService;
@@ -45,7 +45,7 @@ public class GithubController {
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) {
         Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
-        LOG.info("Github Login attempt with access token : {} ", accessToken);
+        logger.info("Github Login attempt with access token : {} ", accessToken);
 
         if (accessToken == null) {
             // generate new request token
@@ -70,7 +70,7 @@ public class GithubController {
 
         Verifier verifier = new Verifier(oauthVerifier);
         Token accessToken = service.getAccessToken(OAuthConstants.EMPTY_TOKEN, verifier);
-        LOG.info("Access Granted to Github with token {}", accessToken);
+        logger.info("Access Granted to Github with token {}", accessToken);
 
         request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
 
