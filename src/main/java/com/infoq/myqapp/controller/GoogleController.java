@@ -88,7 +88,6 @@ public class GoogleController {
 
             UserProfile profileFromMongo = userService.get(profileFromGoogle.getEmail());
             Token tokenTrello = profileFromMongo.getTokenTrello();
-            Token tokenGithub = profileFromMongo.getTokenGithub();
 
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
@@ -96,14 +95,9 @@ public class GoogleController {
             if (tokenTrello != null) {
                 request.setAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, tokenTrello, RequestAttributes.SCOPE_SESSION);
             }
-            if (tokenGithub != null) {
-                request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, tokenGithub, RequestAttributes.SCOPE_SESSION);
-            }
 
             if (tokenTrello == null) {
                 return "redirect:/trello-token.html";
-            } else if (tokenGithub == null) {
-                return "redirect:/github-token.html";
             } else {
                 // check if the token is not revoked
                 try {

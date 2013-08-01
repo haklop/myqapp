@@ -15,8 +15,6 @@ public class AuthenticationFilter implements Filter {
     public static final String ATTR_GOOGLE_OAUTH_ACCESS_TOKEN = "googleoauthaccesstoken";
     public static final String ATTR_GOOGLE_EMAIL = "googleemail";
 
-    public static final String ATTR_GITHUB_OAUTH_ACCESS_TOKEN = "githuboauthaccesstoken";
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // nothing
@@ -31,7 +29,6 @@ public class AuthenticationFilter implements Filter {
 
         Token googleAccessToken = (Token) request.getSession().getAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN);
         Token trelloAccessToken = (Token) request.getSession().getAttribute(ATTR_TRELLO_OAUTH_ACCESS_TOKEN);
-        Token githubAccessToken = (Token) request.getSession().getAttribute(ATTR_GITHUB_OAUTH_ACCESS_TOKEN);
 
         if ("/google-signin.html".equals(request.getServletPath()) && googleAccessToken != null) {
             // already authenticated
@@ -69,18 +66,6 @@ public class AuthenticationFilter implements Filter {
                 response.sendError(403);
             } else {
                 response.sendRedirect("/trello-token.html");
-            }
-        } else if (!"/trello/login".equals(request.getPathInfo())
-                && !"/trello/callback".equals(request.getPathInfo())
-                && !"/github/login".equals(request.getPathInfo())
-                && !"/github/callback".equals(request.getPathInfo())
-                && githubAccessToken == null
-                && googleAccessToken != null) {
-
-            if ("/api".equals(request.getServletPath())) {
-                response.sendError(403);
-            } else {
-                response.sendRedirect("/github-token.html");
             }
         } else {
             filterChain.doFilter(servletRequest, servletResponse);

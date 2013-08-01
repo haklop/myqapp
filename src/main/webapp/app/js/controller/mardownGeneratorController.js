@@ -1,6 +1,8 @@
 function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw) {
     $scope.markdown = {};
 
+    $scope.alerts = [];
+
     $scope.generateHtml = function () {
         if ($scope.markdown.text) {
             MarkdownGenerator.generate(JSON.stringify($scope.markdown), function (result) {
@@ -31,6 +33,10 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw)
             }
         })
     };
+
+    $scope.$on('handleAlert', function(evt, alert) {
+        $scope.alerts.push(alert);
+    });
 
 //    FIXME Ne pas mettre cet ID en dur ici
     TrelloList.query({id: "51499c4cb867d5eb59006794"}, function (result) {

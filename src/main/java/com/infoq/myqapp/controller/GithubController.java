@@ -1,6 +1,7 @@
 package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.AuthenticationFilter;
+import com.infoq.myqapp.domain.ErrorMessage;
 import com.infoq.myqapp.domain.GitHubContent;
 import com.infoq.myqapp.domain.UserProfile;
 import com.infoq.myqapp.service.GithubAuthenticationService;
@@ -24,7 +25,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Controller
@@ -44,10 +44,12 @@ public class GithubController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request) {
-        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
-        logger.info("Github Login attempt with access token : {} ", accessToken);
+        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        UserProfile userProfile = userService.get(email); // TODO: how to inject this value as a parameter of the method ?
 
-        if (accessToken == null) {
+        Token accessToken = userProfile.getTokenGithub();
+
+        if (accessToken == null || accessToken.isEmpty()) {
             // generate new request token
             OAuthService service = githubAuthenticationService.getService();
 
@@ -72,8 +74,6 @@ public class GithubController {
         Token accessToken = service.getAccessToken(OAuthConstants.EMPTY_TOKEN, verifier);
         logger.info("Access Granted to Github with token {}", accessToken);
 
-        request.setAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
-
         userProfile.setTokenGithub(accessToken);
         userService.save(userProfile);
 
@@ -82,15 +82,32 @@ public class GithubController {
 
     @RequestMapping(value = {"/raw"}, method = RequestMethod.GET)
     @Secured("ROLE_EDITOR")
-    public ResponseEntity<GitHubContent> getRaw(@RequestParam(value = "url", required = false) String url, WebRequest request) {
+    public ResponseEntity getRaw(@RequestParam(value = "url", required = false) String url, WebRequest request) {
+        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        UserProfile userProfile = userService.get(email); // TODO: how to inject this value as a parameter of the method ?
 
-        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GITHUB_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = userProfile.getTokenGithub();
+        if (accessToken == null || accessToken.isEmpty()) {
+            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "githubToken", "GitHub token is missing"),
+                    HttpStatus.FORBIDDEN);
+        }
 
         GitHubContent raw;
         try {
             raw = githubService.getRaw(url, accessToken);
+            // TODO catch error when using an expired token
+            // 403 rate limit exceeded
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
+        } catch (HttpClientErrorException e) {
+            switch (e.getStatusCode().value()) {
+                case 401:
+                    return new ResponseEntity<>(new ErrorMessage(HttpStatus.UNAUTHORIZED.value(), "githubToken", "You cannot access to the GitHub repository"),
+                            HttpStatus.UNAUTHORIZED);
+                default:
+                    return new ResponseEntity<>(new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "githubToken", "You cannot access to the GitHub repository"),
+                            HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
         return new ResponseEntity<>(raw, HttpStatus.OK);
     }

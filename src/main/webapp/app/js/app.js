@@ -13,12 +13,19 @@ var module = angular.module('myqapp', ['myqapi', '$strap.directives']).
             otherwise({redirectTo: '/feed/0'});
     }]);
 
-module.factory('http401Interceptor', function ($q) {
+module.factory('httpInterceptor', function ($q, $rootScope) {
     return function (promise) {
         return promise.then(function (response) {
             return response;
         }, function (response) {
-            if (response.status === 401 || response.status === 403) {
+            if (response.data.type) {
+                switch (response.data.type) {
+                    case 'githubToken':
+                        $rootScope.$broadcast('handleAlert', {title: 'Erreur GitHub', type: 'error',
+                            content: 'Vous devez vous <a href="/api/github/login">authentifier</a> sur GitHub pour pouvoir réaliser cette action'});
+                        break;
+                }
+            } else if (response.status === 401 || response.status === 403) {
                 window.location = window.location.pathname + "trello-token.html";
             }
             // do something on error
@@ -28,5 +35,5 @@ module.factory('http401Interceptor', function ($q) {
 });
 
 module.config(function ($httpProvider) {
-    $httpProvider.responseInterceptors.push('http401Interceptor');
+    $httpProvider.responseInterceptors.push('httpInterceptor');
 });
