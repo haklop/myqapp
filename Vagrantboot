@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+apt-get update
+
+# upgrading causes a problem for Grub and debconf bugs you about it
+# DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
+
+# install the bare minimum to survive
+apt-get -y install screen
+
+# install MongoDB
+apt-get -y install mongodb
+
+# change the MongoDB listen port
+sed -i 's/#port = 27017/port = 27017/' /etc/mongodb.conf
+
+# initialize MongoDB with some default data
+# FIXME
+
+# install the JVM - unluckily there's no openjdk-7-jdk-headless
+apt-get -y install openjdk-7-jdk
+
+# oh noes, install Maven
+apt-get -y install maven2
+
+# have brain-dead Maven understand which Java to use
+cat << EOF >> /home/vagrant/.profile
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre
+EOF
+
+source /home/vagrant/.profile
+
+# install the trello-java-wrapper
+apt-get -y install git
+pushd /home/vagrant \
+    && git clone https://github.com/julienvey/trello-java-wrapper.git \
+    && pushd trello-java-wrapper \
+        && mvn clean install \
+    && popd \
+&& popd
+
+# FIXME it'd be cooler to chown -R some stuff for later use as unpriviledged user
+
+# launch the app
+pushd /vagrant \
+    && mvn clean jetty:run \
+&& popd
