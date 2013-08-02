@@ -21,7 +21,7 @@ public class StatsController {
     @RequestMapping(method = RequestMethod.GET, value = "/users")
     @ResponseBody
     public ResponseEntity getUsersStats() {
-        return new ResponseEntity(statsService.getUsersStats(), HttpStatus.OK);
+        return new ResponseEntity<>(statsService.getUsersStats(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/refresh")
@@ -35,6 +35,6 @@ public class StatsController {
     @RequestMapping(method = RequestMethod.GET, value = "/lists")
     @ResponseBody
     public ResponseEntity getListsStats() {
-        return new ResponseEntity(statsService.getListsStats(), HttpStatus.OK);
+        return new ResponseEntity<>(statsService.getListsStats(), HttpStatus.OK);
     }
 }

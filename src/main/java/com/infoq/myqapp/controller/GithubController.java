@@ -96,7 +96,7 @@ public class GithubController {
         try {
             raw = githubService.getRaw(url, accessToken);
             // TODO catch error when using an expired token
-            // 403 rate limit exceeded
+            // TODO catch 403 rate limit exceeded
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
         } catch (HttpClientErrorException e) {
