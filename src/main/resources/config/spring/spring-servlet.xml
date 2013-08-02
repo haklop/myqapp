@@ -13,6 +13,9 @@
                            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
                            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <context:property-placeholder location="classpath:dev.properties, file:${myqapp.properties.config}"
+                                  ignore-resource-not-found="true" system-properties-mode="OVERRIDE" />
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter"
@@ -54,12 +57,5 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="com.infoq.myqapp"/>
-
-    <beans profile="dev">
-        <context:property-placeholder location="file:${myqapp.home}/dev.properties"/>
-    </beans>
-    <beans profile="prod">
-        <context:property-placeholder location="file:${myqapp.home}/prod.properties"/>
-    </beans>
 
 </beans>
