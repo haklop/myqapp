@@ -35,13 +35,10 @@ public class AuthenticationFilter implements Filter {
             response.sendRedirect("/");
         } else if ("/trello-token.html".equals(request.getServletPath()) && googleAccessToken == null) {
             response.sendRedirect("/google-signin.html");
-        } else if ("/github-token.html".equals(request.getServletPath()) && googleAccessToken == null) {
-            response.sendRedirect("/google-signin.html");
         } else if ("/favicon.ico".equals(request.getServletPath())
                 || "/error-403.html".equals(request.getServletPath())
                 || "/google-signin.html".equals(request.getServletPath())
                 || "/trello-token.html".equals(request.getServletPath())
-                || "/github-token.html".equals(request.getServletPath())
                 || request.getServletPath().startsWith("/app")
                 || request.getServletPath().startsWith("/lib")) {
             // don't care about authentication for these resources
