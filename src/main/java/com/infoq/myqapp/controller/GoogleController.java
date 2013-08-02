@@ -41,13 +41,7 @@ public class GoogleController {
     public static final String ATTR_GOOGLE_EMAIL = "googleemail";
 
     @Resource
-    private UserService userService;
-
-    @Resource
     private GoogleAuthenticationService googleAuthenticationService;
-
-    @Resource
-    private TrelloService trelloService;
 
     @Resource
     private AuthenticationManager authenticationManager;
@@ -88,8 +82,6 @@ public class GoogleController {
             Authentication authenticationRequest = new PreAuthenticatedAuthenticationToken(profileFromGoogle.getEmail(), null);
             Authentication result = authenticationManager.authenticate(authenticationRequest);
             SecurityContextHolder.getContext().setAuthentication(result);
-
-            UserProfile profileFromMongo = userService.get(profileFromGoogle.getEmail());
 
             request.setAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
             request.setAttribute(ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);

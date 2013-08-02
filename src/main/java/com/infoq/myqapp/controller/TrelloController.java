@@ -29,6 +29,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/trello")
+@Secured("ROLE_EDITOR")
 public class TrelloController {
 
     private static final Logger logger = LoggerFactory.getLogger(TrelloController.class);
@@ -44,7 +45,6 @@ public class TrelloController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/card")
-    @Secured("ROLE_EDITOR")
     public ResponseEntity addToTrello(@RequestBody @Valid FeedEntry feed, WebRequest request) {
         logger.info("Adding card to Trello {}", feed.getTitle());
 
@@ -64,7 +64,6 @@ public class TrelloController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lists")
-    @Secured("ROLE_EDITOR")
     public ResponseEntity getLists(WebRequest request) {
         Token accessToken = getToken(request);
         if (accessToken == null || accessToken.isEmpty()) {
@@ -78,7 +77,6 @@ public class TrelloController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/list/{listId}")
     @ResponseBody
-    @Secured("ROLE_EDITOR")
     public ResponseEntity getListById(@PathVariable String listId, WebRequest request) {
         Token accessToken = getToken(request);
         if (accessToken == null || accessToken.isEmpty()) {
@@ -91,7 +89,6 @@ public class TrelloController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
-    @Secured("ROLE_ANONYMOUS")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) {
         String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         logger.info("Trying to retrieve a token for {}", email);
@@ -112,7 +109,6 @@ public class TrelloController {
     }
 
     @RequestMapping(value = {"/callback"}, method = RequestMethod.GET)
-    @Secured("ROLE_ANONYMOUS")
     public String callback(@RequestParam(value = "oauth_verifier", required = false) String oauthVerifier, WebRequest request) {
         String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         UserProfile userProfile = userService.get(email);
@@ -134,14 +130,12 @@ public class TrelloController {
     }
 
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
-    @Secured("ROLE_EDITOR")
     public ResponseEntity getUserInfo(WebRequest request) { // TODO remove me ?
         UserProfile profile = userService.get((String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION));
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/member", method = RequestMethod.GET)
-    @Secured("ROLE_EDITOR")
     public ResponseEntity getMembers(WebRequest request) {
         Token accessToken = getToken(request);
         if (accessToken == null || accessToken.isEmpty()) {
