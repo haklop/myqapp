@@ -105,6 +105,7 @@ public class GithubController {
                     return new ResponseEntity<>(new ErrorMessage(HttpStatus.UNAUTHORIZED.value(), "githubToken", "You cannot access to the GitHub repository"),
                             HttpStatus.UNAUTHORIZED);
                 default:
+                    logger.warn("Unknown GitHub error", e);
                     return new ResponseEntity<>(new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "githubToken", "You cannot access to the GitHub repository"),
                             HttpStatus.INTERNAL_SERVER_ERROR);
             }
