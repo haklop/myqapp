@@ -21,7 +21,7 @@ sed -i 's/#port = 27017/port = 27017/' /etc/mongodb.conf
 apt-get -y install openjdk-7-jdk
 
 # oh noes, install Maven
-apt-get -y install maven2
+apt-get -y install maven
 
 # have brain-dead Maven understand which Java to use
 cat << EOF >> /home/vagrant/.profile
@@ -33,15 +33,12 @@ source /home/vagrant/.profile
 # install the trello-java-wrapper
 apt-get -y install git
 pushd /home/vagrant \
-    && git clone https://github.com/julienvey/trello-java-wrapper.git \
+    && rm -rf trello-java-wrapper \
+    && sudo -u vagrant git clone https://github.com/julienvey/trello-java-wrapper.git \
     && pushd trello-java-wrapper \
-        && mvn clean install \
+        && sudo -u vagrant mvn clean install \
     && popd \
 && popd
 
 # FIXME it'd be cooler to chown -R some stuff for later use as unpriviledged user
 
-# launch the app
-pushd /vagrant \
-    && mvn clean jetty:run \
-&& popd
