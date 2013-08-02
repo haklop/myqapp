@@ -4,5 +4,6 @@ target
 *.iml
 *.iws
 *.ipr
+*.swp
 .settings
 .vagrant
