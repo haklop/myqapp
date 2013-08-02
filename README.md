@@ -45,7 +45,21 @@ Create an admin user on Vagrant environment:
 
 - ```mongo```
 - ```use myqapp```
-- Replace the attribute *_id* with your email and execute ```db.userProfile.insert({ "_class" : "com.infoq.myqapp.domain.UserProfile", "_id" : "myqapp@gmail.com", "authorities" : [  "ROLE_EDITOR",  "ROLE_ADMIN" ], "firstName" : "John", "lastName" : "Smith", "secretGithub" : "", "secretTrello" : "", "tokenGithub" : "", "tokenTrello" : "" })```
+- Replace the attribute *_id* with your email and execute:
+
+```
+db.userProfile.insert({ 
+  "_class" : "com.infoq.myqapp.domain.UserProfile", 
+  "_id" : "myqapp@gmail.com", 
+  "authorities" : [  "ROLE_EDITOR",  "ROLE_ADMIN" ], 
+  "firstName" : "John", 
+  "lastName" : "Smith", 
+  "secretGithub" : "", 
+  "secretTrello" : "", 
+  "tokenGithub" : "", 
+  "tokenTrello" : "" 
+})
+```
 
 
 ## Change default port
