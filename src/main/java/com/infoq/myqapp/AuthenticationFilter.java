@@ -16,8 +16,6 @@ public class AuthenticationFilter implements Filter {
     public static final String ATTR_GOOGLE_OAUTH_ACCESS_TOKEN = "googleoauthaccesstoken";
     public static final String ATTR_GOOGLE_EMAIL = "googleemail";
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // nothing
@@ -32,7 +30,7 @@ public class AuthenticationFilter implements Filter {
 
         Token googleAccessToken = (Token) request.getSession().getAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN);
 
-        if ("/google-signin.html".equals(request.getServletPath()) && googleAccessToken != null) {
+        /*if ("/google-signin.html".equals(request.getServletPath()) && googleAccessToken != null) {
             // already authenticated
             response.sendRedirect("/");
         } else if ("/favicon.ico".equals(request.getServletPath())
@@ -53,9 +51,9 @@ public class AuthenticationFilter implements Filter {
             response.setCharacterEncoding("UTF-8");
 
            OBJECT_MAPPER.writeValue(response.getWriter(), new ErrorMessage(403, "googleAuthentication", "Authentication required"));
-        } else {
+        } else {*/
             filterChain.doFilter(servletRequest, servletResponse);
-        }
+       // }
     }
 
     @Override

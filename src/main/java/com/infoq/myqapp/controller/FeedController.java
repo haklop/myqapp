@@ -18,6 +18,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/feed")
+@Secured("ROLE_EDITOR")
 public class FeedController {
 
     @Resource
@@ -37,7 +38,6 @@ public class FeedController {
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)
     @ResponseBody
-    @Secured("ROLE_EDITOR")
     public Page<FeedEntry> refreshAndGetNewFeed() {
         feedService.retrieveFeedTask();
         return getAllFeeds();

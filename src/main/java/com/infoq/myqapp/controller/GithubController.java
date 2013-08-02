@@ -29,6 +29,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/github")
+@Secured("ROLE_EDITOR")
 public class GithubController {
 
     private static final Logger logger = LoggerFactory.getLogger(GithubController.class);
@@ -81,7 +82,6 @@ public class GithubController {
     }
 
     @RequestMapping(value = {"/raw"}, method = RequestMethod.GET)
-    @Secured("ROLE_EDITOR")
     public ResponseEntity getRaw(@RequestParam(value = "url", required = false) String url, WebRequest request) {
         String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         UserProfile userProfile = userService.get(email); // TODO: how to inject this value as a parameter of the method ?

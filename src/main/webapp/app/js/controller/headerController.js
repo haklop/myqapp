@@ -8,5 +8,11 @@ function HeaderController($scope, $location, UserService) {
     $scope.isAdmin = UserService.isAdmin;
     $scope.isEditor = UserService.isEditor;
 
+    $scope.$on('$routeChangeStart', function (next, current) {
+        UserService.query(function (response) {
+            $scope.userinfo = response;
+        });
+    });
+
 }
 

@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 
 @Controller
 @RequestMapping("/stats")
+@Secured("ROLE_EDITOR")
 public class StatsController {
 
     @Resource
@@ -26,7 +27,6 @@ public class StatsController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/refresh")
     @ResponseBody
-    @Secured("ROLE_EDITOR")
     public ResponseEntity refreshStats() {
         statsService.calculateStats();
         return new ResponseEntity(HttpStatus.OK);

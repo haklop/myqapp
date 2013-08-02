@@ -14,6 +14,7 @@ import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -33,6 +34,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/google")
+@Secured("ROLE_ANONYMOUS")
 public class GoogleController {
 
     private static final Logger logger = LoggerFactory.getLogger(GoogleController.class);

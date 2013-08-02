@@ -22,9 +22,14 @@
 
     <security:global-method-security secured-annotations="enabled" />
 
-    <security:http auto-config="true" use-expressions="true" />
+    <security:http use-expressions="true" >
+        <security:http-basic entry-point-ref="myQAppAuthenticationEntryPoint" />
+        <security:access-denied-handler ref="myQAppAuthenticationEntryPoint" />
+        <security:logout />
+    </security:http>
 
     <bean id="authenticationManager" class="com.infoq.myqapp.service.security.AppAuthenticationManager" />
+    <bean class="com.infoq.myqapp.service.security.MyQAppAuthenticationEntryPoint" id="myQAppAuthenticationEntryPoint" />
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="authenticationManager" />

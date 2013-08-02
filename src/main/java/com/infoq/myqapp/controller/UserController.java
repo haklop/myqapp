@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
+@Secured("ROLE_ADMIN")
 public class UserController {
 
     @Resource
@@ -20,14 +21,12 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    @Secured("ROLE_ADMIN")
     public ResponseEntity list() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    @Secured("ROLE_ADMIN")
     public ResponseEntity create(@RequestBody @Valid UserProfile userProfile) {
         userService.create(userProfile);
         return new ResponseEntity(HttpStatus.CREATED);
@@ -35,7 +34,6 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{userId:.+}")
     @ResponseBody
-    @Secured("ROLE_ADMIN")
     public ResponseEntity update(@PathVariable String userId, @RequestBody @Valid UserProfile userProfile) {
         userService.update(userId, userProfile);
         return new ResponseEntity(HttpStatus.CREATED);
@@ -43,7 +41,6 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{userId:.+}")
     @ResponseBody
-    @Secured("ROLE_ADMIN")
     public ResponseEntity create(@PathVariable String userId) {
         userService.delete(userId);
         return new ResponseEntity(HttpStatus.OK);

@@ -64,6 +64,7 @@ public class TrelloController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lists")
+    @Secured("ROLE_EDITOR")
     public ResponseEntity getLists(WebRequest request) {
         Token accessToken = getToken(request);
         if (accessToken == null || accessToken.isEmpty()) {
@@ -77,6 +78,7 @@ public class TrelloController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/list/{listId}")
     @ResponseBody
+    @Secured("ROLE_EDITOR")
     public ResponseEntity getListById(@PathVariable String listId, WebRequest request) {
         Token accessToken = getToken(request);
         if (accessToken == null || accessToken.isEmpty()) {
@@ -89,6 +91,7 @@ public class TrelloController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
+    @Secured("ROLE_ANONYMOUS")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) {
         String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         logger.info("Trying to retrieve a token for {}", email);
@@ -109,6 +112,7 @@ public class TrelloController {
     }
 
     @RequestMapping(value = {"/callback"}, method = RequestMethod.GET)
+    @Secured("ROLE_ANONYMOUS")
     public String callback(@RequestParam(value = "oauth_verifier", required = false) String oauthVerifier, WebRequest request) {
         String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         UserProfile userProfile = userService.get(email);
@@ -130,26 +134,14 @@ public class TrelloController {
     }
 
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
+    @Secured("ROLE_EDITOR")
     public ResponseEntity getUserInfo(WebRequest request) { // TODO remove me ?
-        Token accessToken = getToken(request);
-        if (accessToken == null || accessToken.isEmpty()) {
-            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is missing"),
-                    HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            trelloService.getUserInfo(accessToken); // TODO catch token error
-            UserProfile profile = userService.get((String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION));
-            return new ResponseEntity<>(profile, HttpStatus.OK);
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
-                return new ResponseEntity(HttpStatus.FORBIDDEN);
-            }
-            throw e;
-        }
+        UserProfile profile = userService.get((String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION));
+        return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/member", method = RequestMethod.GET)
+    @Secured("ROLE_EDITOR")
     public ResponseEntity getMembers(WebRequest request) {
         Token accessToken = getToken(request);
         if (accessToken == null || accessToken.isEmpty()) {

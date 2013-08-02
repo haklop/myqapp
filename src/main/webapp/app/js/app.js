@@ -31,9 +31,11 @@ module.factory('httpInterceptor', function ($q, $rootScope) {
                     case 'googleAuthentication':
                         window.location = window.location.pathname + "google-signin.html";
                         break;
+                    case 'accessDenied':
+                        window.location = window.location.pathname;
+                        break;
                 }
             }
-            // do something on error
             return $q.reject(response);
         });
     };
