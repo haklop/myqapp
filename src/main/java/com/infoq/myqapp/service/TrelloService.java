@@ -32,6 +32,9 @@ public class TrelloService {
     @Value("${editingprocess.stats.board.id}")
     private String trelloBoardForStatsId;
 
+    @Value("${trello.oauth.key}")
+    private String trelloKey;
+
     @Resource
     private FeedRepository feedRepository;
 
@@ -41,7 +44,7 @@ public class TrelloService {
             throw new CardConflictException();
         }
 
-        Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
+        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
         Board board = trelloApi.getBoard(trelloBoardForAddingCardsId);
 
         List<TList> lists = board.fetchLists();
@@ -58,19 +61,19 @@ public class TrelloService {
     }
 
     public List<TList> getLists(Token accessToken) {
-        Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
+        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
         Board board = trelloApi.getBoard(trelloBoardForStatsId);
 
         return board.fetchLists(arg("cards", "open"));
     }
 
     private Member getUserInfo(String username, Token accessToken) {
-        Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
+        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
         return trelloApi.getBasicMemberInformation(username);
     }
 
     public List<Member> getMembers(Token accessToken) {
-        Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
+        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
         Board board = trelloApi.getBoard(trelloBoardForStatsId);
 
         return board.fetchMembers();
@@ -88,7 +91,7 @@ public class TrelloService {
     }
 
     public TList getList(Token accessToken, String listId) {
-        Trello trelloApi = new TrelloImpl(TrelloAuthenticationService.APPLICATION_KEY, accessToken.getToken());
+        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
         return trelloApi.getList(listId, arg("cards", "open"));
     }
 }
