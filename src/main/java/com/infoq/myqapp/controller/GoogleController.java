@@ -1,7 +1,6 @@
 package com.infoq.myqapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.UserProfile;
 import com.infoq.myqapp.service.GoogleAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
@@ -38,6 +37,8 @@ import java.io.IOException;
 public class GoogleController {
 
     private static final Logger logger = LoggerFactory.getLogger(GoogleController.class);
+    public static final String ATTR_GOOGLE_OAUTH_ACCESS_TOKEN = "googleoauthaccesstoken";
+    public static final String ATTR_GOOGLE_EMAIL = "googleemail";
 
     @Resource
     private UserService userService;
@@ -53,7 +54,7 @@ public class GoogleController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request) {
-        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = (Token) request.getAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
         logger.info("Login attempt with access token : {} ", accessToken);
 
         if (accessToken == null) {
@@ -90,8 +91,8 @@ public class GoogleController {
 
             UserProfile profileFromMongo = userService.get(profileFromGoogle.getEmail());
 
-            request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
-            request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
+            request.setAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
+            request.setAttribute(ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
 
         } catch (AuthenticationException e) {
             return "redirect:/error-403.html";

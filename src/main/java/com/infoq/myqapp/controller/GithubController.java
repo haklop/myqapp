@@ -1,6 +1,5 @@
 package com.infoq.myqapp.controller;
 
-import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.ErrorMessage;
 import com.infoq.myqapp.domain.GitHubContent;
 import com.infoq.myqapp.domain.UserProfile;
@@ -45,7 +44,7 @@ public class GithubController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request) {
-        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         UserProfile userProfile = userService.get(email); // TODO: how to inject this value as a parameter of the method ?
 
         Token accessToken = userProfile.getTokenGithub();
@@ -62,7 +61,7 @@ public class GithubController {
 
     @RequestMapping(value = {"/callback"}, method = RequestMethod.GET)
     public String callback(@RequestParam(value = "code", required = false) String oauthVerifier, WebRequest request) throws IOException {
-        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
 
         UserProfile userProfile = userService.get(email);
         if (userProfile == null) {
@@ -83,7 +82,7 @@ public class GithubController {
 
     @RequestMapping(value = {"/raw"}, method = RequestMethod.GET)
     public ResponseEntity getRaw(@RequestParam(value = "url", required = false) String url, WebRequest request) {
-        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         UserProfile userProfile = userService.get(email); // TODO: how to inject this value as a parameter of the method ?
 
         Token accessToken = userProfile.getTokenGithub();

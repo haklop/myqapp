@@ -1,6 +1,5 @@
 package com.infoq.myqapp.controller;
 
-import com.infoq.myqapp.AuthenticationFilter;
 import com.infoq.myqapp.domain.ErrorMessage;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.UserProfile;
@@ -33,6 +32,7 @@ import java.util.List;
 public class TrelloController {
 
     private static final Logger logger = LoggerFactory.getLogger(TrelloController.class);
+    public static final String ATTR_TRELLO_OAUTH_REQUEST_TOKEN = "oauthrequestoken";
 
     @Resource
     private TrelloAuthenticationService trelloAuthenticationService;
@@ -93,7 +93,7 @@ public class TrelloController {
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     @Secured("ROLE_ANONYMOUS")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) {
-        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         logger.info("Trying to retrieve a token for {}", email);
 
         UserProfile userProfile = userService.get(email);
@@ -105,7 +105,7 @@ public class TrelloController {
                 .toString().replace("/api/trello/login", "/api/trello/callback"));
 
         Token requestToken = service.getRequestToken();
-        request.setAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
+        request.setAttribute(ATTR_TRELLO_OAUTH_REQUEST_TOKEN, requestToken, RequestAttributes.SCOPE_SESSION);
 
         // redirect to trello auth page
         return "redirect:" + service.getAuthorizationUrl(requestToken);
@@ -114,14 +114,14 @@ public class TrelloController {
     @RequestMapping(value = {"/callback"}, method = RequestMethod.GET)
     @Secured("ROLE_ANONYMOUS")
     public String callback(@RequestParam(value = "oauth_verifier", required = false) String oauthVerifier, WebRequest request) {
-        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         UserProfile userProfile = userService.get(email);
         if (userProfile == null) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
 
         OAuthService service = trelloAuthenticationService.getService();
-        Token requestToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token requestToken = (Token) request.getAttribute(ATTR_TRELLO_OAUTH_REQUEST_TOKEN, RequestAttributes.SCOPE_SESSION);
 
         Verifier verifier = new Verifier(oauthVerifier);
         Token accessToken = service.getAccessToken(requestToken, verifier);
@@ -136,7 +136,7 @@ public class TrelloController {
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
     @Secured("ROLE_EDITOR")
     public ResponseEntity getUserInfo(WebRequest request) { // TODO remove me ?
-        UserProfile profile = userService.get((String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION));
+        UserProfile profile = userService.get((String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION));
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
@@ -159,7 +159,7 @@ public class TrelloController {
     }
 
     private Token getToken(WebRequest request) {
-        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         UserProfile userProfile = userService.get(email);
         return userProfile.getTokenTrello();
     }
