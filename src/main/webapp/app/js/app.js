@@ -28,9 +28,10 @@ module.factory('httpInterceptor', function ($q, $rootScope) {
                         $rootScope.$broadcast('handleAlert', {title: 'Erreur Trello', type: 'error',
                             content: 'Vous devez vous <a href="/api/trello/login">authentifier</a> sur Trello pour pouvoir réaliser cette action'});
                         break;
+                    case 'googleAuthentication':
+                        window.location = window.location.pathname + "google-signin.html";
+                        break;
                 }
-            } else if (response.status === 401 || response.status === 403) {
-                window.location = window.location.pathname + "trello-token.html";
             }
             // do something on error
             return $q.reject(response);

@@ -1,5 +1,7 @@
 package com.infoq.myqapp;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infoq.myqapp.domain.ErrorMessage;
 import org.scribe.model.Token;
 
 import javax.servlet.*;
@@ -13,6 +15,8 @@ public class AuthenticationFilter implements Filter {
 
     public static final String ATTR_GOOGLE_OAUTH_ACCESS_TOKEN = "googleoauthaccesstoken";
     public static final String ATTR_GOOGLE_EMAIL = "googleemail";
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -34,6 +38,8 @@ public class AuthenticationFilter implements Filter {
         } else if ("/favicon.ico".equals(request.getServletPath())
                 || "/error-403.html".equals(request.getServletPath())
                 || "/google-signin.html".equals(request.getServletPath())
+                || "/index.html".equals(request.getServletPath())
+                || "/".equals(request.getServletPath())
                 || request.getServletPath().startsWith("/app")
                 || request.getServletPath().startsWith("/lib")) {
             // don't care about authentication for these resources
@@ -42,11 +48,11 @@ public class AuthenticationFilter implements Filter {
                 && !"/google/callback".equals(request.getPathInfo())
                 && googleAccessToken == null) {
 
-            if ("/api".equals(request.getServletPath())) {
-                response.sendError(401);
-            } else {
-                response.sendRedirect("/google-signin.html");
-            }
+            response.setStatus(403);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+           OBJECT_MAPPER.writeValue(response.getWriter(), new ErrorMessage(403, "googleAuthentication", "Authentication required"));
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
