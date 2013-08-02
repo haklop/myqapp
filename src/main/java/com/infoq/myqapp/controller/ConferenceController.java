@@ -46,12 +46,6 @@ public class ConferenceController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public List<Conference> getAllConfs() {
-        return conferenceService.getAllFutureConfs();
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "{year:[0-9]{4}}/{month:[0-9]{2}}")
     @ResponseBody
     public List<Conference> getConfsByMonth(@PathVariable("year") int year, @PathVariable("month") int month) {
