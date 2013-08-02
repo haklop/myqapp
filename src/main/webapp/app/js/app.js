@@ -24,6 +24,10 @@ module.factory('httpInterceptor', function ($q, $rootScope) {
                         $rootScope.$broadcast('handleAlert', {title: 'Erreur GitHub', type: 'error',
                             content: 'Vous devez vous <a href="/api/github/login">authentifier</a> sur GitHub pour pouvoir réaliser cette action'});
                         break;
+                    case 'trelloToken':
+                        $rootScope.$broadcast('handleAlert', {title: 'Erreur Trello', type: 'error',
+                            content: 'Vous devez vous <a href="/api/trello/login">authentifier</a> sur Trello pour pouvoir réaliser cette action'});
+                        break;
                 }
             } else if (response.status === 401 || response.status === 403) {
                 window.location = window.location.pathname + "trello-token.html";

@@ -87,25 +87,9 @@ public class GoogleController {
             SecurityContextHolder.getContext().setAuthentication(result);
 
             UserProfile profileFromMongo = userService.get(profileFromGoogle.getEmail());
-            Token tokenTrello = profileFromMongo.getTokenTrello();
 
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
             request.setAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, profileFromGoogle.getEmail(), RequestAttributes.SCOPE_SESSION);
-
-            if (tokenTrello != null) {
-                request.setAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, tokenTrello, RequestAttributes.SCOPE_SESSION);
-            }
-
-            if (tokenTrello == null) {
-                return "redirect:/trello-token.html";
-            } else {
-                // check if the token is not revoked
-                try {
-                    trelloService.getUserInfo(profileFromMongo.getTokenTrello());
-                } catch (HttpClientErrorException e) {
-                    return "redirect:/trello-token.html";
-                }
-            }
 
         } catch (AuthenticationException e) {
             return "redirect:/error-403.html";

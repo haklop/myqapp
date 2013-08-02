@@ -1,6 +1,7 @@
 package com.infoq.myqapp.controller;
 
 import com.infoq.myqapp.AuthenticationFilter;
+import com.infoq.myqapp.domain.ErrorMessage;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.UserProfile;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
@@ -8,7 +9,6 @@ import com.infoq.myqapp.service.TrelloService;
 import com.infoq.myqapp.service.UserService;
 import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.domain.Member;
-import com.julienvey.trello.domain.TList;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
@@ -48,10 +48,14 @@ public class TrelloController {
     public ResponseEntity addToTrello(@RequestBody @Valid FeedEntry feed, WebRequest request) {
         logger.info("Adding card to Trello {}", feed.getTitle());
 
-        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = getToken(request);
+        if (accessToken == null || accessToken.isEmpty()) {
+            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is missing"),
+                    HttpStatus.FORBIDDEN);
+        }
 
         try {
-            trelloService.addCardToTrello(feed, accessToken);
+            trelloService.addCardToTrello(feed, accessToken); // TODO catch token error
         } catch (CardConflictException e) {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
@@ -60,17 +64,27 @@ public class TrelloController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/lists")
-    public ResponseEntity<List<TList>> getLists(WebRequest request) {
-        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+    public ResponseEntity getLists(WebRequest request) {
+        Token accessToken = getToken(request);
+        if (accessToken == null || accessToken.isEmpty()) {
+            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is missing"),
+                    HttpStatus.FORBIDDEN);
+        }
 
+        // TODO catch token error
         return new ResponseEntity<>(trelloService.getLists(accessToken), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/list/{listId}")
     @ResponseBody
-    public ResponseEntity<TList> getListById(@PathVariable String listId, WebRequest request) {
-        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+    public ResponseEntity getListById(@PathVariable String listId, WebRequest request) {
+        Token accessToken = getToken(request);
+        if (accessToken == null || accessToken.isEmpty()) {
+            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is missing"),
+                    HttpStatus.FORBIDDEN);
+        }
 
+        // TODO catch token error
         return new ResponseEntity<>(trelloService.getList(accessToken, listId), HttpStatus.OK);
     }
 
@@ -109,8 +123,6 @@ public class TrelloController {
         Token accessToken = service.getAccessToken(requestToken, verifier);
         logger.info("Access Granted to Trello for {} with token {}", email, accessToken);
 
-        request.setAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, accessToken, RequestAttributes.SCOPE_SESSION);
-
         userProfile.setTokenTrello(accessToken);
         userService.save(userProfile);
 
@@ -118,15 +130,15 @@ public class TrelloController {
     }
 
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
-    public ResponseEntity getUserInfo(WebRequest request) {
-        //this check is here to verify token validity accross user navigation on pages
-        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
-        if (accessToken == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity getUserInfo(WebRequest request) { // TODO remove me ?
+        Token accessToken = getToken(request);
+        if (accessToken == null || accessToken.isEmpty()) {
+            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is missing"),
+                    HttpStatus.FORBIDDEN);
         }
 
         try {
-            trelloService.getUserInfo(accessToken);
+            trelloService.getUserInfo(accessToken); // TODO catch token error
             UserProfile profile = userService.get((String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION));
             return new ResponseEntity<>(profile, HttpStatus.OK);
         } catch (HttpClientErrorException e) {
@@ -139,14 +151,24 @@ public class TrelloController {
 
     @RequestMapping(value = "/member", method = RequestMethod.GET)
     public ResponseEntity getMembers(WebRequest request) {
-        Token accessToken = (Token) request.getAttribute(AuthenticationFilter.ATTR_TRELLO_OAUTH_ACCESS_TOKEN, RequestAttributes.SCOPE_SESSION);
+        Token accessToken = getToken(request);
+        if (accessToken == null || accessToken.isEmpty()) {
+            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is missing"),
+                    HttpStatus.FORBIDDEN);
+        }
 
-        List<Member> members = trelloService.getMembers(accessToken);
+        List<Member> members = trelloService.getMembers(accessToken); // TODO catch token error
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity handleClientException(HttpClientErrorException e) {
         return new ResponseEntity(e.getStatusCode());
+    }
+
+    private Token getToken(WebRequest request) {
+        String email = (String) request.getAttribute(AuthenticationFilter.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
+        UserProfile userProfile = userService.get(email);
+        return userProfile.getTokenTrello();
     }
 }

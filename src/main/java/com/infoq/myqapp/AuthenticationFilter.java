@@ -10,7 +10,6 @@ import java.io.IOException;
 public class AuthenticationFilter implements Filter {
 
     public static final String ATTR_TRELLO_OAUTH_REQUEST_TOKEN = "oauthrequestoken";
-    public static final String ATTR_TRELLO_OAUTH_ACCESS_TOKEN = "oauthaccesstoken";
 
     public static final String ATTR_GOOGLE_OAUTH_ACCESS_TOKEN = "googleoauthaccesstoken";
     public static final String ATTR_GOOGLE_EMAIL = "googleemail";
@@ -28,17 +27,13 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         Token googleAccessToken = (Token) request.getSession().getAttribute(ATTR_GOOGLE_OAUTH_ACCESS_TOKEN);
-        Token trelloAccessToken = (Token) request.getSession().getAttribute(ATTR_TRELLO_OAUTH_ACCESS_TOKEN);
 
         if ("/google-signin.html".equals(request.getServletPath()) && googleAccessToken != null) {
             // already authenticated
             response.sendRedirect("/");
-        } else if ("/trello-token.html".equals(request.getServletPath()) && googleAccessToken == null) {
-            response.sendRedirect("/google-signin.html");
         } else if ("/favicon.ico".equals(request.getServletPath())
                 || "/error-403.html".equals(request.getServletPath())
                 || "/google-signin.html".equals(request.getServletPath())
-                || "/trello-token.html".equals(request.getServletPath())
                 || request.getServletPath().startsWith("/app")
                 || request.getServletPath().startsWith("/lib")) {
             // don't care about authentication for these resources
@@ -51,18 +46,6 @@ public class AuthenticationFilter implements Filter {
                 response.sendError(401);
             } else {
                 response.sendRedirect("/google-signin.html");
-            }
-        } else if (!"/trello/login".equals(request.getPathInfo())
-                && !"/trello/callback".equals(request.getPathInfo())
-                && !"/github/login".equals(request.getPathInfo())
-                && !"/github/callback".equals(request.getPathInfo())
-                && trelloAccessToken == null
-                && googleAccessToken != null) {
-
-            if ("/api".equals(request.getServletPath())) {
-                response.sendError(403);
-            } else {
-                response.sendRedirect("/trello-token.html");
             }
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
