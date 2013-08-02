@@ -10,7 +10,6 @@ import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
-import com.julienvey.trello.utils.ArgUtils;
 import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ import static com.julienvey.trello.utils.ArgUtils.arg;
 @Service
 public class TrelloService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TrelloService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TrelloService.class);
 
     @Value("${editingprocess.add.board.id}")
     private String trelloBoardForAddingCardsId;
@@ -51,7 +50,7 @@ public class TrelloService {
         Card card = lists.get(0).createCard(cardToCreate);
 
         card.addLabels(TrelloLabel.TRADUCTION.getLabelColor(), TrelloLabel.valueOf(feedEntry.getType().toUpperCase()).getLabelColor());
-        LOG.info("Card created on Trello, id is {}", card.getId());
+        logger.info("Card created on Trello, id is {}", card.getId());
 
         feedEntry.setAddedInTrello(true);
         feedEntry.setUrlTrello(card.getUrl());

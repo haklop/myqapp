@@ -25,6 +25,10 @@ function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello, UserServi
 
     $scope.alerts = [];
 
+    $scope.$on('handleAlert', function(evt, alert) {
+        $scope.alerts.push(alert);
+    });
+
     $scope.formatCategories = function (categories) {
         var s = "";
         var append = "";

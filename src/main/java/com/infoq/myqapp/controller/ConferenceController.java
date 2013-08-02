@@ -14,6 +14,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/conf")
+@Secured("ROLE_EDITOR")
 public class ConferenceController {
 
     @Resource
@@ -21,7 +22,6 @@ public class ConferenceController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    @Secured("ROLE_EDITOR")
     public ResponseEntity createConf(@RequestBody @Valid Conference conference) {
         conferenceService.createOrUpdate(conference);
         return new ResponseEntity(HttpStatus.CREATED);
@@ -29,7 +29,6 @@ public class ConferenceController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{confId:.+}")
     @ResponseBody
-    @Secured("ROLE_EDITOR")
     public ResponseEntity updateConf(@RequestBody @Valid Conference conference, @PathVariable String confId) {
         if (!conference.getId().equals(confId)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -40,16 +39,9 @@ public class ConferenceController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{confId:.+}")
     @ResponseBody
-    @Secured("ROLE_EDITOR")
     public ResponseEntity deleteConf(@PathVariable String confId) {
         conferenceService.delete(confId);
         return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public List<Conference> getAllConfs() {
-        return conferenceService.getAllFutureConfs();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{year:[0-9]{4}}/{month:[0-9]{2}}")
