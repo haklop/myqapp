@@ -21,11 +21,11 @@ module.factory('httpInterceptor', function ($q, $rootScope) {
             if (response.data.type) {
                 switch (response.data.type) {
                     case 'githubToken':
-                        $rootScope.$broadcast('handleAlert', {title: 'Erreur GitHub', type: 'error',
+                        $rootScope.$broadcast('handleAlert', {title: 'Erreur GitHub', type: 'error', category: response.data.type,
                             content: 'Vous devez vous <a href="/api/github/login">authentifier</a> sur GitHub pour pouvoir réaliser cette action'});
                         break;
                     case 'trelloToken':
-                        $rootScope.$broadcast('handleAlert', {title: 'Erreur Trello', type: 'error',
+                        $rootScope.$broadcast('handleAlert', {title: 'Erreur Trello', type: 'error', category: response.data.type,
                             content: 'Vous devez vous <a href="/api/trello/login">authentifier</a> sur Trello pour pouvoir réaliser cette action'});
                         break;
                     case 'googleAuthentication':
