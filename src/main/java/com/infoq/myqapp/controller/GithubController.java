@@ -103,6 +103,9 @@ public class GithubController {
                 case 401:
                     return new ResponseEntity<>(new ErrorMessage(HttpStatus.UNAUTHORIZED.value(), "githubToken", "You cannot access to the GitHub repository"),
                             HttpStatus.UNAUTHORIZED);
+                case 404:
+                    return new ResponseEntity<>(new ErrorMessage(HttpStatus.BAD_REQUEST.value(), "githubError", "File not found"),
+                            HttpStatus.BAD_REQUEST);
                 default:
                     logger.warn("Unknown GitHub error", e);
                     return new ResponseEntity<>(new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "githubToken", "You cannot access to the GitHub repository"),

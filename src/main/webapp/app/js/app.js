@@ -34,6 +34,12 @@ module.factory('httpInterceptor', function ($q, $rootScope) {
                     case 'accessDenied':
                         window.location = window.location.pathname;
                         break;
+                    case 'githubError':
+                        if (response.data.code === 400) {
+                            $rootScope.$broadcast('handleAlert', {title: 'Erreur GitHub', type: 'error', category: response.data.type,
+                                content: 'Impossible de trouver le markdown sur GitHub. Etes-vous sûr que le lien dans la carte Trello est à jour ?'});
+                        }
+                        break;
                 }
             }
             return $q.reject(response);
