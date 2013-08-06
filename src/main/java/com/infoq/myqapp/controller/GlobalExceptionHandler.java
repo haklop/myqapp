@@ -24,6 +24,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity handleValidationException() {
-        return new ResponseEntity<>(new ErrorMessage(400, "Bad Request", "Body not valid"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorMessage(400, "invalidArgument", "Body not valid"), HttpStatus.BAD_REQUEST);
     }
 }

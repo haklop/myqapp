@@ -28,6 +28,10 @@ module.factory('httpInterceptor', function ($q, $rootScope) {
                         $rootScope.$broadcast('handleAlert', {title: 'Erreur Trello', type: 'error', category: response.data.type,
                             content: 'Vous devez vous <a href="/api/trello/login">authentifier</a> sur Trello pour pouvoir réaliser cette action'});
                         break;
+                    case 'invalidArgument':
+                        $rootScope.$broadcast('handleAlert', {title: 'Bad request', type: 'error', category: response.data.type,
+                            content: 'Données invalides'});
+                        break;
                     case 'googleAuthentication':
                         window.location = window.location.pathname + "google-signin.html";
                         break;
