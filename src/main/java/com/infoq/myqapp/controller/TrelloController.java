@@ -57,7 +57,8 @@ public class TrelloController {
         try {
             trelloService.addCardToTrello(feed, accessToken); // TODO catch token error
         } catch (CardConflictException e) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new ErrorMessage(HttpStatus.CONFLICT.value(), "trello", "Card already inserted"),
+                    HttpStatus.CONFLICT);
         }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -145,11 +146,6 @@ public class TrelloController {
 
         List<Member> members = trelloService.getMembers(accessToken); // TODO catch token error
         return new ResponseEntity<>(members, HttpStatus.OK);
-    }
-
-    @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity handleClientException(HttpClientErrorException e) {
-        return new ResponseEntity(e.getStatusCode());
     }
 
     private Token getToken(WebRequest request) {

@@ -92,9 +92,4 @@ public class GoogleController {
 
         return "redirect:/";
     }
-
-    @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity handleClientErrorException(HttpClientErrorException e) {
-        return new ResponseEntity(e.getStatusCode());
-    }
 }
