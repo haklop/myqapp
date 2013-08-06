@@ -9,6 +9,7 @@
 - Install [VirtualBox and VirtualBox Extension Pack](https://www.virtualbox.org/wiki/Downloads)
 - Install [Vagrant](http://www.vagrantup.com/)
 - Open a terminal
+- Clone [trello-java-wrapper](https://github.com/julienvey/trello-java-wrapper) ```git clone git@github.com:julienvey/trello-java-wrapper.git```
 - Clone the project ```git clone git@github.com:haklop/myqapp.git```
 - ```cd myqapp```
 - Start the VM ```vagrant up```
