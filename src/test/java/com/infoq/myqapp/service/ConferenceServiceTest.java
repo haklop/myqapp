@@ -10,13 +10,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -81,5 +78,15 @@ public class ConferenceServiceTest {
         //conferenceService.getAllFutureConfs();
 
         //Then
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testLowerInvalidMonthValue() {
+        conferenceService.getConfsByMonth(2000, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHigherInvalidMonthValue() {
+        conferenceService.getConfsByMonth(2000, 13);
     }
 }
