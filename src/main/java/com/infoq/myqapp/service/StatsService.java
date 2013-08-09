@@ -146,7 +146,7 @@ public class StatsService {
     }
 
     public void calculateStats() {
-        UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("admin")),
+        UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("ROLE_ADMIN")),
                 UserProfile.class);
 
         Map<String, Member> memberMap = mapMemberList(trelloService.getMembers(adminUser.getTokenTrello()));
