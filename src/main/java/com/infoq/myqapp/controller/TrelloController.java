@@ -55,10 +55,15 @@ public class TrelloController {
         }
 
         try {
-            trelloService.addCardToTrello(feed, accessToken); // TODO catch token error
+            trelloService.addCardToTrello(feed, accessToken);
         } catch (CardConflictException e) {
             return new ResponseEntity<>(new ErrorMessage(HttpStatus.CONFLICT.value(), "trello", "Card already inserted"),
                     HttpStatus.CONFLICT);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().value() == 401) {
+                return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is expired"),
+                        HttpStatus.FORBIDDEN);
+            }
         }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
