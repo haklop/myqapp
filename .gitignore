@@ -1,7 +1,11 @@
 target
+.idea
 .classpath
 .project
 *.iml
 *.iws
 *.ipr
+*.swp
 .settings
+.vagrant
+

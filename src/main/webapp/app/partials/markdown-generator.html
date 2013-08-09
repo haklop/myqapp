@@ -21,6 +21,10 @@
         </table>
     </div>
     <div class="span8">
+        <div class="alerts">
+            <div class="alert fade" ng-repeat="alert in alerts" bs-alert="alert"></div>
+        </div>
+
         <form class="form-horizontal" name="generateMarkdownForm" novalidate>
             <textarea style="width: 100% !important; height: 300px;" ng-model="markdown.text"></textarea>
 

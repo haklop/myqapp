@@ -39,10 +39,8 @@ public class MarkdownService {
     }
 
     private List<String> getImageSources(String markdown) {
-        List<String> imagesSources = new ArrayList<>();
-
         ExtractImageDecorator extractImageDecorator = new ExtractImageDecorator();
-        String txtMarkHtml = Processor.process(markdown, extractImageDecorator);
+        Processor.process(markdown, extractImageDecorator);
 
         return extractImageDecorator.images;
     }
@@ -124,8 +122,7 @@ public class MarkdownService {
             });
 
             for (TextNode textNode : textNodes) {
-                String code = " " + textNode.outerHtml();
-                textNode.replaceWith(new DataNode(code.replace(" ", "&nbsp;").replace("\n", "<br/>"), ""));
+                textNode.replaceWith(new DataNode(textNode.outerHtml().replace(" ", "&nbsp;").replace("\n", "<br/>"), ""));
             }
 
             Element parent = pre.parent();

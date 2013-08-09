@@ -13,6 +13,9 @@
                            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
                            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <context:property-placeholder location="classpath:dev.properties, file:${myqapp.properties.config}"
+                                  ignore-resource-not-found="true" system-properties-mode="OVERRIDE" />
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter"
@@ -22,9 +25,14 @@
 
     <security:global-method-security secured-annotations="enabled" />
 
-    <security:http auto-config="true" use-expressions="true" />
+    <security:http use-expressions="true" >
+        <security:http-basic entry-point-ref="myQAppAuthenticationEntryPoint" />
+        <security:access-denied-handler ref="myQAppAuthenticationEntryPoint" />
+        <security:logout />
+    </security:http>
 
     <bean id="authenticationManager" class="com.infoq.myqapp.service.security.AppAuthenticationManager" />
+    <bean class="com.infoq.myqapp.service.security.MyQAppAuthenticationEntryPoint" id="myQAppAuthenticationEntryPoint" />
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="authenticationManager" />
@@ -49,12 +57,5 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="com.infoq.myqapp"/>
-
-    <beans profile="dev">
-        <context:property-placeholder location="classpath:config/properties/dev.properties"/>
-    </beans>
-    <beans profile="prod">
-        <context:property-placeholder location="classpath:config/properties/prod.properties"/>
-    </beans>
 
 </beans>

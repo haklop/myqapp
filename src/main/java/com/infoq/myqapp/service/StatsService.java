@@ -111,7 +111,7 @@ public class StatsService {
 
     private int countTranslatedNews(List<UserStat> stats) {
         int count = 0;
-        for(UserStat stat : stats){
+        for (UserStat stat : stats) {
             count += stat.getTranslatedNews();
         }
         return count;
@@ -119,7 +119,7 @@ public class StatsService {
 
     private int countTranslatedArticles(List<UserStat> stats) {
         int count = 0;
-        for(UserStat stat : stats){
+        for (UserStat stat : stats) {
             count += stat.getTranslatedArticles();
         }
         return count;
@@ -127,7 +127,7 @@ public class StatsService {
 
     private int countOriginalNews(List<UserStat> stats) {
         int count = 0;
-        for(UserStat stat : stats){
+        for (UserStat stat : stats) {
             count += stat.getOriginalNews();
         }
         return count;
@@ -135,7 +135,7 @@ public class StatsService {
 
     private int countOriginalArticles(List<UserStat> stats) {
         int count = 0;
-        for(UserStat stat : stats){
+        for (UserStat stat : stats) {
             count += stat.getOriginalArticles();
         }
         return count;
@@ -156,8 +156,8 @@ public class StatsService {
     }
 
     public void calculateStats() {
-		UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("admin")),
-				UserProfile.class);
+        UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("ROLE_ADMIN")),
+                UserProfile.class);
 
         Map<String, Member> memberMap = mapMemberList(trelloService.getMembers(adminUser.getTokenTrello()));
         List<TList> lists = trelloService.getLists(adminUser.getTokenTrello());
@@ -173,14 +173,14 @@ public class StatsService {
 
                 if (!userStatMap.containsKey(idAuthor)) {
                     Member member = memberMap.get(idAuthor);
-                    if(member == null){
+                    if (member == null) {
                         member = new Member();
                     }
                     userStatMap.put(idAuthor, new UserStat(member.getId(), member.getFullName(), list.getName()));
                 }
                 if (!userStatMap.containsKey(idValidator)) {
                     Member member = memberMap.get(idValidator);
-                    if(member == null){
+                    if (member == null) {
                         member = new Member();
                     }
                     userStatMap.put(idValidator, new UserStat(member.getId(), member.getFullName(), list.getName()));

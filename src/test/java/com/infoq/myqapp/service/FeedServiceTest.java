@@ -1,27 +1,34 @@
 package com.infoq.myqapp.service;
 
-import com.infoq.myqapp.domain.FeedEntry;
+import com.infoq.myqapp.repository.FeedRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
-
-import static org.fest.assertions.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/config/spring/spring-servlet.xml")
 public class FeedServiceTest {
 
     @Autowired
+    @InjectMocks
     private FeedService feedService;
 
+    @Mock
+    private FeedRepository feedRepository;
+
+    @Before
+    public void setUp(){
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
-    public void testReadFeed() throws Exception {
-//        List<FeedEntry> feedEntries = feedService.retrieveFeedTask();
-//
-//        assertThat(feedEntries).isNotEmpty();
+    public void testRetrieveFeedTask() throws Exception {
     }
 }
