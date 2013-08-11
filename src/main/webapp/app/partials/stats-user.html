@@ -35,19 +35,19 @@
                 {{stats.mentoredNews}} news)
             </td>
             <td>
-            	<strong>{{(stats.activity | filter:{heartbeatStatus:'FRESH'}).length}}</strong> /
-            	{{(stats.activity | filter:{heartbeatStatus:'STALE'}).length}} / 
-            	<span ng-class="'age'+(stats.activity | orderBy:'heartbeatDate':reverse)[0].heartbeatStatus">
-	            	{{((stats.activity | orderBy:'heartbeatDate':reverse)[0].heartbeatDate | date)}}
-            	</span>
-            	
-            	<a href="" ng-click="show=!show">+</a>
-            	<table ng-show="show">
-            		<tr ng-repeat="activity in stats.activity | orderBy:'heartbeatDate':reverse">
-	    	        	<th ng-class="'age'+activity.heartbeatStatus">{{activity.heartbeatDate | date}}</th>
-	    	        	<td>{{activity.cardName}}</td>
+                <strong>{{(stats.activity | filter:{heartbeatStatus:'FRESH'}).length}}</strong> /
+                {{(stats.activity | filter:{heartbeatStatus:'STALE'}).length}} /
+                <span ng-class="'age'+(stats.activity | orderBy:'heartbeatDate':reverse)[0].heartbeatStatus">
+	                {{((stats.activity | orderBy:'heartbeatDate':reverse)[0].heartbeatDate | date)}}
+                </span>
+
+                <a href="" ng-click="show=!show">+</a>
+                <table ng-show="show">
+                    <tr ng-repeat="activity in stats.activity | orderBy:'heartbeatDate':reverse">
+                        <th ng-class="'age'+activity.heartbeatStatus">{{activity.heartbeatDate | date}}</th>
+	                    <td>{{activity.cardName}}</td>
 	    	        </tr>
-            	</table>
+                </table>
             </td>
         </tr>
         </tbody>

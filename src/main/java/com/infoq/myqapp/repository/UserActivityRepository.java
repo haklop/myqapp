@@ -1,8 +1,7 @@
 package com.infoq.myqapp.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import com.infoq.myqapp.domain.TrelloActivity;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserActivityRepository extends MongoRepository<TrelloActivity, String> {
 }
