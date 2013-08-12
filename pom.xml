@@ -35,7 +35,7 @@
         <!-- Plugins versions -->
         <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
         <jetty-maven-plugin.version>8.1.10.v20130312</jetty-maven-plugin.version>
-        <maven-jgitflow-plugin.version>1.0-alpha9</maven-jgitflow-plugin.version>
+        <maven-jgitflow-plugin.version>1.0-alpha14</maven-jgitflow-plugin.version>
         <mockito-all.version>1.9.5</mockito-all.version>
     </properties>
 
