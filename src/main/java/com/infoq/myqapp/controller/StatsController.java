@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/stats")
@@ -21,8 +22,9 @@ public class StatsController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users")
     @ResponseBody
-    public ResponseEntity getUsersStats() {
-        return new ResponseEntity<>(statsService.getUsersStats(), HttpStatus.OK);
+    public ResponseEntity getUsersStats(HttpServletRequest request) {
+        boolean canRetrieveActivity = request.isUserInRole("ROLE_ADMIN");
+        return new ResponseEntity<>(statsService.getUsersStats(canRetrieveActivity), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/refresh")

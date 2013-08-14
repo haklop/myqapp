@@ -9,6 +9,8 @@ import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import javax.annotation.Resource;
@@ -22,6 +24,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 public class StatsService {
+    private static final Logger logger = LoggerFactory.getLogger(StatsService.class);
 
     public static final String POOL_D_ARTICLES = "Pool d'Articles";
     public static final String EN_COURS_D_ECRITURE_TRADUCTION = "En cours d'écriture / traduction";
@@ -53,13 +56,13 @@ public class StatsService {
     @Resource
     private MongoTemplate mongoTemplate;
 
-    public List<TrelloActivity> getUsersStats() {
+    public List<TrelloActivity> getUsersStats(boolean withActivity) {
         List<UserStat> userStats = mongoTemplate.find(query(where("listName").in(A_VALIDER, EN_COURS_DE_VALIDATION, VALIDE, PUBLIE, EN_COURS_PUBLICATION, PROBLEME_FORMAT)), UserStat.class);
 
-        return aggregateStats(userStats);
+        return aggregateStats(userStats, withActivity);
     }
 
-    private List<TrelloActivity> aggregateStats(List<UserStat> userStats) {
+    private List<TrelloActivity> aggregateStats(List<UserStat> userStats, boolean withActivity) {
         Map<String, TrelloActivity> aggregatedStats = new HashMap<>();
         List<TrelloActivity> allActivities = mongoTemplate.findAll(TrelloActivity.class);
         for (TrelloActivity activity : allActivities) {
@@ -79,6 +82,10 @@ public class StatsService {
                 currentStat.setTranslatedNews(currentStat.getTranslatedNews() + stat.getTranslatedNews());
                 currentStat.setValidatedArticles(currentStat.getValidatedArticles() + stat.getValidatedArticles());
                 currentStat.setValidatedNews(currentStat.getValidatedNews() + stat.getValidatedNews());
+
+                if (!withActivity) {
+                    currentStat.getActivity().clear();
+                }
             }
         }
 
@@ -150,6 +157,7 @@ public class StatsService {
     }
 
     public void calculateStats() {
+        logger.debug("Calculate stats");
         UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("ROLE_ADMIN")),
                 UserProfile.class);
 
@@ -225,6 +233,7 @@ public class StatsService {
 
         }
         // get the heartbeat for each members
+        logger.debug("Get the heartbeat for each members");
         List<TrelloActivity> activities = new ArrayList<>(memberMap.size());
         for (Entry<String, Member> entry : memberMap.entrySet()) {
             String id = entry.getKey();
