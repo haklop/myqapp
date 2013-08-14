@@ -39,10 +39,8 @@ public class MarkdownService {
     }
 
     private List<String> getImageSources(String markdown) {
-        List<String> imagesSources = new ArrayList<>();
-
         ExtractImageDecorator extractImageDecorator = new ExtractImageDecorator();
-        String txtMarkHtml = Processor.process(markdown, extractImageDecorator);
+        Processor.process(markdown, extractImageDecorator);
 
         return extractImageDecorator.images;
     }

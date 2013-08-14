@@ -2,14 +2,15 @@ package com.infoq.myqapp.service;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.infoq.myqapp.domain.ListStat;
-import com.infoq.myqapp.domain.UserProfile;
-import com.infoq.myqapp.domain.UserStat;
+import com.infoq.myqapp.domain.*;
+import com.infoq.myqapp.repository.UserActivityRepository;
 import com.infoq.myqapp.repository.UserStatRepository;
 import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import javax.annotation.Resource;
@@ -17,11 +18,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 public class StatsService {
+    private static final Logger logger = LoggerFactory.getLogger(StatsService.class);
 
     public static final String POOL_D_ARTICLES = "Pool d'Articles";
     public static final String EN_COURS_D_ECRITURE_TRADUCTION = "En cours d'écriture / traduction";
@@ -45,36 +48,44 @@ public class StatsService {
     private UserStatRepository userStatRepository;
 
     @Resource
+    private UserActivityRepository userActivityRepository;
+
+    @Resource
     private TrelloService trelloService;
 
     @Resource
     private MongoTemplate mongoTemplate;
 
-    public List<UserStat> getUsersStats() {
+    public List<TrelloActivity> getUsersStats(boolean withActivity) {
         List<UserStat> userStats = mongoTemplate.find(query(where("listName").in(A_VALIDER, EN_COURS_DE_VALIDATION, VALIDE, PUBLIE, EN_COURS_PUBLICATION, PROBLEME_FORMAT)), UserStat.class);
 
-        return aggregateStats(userStats);
+        return aggregateStats(userStats, withActivity);
     }
 
-    private List<UserStat> aggregateStats(List<UserStat> userStats) {
-        Map<String, UserStat> aggregatedStats = new HashMap<>();
+    private List<TrelloActivity> aggregateStats(List<UserStat> userStats, boolean withActivity) {
+        Map<String, TrelloActivity> aggregatedStats = new HashMap<>();
+        List<TrelloActivity> allActivities = mongoTemplate.findAll(TrelloActivity.class);
+        for (TrelloActivity activity : allActivities) {
+            aggregatedStats.put(activity.getMemberId(), activity);
+        }
+
         for (UserStat stat : userStats) {
             String userId = stat.getMemberId();
-            if (aggregatedStats.containsKey(userId)) {
-                UserStat currentStat = aggregatedStats.get(userId);
-                stat.setMentoredArticles(currentStat.getMentoredArticles() + stat.getMentoredArticles());
-                stat.setMentoredNews(currentStat.getMentoredNews() + stat.getMentoredNews());
-                stat.setOriginalArticles(currentStat.getOriginalArticles() + stat.getOriginalArticles());
-                stat.setOriginalNews(currentStat.getOriginalNews() + stat.getOriginalNews());
-                stat.setTranslatedArticles(currentStat.getTranslatedArticles() + stat.getTranslatedArticles());
-                stat.setTranslatedNews(currentStat.getTranslatedNews() + stat.getTranslatedNews());
-                stat.setValidatedArticles(currentStat.getValidatedArticles() + stat.getValidatedArticles());
-                stat.setValidatedNews(currentStat.getValidatedNews() + stat.getValidatedNews());
-            } else {
-                stat.setListName("Done");
-            }
-            if (!(userId.equals(NONE) || userId.equals("5024fa0753f944277fba9907"))) {
-                aggregatedStats.put(userId, stat);
+
+            TrelloActivity currentStat = aggregatedStats.get(userId);
+            if (currentStat != null && !(userId.equals(NONE) || userId.equals("5024fa0753f944277fba9907"))) {
+                currentStat.setMentoredArticles(currentStat.getMentoredArticles() + stat.getMentoredArticles());
+                currentStat.setMentoredNews(currentStat.getMentoredNews() + stat.getMentoredNews());
+                currentStat.setOriginalArticles(currentStat.getOriginalArticles() + stat.getOriginalArticles());
+                currentStat.setOriginalNews(currentStat.getOriginalNews() + stat.getOriginalNews());
+                currentStat.setTranslatedArticles(currentStat.getTranslatedArticles() + stat.getTranslatedArticles());
+                currentStat.setTranslatedNews(currentStat.getTranslatedNews() + stat.getTranslatedNews());
+                currentStat.setValidatedArticles(currentStat.getValidatedArticles() + stat.getValidatedArticles());
+                currentStat.setValidatedNews(currentStat.getValidatedNews() + stat.getValidatedNews());
+
+                if (!withActivity) {
+                    currentStat.getActivity().clear();
+                }
             }
         }
 
@@ -101,7 +112,7 @@ public class StatsService {
 
     private int countTranslatedNews(List<UserStat> stats) {
         int count = 0;
-        for(UserStat stat : stats){
+        for (UserStat stat : stats) {
             count += stat.getTranslatedNews();
         }
         return count;
@@ -109,7 +120,7 @@ public class StatsService {
 
     private int countTranslatedArticles(List<UserStat> stats) {
         int count = 0;
-        for(UserStat stat : stats){
+        for (UserStat stat : stats) {
             count += stat.getTranslatedArticles();
         }
         return count;
@@ -117,7 +128,7 @@ public class StatsService {
 
     private int countOriginalNews(List<UserStat> stats) {
         int count = 0;
-        for(UserStat stat : stats){
+        for (UserStat stat : stats) {
             count += stat.getOriginalNews();
         }
         return count;
@@ -125,7 +136,7 @@ public class StatsService {
 
     private int countOriginalArticles(List<UserStat> stats) {
         int count = 0;
-        for(UserStat stat : stats){
+        for (UserStat stat : stats) {
             count += stat.getOriginalArticles();
         }
         return count;
@@ -146,12 +157,15 @@ public class StatsService {
     }
 
     public void calculateStats() {
-        UserProfile adminUser = mongoTemplate.findOne(query(where("email").is("vey.julien@gmail.com")), UserProfile.class);
+        logger.debug("Calculate stats");
+        UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("ROLE_ADMIN")),
+                UserProfile.class);
 
         Map<String, Member> memberMap = mapMemberList(trelloService.getMembers(adminUser.getTokenTrello()));
         List<TList> lists = trelloService.getLists(adminUser.getTokenTrello());
 
         userStatRepository.deleteAll();
+        userActivityRepository.deleteAll();
 
         for (TList list : lists) {
             Map<String, UserStat> userStatMap = new HashMap<>();
@@ -161,14 +175,14 @@ public class StatsService {
 
                 if (!userStatMap.containsKey(idAuthor)) {
                     Member member = memberMap.get(idAuthor);
-                    if(member == null){
+                    if (member == null) {
                         member = new Member();
                     }
                     userStatMap.put(idAuthor, new UserStat(member.getId(), member.getFullName(), list.getName()));
                 }
                 if (!userStatMap.containsKey(idValidator)) {
                     Member member = memberMap.get(idValidator);
-                    if(member == null){
+                    if (member == null) {
                         member = new Member();
                     }
                     userStatMap.put(idValidator, new UserStat(member.getId(), member.getFullName(), list.getName()));
@@ -216,10 +230,25 @@ public class StatsService {
             }
 
             userStatRepository.save(userStatMap.values());
+
         }
+        // get the heartbeat for each members
+        logger.debug("Get the heartbeat for each members");
+        List<TrelloActivity> activities = new ArrayList<>(memberMap.size());
+        for (Entry<String, Member> entry : memberMap.entrySet()) {
+            String id = entry.getKey();
+            Member member = entry.getValue();
+            if (NONE.equals(member.getId()) || AL_AMINE_USER_ID.equals(id))
+                continue;
+            List<TrelloHeartbeat> hb = trelloService.getMemberHeartbeat(member,
+                    adminUser.getTokenTrello());
+            activities.add(new TrelloActivity(id, member.getFullName(), "Done", hb));
+        }
+
+        userActivityRepository.save(activities);
     }
 
-    private boolean hasLabel(Card card, String label) {
+    public static boolean hasLabel(Card card, String label) {
         for (Label l : card.getLabels()) {
             if (l.getName().equals(label)) {
                 return true;

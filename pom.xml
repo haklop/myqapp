@@ -4,7 +4,7 @@
 
     <groupId>com.infoq.myqapp</groupId>
     <artifactId>myqapp</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <packaging>war</packaging>
 
     <properties>
@@ -24,7 +24,7 @@
         <fest-assert.version>1.4</fest-assert.version>
         <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
         <scribe.version>1.3.3</scribe.version>
-        <trello-java-wrapper.version>1.0-SNAPSHOT</trello-java-wrapper.version>
+        <trello-java-wrapper.version>0.1</trello-java-wrapper.version>
         <guava.version>14.0.1</guava.version>
         <mongo-java-driver.version>2.10.1</mongo-java-driver.version>
         <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>
@@ -35,7 +35,8 @@
         <!-- Plugins versions -->
         <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
         <jetty-maven-plugin.version>8.1.10.v20130312</jetty-maven-plugin.version>
-        <maven-jgitflow-plugin.version>1.0-alpha8</maven-jgitflow-plugin.version>
+        <maven-jgitflow-plugin.version>1.0-alpha14</maven-jgitflow-plugin.version>
+        <mockito-all.version>1.9.5</mockito-all.version>
     </properties>
 
     <scm>
@@ -92,11 +93,6 @@
             <artifactId>spring-security-config</artifactId>
             <version>${spring-security.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${spring-security.version}</version>
-        </dependency>
 
         <!-- Jackson -->
         <dependency>
@@ -113,6 +109,18 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Validation -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.2.0.Final</version>
         </dependency>
 
         <!-- Others -->
@@ -186,6 +194,11 @@
             <version>${fest-assert.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito-all.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -209,6 +222,30 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.6.2.201302030002</version>
+                <configuration>
+                    <detail>true</detail>
+                    <check />
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-jgitflow-plugin</artifactId>
                 <version>${maven-jgitflow-plugin.version}</version>
@@ -218,7 +255,6 @@
                         <versionTagPrefix>v</versionTagPrefix>
                     </flowInitContext>
                     <noDeploy>true</noDeploy>
-                    <pushChanges>true</pushChanges>
                     <allowSnapshots>true</allowSnapshots> <!-- Allow only because com.julienvey.trello:trello-java-wrapper is a snapshot -->
                 </configuration>
             </plugin>

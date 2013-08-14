@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/stats")
+@Secured("ROLE_EDITOR")
 public class StatsController {
 
     @Resource
@@ -20,13 +22,13 @@ public class StatsController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users")
     @ResponseBody
-    public ResponseEntity getUsersStats() {
-        return new ResponseEntity(statsService.getUsersStats(), HttpStatus.OK);
+    public ResponseEntity getUsersStats(HttpServletRequest request) {
+        boolean canRetrieveActivity = request.isUserInRole("ROLE_ADMIN");
+        return new ResponseEntity<>(statsService.getUsersStats(canRetrieveActivity), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/refresh")
     @ResponseBody
-    @Secured("ROLE_EDITOR")
     public ResponseEntity refreshStats() {
         statsService.calculateStats();
         return new ResponseEntity(HttpStatus.OK);
@@ -35,6 +37,6 @@ public class StatsController {
     @RequestMapping(method = RequestMethod.GET, value = "/lists")
     @ResponseBody
     public ResponseEntity getListsStats() {
-        return new ResponseEntity(statsService.getListsStats(), HttpStatus.OK);
+        return new ResponseEntity<>(statsService.getListsStats(), HttpStatus.OK);
     }
 }

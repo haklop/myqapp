@@ -5,6 +5,7 @@ function StatsUserCtrl($scope, StatsUsers, Stats, UserService) {
     $scope.reverse = true;
 
     $scope.isEditor = UserService.isEditor;
+    $scope.isAdmin = UserService.isAdmin;
 
     $scope.news = function (stats) {
         return stats.originalNews + stats.translatedNews;

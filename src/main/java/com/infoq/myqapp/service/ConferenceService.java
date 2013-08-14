@@ -46,7 +46,7 @@ public class ConferenceService {
      */
     public List<Conference> getConfsByMonth(int year, int month) {
         if (month < 1 || month > 12) {
-            throw new RuntimeException("Month value is 1-based. e.g., 1 for January");
+            throw new IllegalArgumentException("Month value is 1-based. e.g., 1 for January");
         }
 
         Query query = query(monthCriteria(year, month));

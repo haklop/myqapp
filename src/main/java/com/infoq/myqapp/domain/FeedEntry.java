@@ -1,6 +1,7 @@
 package com.infoq.myqapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
@@ -10,9 +11,14 @@ import java.util.List;
 public class FeedEntry {
 
     @Id
+    @NotBlank
     private String link;
+
+    @NotBlank
     private String title;
     private String description;
+
+    @NotBlank
     private String type;
     private Date publishedDate;
     private List<String> categories;

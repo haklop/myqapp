@@ -1,11 +1,9 @@
-function HeaderController($scope, $location, UserService) {
+function HeaderController($scope, $location, $modal, $q, UserService) {
     $scope.userinfo = UserService.query();
 
     $scope.isActive = function (route) {
         return $location.path().indexOf(route) === 0;
     };
-
-
 
     $scope.isAdmin = UserService.isAdmin;
     $scope.isEditor = UserService.isEditor;
@@ -13,13 +11,31 @@ function HeaderController($scope, $location, UserService) {
     $scope.$on('$routeChangeStart', function (next, current) {
         UserService.query(function (response) {
             $scope.userinfo = response;
-        }, function (response) {
-            if (response.status === 400 || response.status === 401) {
-                window.location = window.location.pathname + "google-signin.html";
-            } else if (response.status === 403) {
-                window.location = window.location.pathname + "trello-token.html";
-            }
         });
+    });
+
+    var modalTrelloToken = $modal({template: '/app/partials/trelloTokenModal.html',
+        persist: true, show: false, backdrop: 'static', scope: $scope});
+
+    var modalGithubToken = $modal({template: '/app/partials/githubTokenModal.html',
+        persist: true, show: false, backdrop: 'static', scope: $scope});
+
+    $scope.$on('handleAlert', function (evt, alert) {
+
+        switch (alert.category) {
+            case 'trelloToken':
+                $q.when(modalTrelloToken).then(function (modalEl) {
+                    modalEl.modal('show');
+                });
+                break;
+            case 'githubToken':
+                $q.when(modalGithubToken).then(function (modalEl) {
+                    modalEl.modal('show');
+                });
+                break;
+
+        }
+
     });
 
 }

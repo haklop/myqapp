@@ -15,5 +15,16 @@
 
 .user-form .controls {
     margin-left: 70px;
+}
 
+.ageFRESH {
+	color: green;
+}
+
+.ageSTALE {
+	color: orange;
+}
+
+.ageOLD {
+	color: red;
 }

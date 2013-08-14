@@ -2,6 +2,9 @@ package com.infoq.myqapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.scribe.model.Token;
 import org.springframework.data.annotation.Id;
 
@@ -11,9 +14,13 @@ import java.util.List;
 public class UserProfile {
 
     @Id
+    @Email
     private String email;
 
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
     private List<String> authorities;
 

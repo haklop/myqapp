@@ -13,20 +13,44 @@ var module = angular.module('myqapp', ['myqapi', '$strap.directives']).
             otherwise({redirectTo: '/feed/0'});
     }]);
 
-module.factory('http401Interceptor', function ($q) {
+module.factory('httpInterceptor', function ($q, $rootScope) {
     return function (promise) {
         return promise.then(function (response) {
             return response;
         }, function (response) {
-            if (response.status === 401 || response.status === 403) {
-                window.location = window.location.pathname + "trello-token.html";
+            if (response.data.type) {
+                switch (response.data.type) {
+                    case 'githubToken':
+                        $rootScope.$broadcast('handleAlert', {title: 'Erreur GitHub', type: 'error', category: response.data.type,
+                            content: 'Vous devez vous <a href="/api/github/login">authentifier</a> sur GitHub pour pouvoir réaliser cette action'});
+                        break;
+                    case 'trelloToken':
+                        $rootScope.$broadcast('handleAlert', {title: 'Erreur Trello', type: 'error', category: response.data.type,
+                            content: 'Vous devez vous <a href="/api/trello/login">authentifier</a> sur Trello pour pouvoir réaliser cette action'});
+                        break;
+                    case 'invalidArgument':
+                        $rootScope.$broadcast('handleAlert', {title: 'Bad request', type: 'error', category: response.data.type,
+                            content: 'Données invalides'});
+                        break;
+                    case 'googleAuthentication':
+                        window.location = window.location.pathname + "google-signin.html";
+                        break;
+                    case 'accessDenied':
+                        window.location = window.location.pathname;
+                        break;
+                    case 'githubError':
+                        if (response.data.code === 400) {
+                            $rootScope.$broadcast('handleAlert', {title: 'Erreur GitHub', type: 'error', category: response.data.type,
+                                content: 'Impossible de trouver le markdown sur GitHub. Etes-vous sûr que le lien dans la carte Trello est à jour ?'});
+                        }
+                        break;
+                }
             }
-            // do something on error
             return $q.reject(response);
         });
     };
 });
 
 module.config(function ($httpProvider) {
-    $httpProvider.responseInterceptors.push('http401Interceptor');
+    $httpProvider.responseInterceptors.push('httpInterceptor');
 });

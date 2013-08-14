@@ -38,7 +38,6 @@ angularModule.factory('TrelloUser', function ($resource) {
 
 angularModule.factory('Confs', function ($resource) {
     return $resource('api/conf', {}, {
-        query: {method: 'GET', isArray: true},
         save: {method: 'POST'}
     });
 });

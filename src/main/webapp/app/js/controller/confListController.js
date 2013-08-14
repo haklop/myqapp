@@ -3,15 +3,12 @@ function ConfListCtrl($scope, Confs, UserService) {
 
     $scope.newconf = {};
 
-    $scope.confs = Confs.query();
-
     $scope.isEditor = UserService.isEditor;
 
     $scope.createConf = function () {
         if ($scope.newconfForm.$valid) {
             Confs.save($scope.newconf, function () {
                 $scope.alerts.push({"title": "Conference ajoutée", "type": "success", "content": ""});
-                $scope.confs = Confs.query();
                 $scope.newconf = {};
 
             }, function () {
@@ -45,7 +42,6 @@ function ConfListCtrl($scope, Confs, UserService) {
                     end: end.getTime()
                 },
                 success: function (doc) {
-                    console.log(doc);
                     var i;
                     var events = [];
                     for (i = 0; i < doc.length; i++) {
