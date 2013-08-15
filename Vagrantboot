@@ -29,9 +29,3 @@ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre
 EOF
 
 source /home/vagrant/.profile
-
-# install the trello-java-wrapper
-# apt-get -y install git
-pushd /vagrant-trello \
-    && sudo -u vagrant mvn clean install \
-&& popd
