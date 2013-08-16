@@ -255,7 +255,6 @@
                         <versionTagPrefix>v</versionTagPrefix>
                     </flowInitContext>
                     <noDeploy>true</noDeploy>
-                    <allowSnapshots>true</allowSnapshots> <!-- Allow only because com.julienvey.trello:trello-java-wrapper is a snapshot -->
                 </configuration>
             </plugin>
         </plugins>
