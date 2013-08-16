@@ -49,14 +49,12 @@ public class GithubController {
 
         Token accessToken = userProfile.getTokenGithub();
 
-        if (accessToken == null || accessToken.isEmpty()) {
-            // generate new request token
-            OAuthService service = githubAuthenticationService.getService();
+        // generate new request token
+        OAuthService service = githubAuthenticationService.getService();
 
-            // redirect to trello auth page
-            return "redirect:" + service.getAuthorizationUrl(OAuthConstants.EMPTY_TOKEN);
-        }
-        return "redirect:/";
+        // redirect to trello auth page
+        return "redirect:" + service.getAuthorizationUrl(OAuthConstants.EMPTY_TOKEN);
+
     }
 
     @RequestMapping(value = {"/callback"}, method = RequestMethod.GET)
@@ -94,7 +92,6 @@ public class GithubController {
         GitHubContent raw;
         try {
             raw = githubService.getRaw(url, accessToken);
-            // TODO catch error when using an expired token
             // TODO catch 403 rate limit exceeded
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
@@ -103,6 +100,9 @@ public class GithubController {
                 case 401:
                     return new ResponseEntity<>(new ErrorMessage(HttpStatus.UNAUTHORIZED.value(), "githubToken", "You cannot access to the GitHub repository"),
                             HttpStatus.UNAUTHORIZED);
+                case 403:
+                    return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "githubToken", "You cannot access to the GitHub repository"),
+                            HttpStatus.FORBIDDEN);
                 case 404:
                     return new ResponseEntity<>(new ErrorMessage(HttpStatus.BAD_REQUEST.value(), "githubError", "File not found"),
                             HttpStatus.BAD_REQUEST);
