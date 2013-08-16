@@ -4,7 +4,7 @@
 
     <groupId>com.infoq.myqapp</groupId>
     <artifactId>myqapp</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <packaging>war</packaging>
 
     <properties>
@@ -24,7 +24,7 @@
         <fest-assert.version>1.4</fest-assert.version>
         <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
         <scribe.version>1.3.3</scribe.version>
-        <trello-java-wrapper.version>0.1</trello-java-wrapper.version>
+        <trello-java-wrapper.version>0.2</trello-java-wrapper.version>
         <guava.version>14.0.1</guava.version>
         <mongo-java-driver.version>2.10.1</mongo-java-driver.version>
         <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>
@@ -42,7 +42,7 @@
     <scm>
         <developerConnection>scm:git:git@github.com:haklop/myqapp.git</developerConnection>
         <tag>1.0.1</tag>
-  </scm>
+    </scm>
 
     <dependencies>
         <!-- Spring -->
@@ -255,7 +255,6 @@
                         <versionTagPrefix>v</versionTagPrefix>
                     </flowInitContext>
                     <noDeploy>true</noDeploy>
-                    <allowSnapshots>true</allowSnapshots> <!-- Allow only because com.julienvey.trello:trello-java-wrapper is a snapshot -->
                 </configuration>
             </plugin>
         </plugins>
