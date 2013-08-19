@@ -40,6 +40,18 @@ a {
     color: rgb(151, 96, 13);
 }
 
+.myqapp-alert-close {
+    border-radius: 5px;
+    padding: .2em 1em;
+    float: right;
+    margin-left: 1em;
+    margin-top: -0.25em;
+}
+
+.myqapp-alert-title {
+    font-weight: bold;
+}
+
 /* LAYOUT CSS */
 #layout {
     padding-left:200px; /* "left col (nav + list)" width */

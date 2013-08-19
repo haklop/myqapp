@@ -1,5 +1,5 @@
 function ConfListCtrl($scope, Confs, UserService) {
-    $scope.alerts = [];
+    $scope.alerts = []; // TODO : user AlertController
 
     $scope.newconf = {};
 

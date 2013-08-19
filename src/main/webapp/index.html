@@ -31,6 +31,14 @@
         </div>
     </div>
 
+    <div class="pure-u-1" ng-controller="AlertController">
+        <div class="pure-u-3-4">
+            <div class="myqapp-alert" ng-repeat="alert in alerts" ng-class="getClassAlert(alert)">
+                <a class="pure-button myqapp-alert-close" href="#" ng-click="removeAlert(alert)">x</a>
+                <span class="myqapp-alert-title">{{alert.title}}</span> {{alert.content}}</div>
+        </div>
+    </div>
+
     <div ng-view class="pure-u-1"></div>
 </div>
 
@@ -46,6 +54,7 @@
 <script src="app/js/services.js"></script>
 <script src="app/js/controller/feedListController.js"></script>
 <script src="app/js/controller/headerController.js"></script>
+<script src="app/js/controller/alertController.js"></script>
 <script src="app/js/controller/statsListsController.js"></script>
 <script src="app/js/controller/statsUserController.js"></script>
 <script src="app/js/controller/userDetailController.js"></script>
