@@ -1,6 +1,7 @@
-<button class="btn" ng-click="refreshStats()" ng-class="refreshing()" ng-disabled="refreshing()" ng-show="isEditor()">Rafraîchir les stats</button>
-<div>
-    <table class="table table-striped">
+<div class="feed-content">
+    <h1 class="content-subhead">Stats utilisateurs</h1>
+
+    <table class="pure-table pure-table-horizontal user-table">
         <thead>
         <tr>
             <th><a href="" ng-click="order = name; reverse = !reverse;">Nom</a></th>
@@ -12,8 +13,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="stats in authorStats | orderBy:order:reverse">
-            <td><a ng-href="#/users/{{stats.member.id}}">{{stats.memberFullName}}</a></td>
+        <tr ng-repeat="stats in authorStats | orderBy:order:reverse" ng-class-odd="'pure-table-odd'">
+            <td>{{stats.memberFullName}}</td>
             <td>
                 <strong>{{stats.originalNews + stats.translatedNews}}</strong>
                 ({{stats.originalNews}} <ng-pluralize count="stats.originalNews" when="{0:'originale', one:'originale', other:'originales'}"></ng-pluralize>,
@@ -52,5 +53,4 @@
         </tr>
         </tbody>
     </table>
-
 </div>

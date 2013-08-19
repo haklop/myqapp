@@ -2,29 +2,36 @@
 <html ng-app="myqapp">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap-datepicker/bootstrap-datepicker.css"/>
-    <link rel="stylesheet" type="text/css" href="lib/fullcalendar/fullcalendar.css"/>
-    <link rel="stylesheet" type="text/css" href="app/css/myqapp.css"/>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.1/pure-min.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="app/css/myqapp.css">
+
+    <!--link rel="stylesheet" type="text/css" href="lib/bootstrap-datepicker/bootstrap-datepicker.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/fullcalendar/fullcalendar.css"/-->
+
 </head>
 <body>
-<div class="navbar navbar-static-top banner" ng-controller="HeaderController">
-    <div class="navbar-inner">
-        <a class="brand" href="#/">MyQ, The App for The Best</a>
-        <ul class="nav pull-right">
-            <li><a href="">Bienvenue {{userinfo.firstName}} {{userinfo.lastName}}</a></li>
-            <li ng-class="{active: isActive('/feed')}"><a href="#/feed">Flux</a></li>
-            <li ng-class="{active: isActive('/stats')}"><a href="#/stats">Stats Listes</a></li>
-            <li ng-class="{active: isActive('/users')}"><a href="#/users">Stats Contributeurs</a></li>
-            <li ng-class="{active: isActive('/conf')}"><a href="#/conf">Conférences</a></li>
-            <li ng-show="isEditor()" ng-class="{active: isActive('/markdown')}"><a href="#/markdown">Markdown</a></li>
-            <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}"><a href="#/admin">Admin</a></li>
-        </ul>
-    </div>
-</div>
 
-<div class="container-fluid">
-    <div ng-view class="mainContent"></div>
+<div class="pure-g-r content" id="layout" ng-controller="HeaderController">
+    <div class="pure-u" id="nav">
+        <a href="#" class="nav-menu-button">MyQApp</a>
+
+        <div class="nav-inner">
+            <div class="pure-menu pure-menu-open">
+                <ul>
+                    <li class="pure-menu-heading">MyQApp</li>
+                    <li><a ng-class="{active: isActive('/feed')}" href="#/feed">Flux</a></li>
+                    <li><a ng-class="{active: isActive('/stats')}" href="#/stats">Stats Listes</a></li>
+                    <li><a ng-class="{active: isActive('/users')}" href="#/users">Stats Contributeurs</a></li>
+                    <li><a ng-class="{active: isActive('/conf')}" href="#/conf">Conférences</a></li>
+                    <li ng-show="isEditor()"><a ng-class="{active: isActive('/markdown')}" href="#/markdown">Markdown</a></li>
+                    <li ng-show="isAdmin()"><a ng-class="{active: isActive('/admin')}" href="#/admin">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div ng-view class="pure-u-1"></div>
 </div>
 
 <script src="lib/jquery/jquery-1.9.1.min.js"></script>
@@ -32,8 +39,8 @@
 <script src="lib/angular/lib/angular-resource.min.js"></script>
 <script src="lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="lib/angular/lib/angularstrap.js"></script>
-<script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
-<script src="lib/fullcalendar/fullcalendar.min.js"></script>
+<!--script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+<script src="lib/fullcalendar/fullcalendar.min.js"></script-->
 
 <script src="app/js/app.js"></script>
 <script src="app/js/services.js"></script>
@@ -47,5 +54,6 @@
 <script src="app/js/controller/adminController.js"></script>
 <script src="app/js/controller/userCreationController.js"></script>
 <script src="app/js/controller/userModificationController.js"></script>
+
 </body>
 </html>

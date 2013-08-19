@@ -29,18 +29,6 @@ function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello, UserServi
         $scope.alerts.push(alert);
     });
 
-    $scope.formatCategories = function (categories) {
-        var s = "";
-        var append = "";
-        var i;
-        for (i = 0; i < categories.length; i++) {
-            s += append;
-            append = ", ";
-            s += categories[i];
-        }
-        return s;
-    };
-
     $scope.addingToTrello = function (feed) {
         return feed.addingToTrello ? 'disabled' : undefined;
     };
@@ -56,7 +44,7 @@ function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello, UserServi
             feed.addingToTrello = false;
         }, function (response) {
             if (response.status === 409) {
-                $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "info", "content": "Carte déjà existante"});
+                $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "warning", "content": "Carte déjà existante"});
             } else {
                 $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
             }

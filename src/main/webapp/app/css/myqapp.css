@@ -1,30 +1,325 @@
-.mainContent {
-    margin-left: 30px;
-    margin-top: 10px;
-    margin-right: 30px;
+body {
+    color: #333;
+}
+a {
+    text-decoration: none;
+    color: #1b98f8;
 }
 
-.conf-form .control-label,
-.user-form .control-label {
-    width: auto;
+.page-header {
+    border-bottom: 1px solid #ddd;
 }
 
-.conf-form .controls {
-    margin-left: 50px;
+.page-header h1 {
+    border-bottom: none;
 }
 
-.user-form .controls {
-    margin-left: 70px;
+
+
+.myqapp-alert {
+    position: relative;
+    margin-bottom: 1em;
+    padding: 1em;
+    background-color: rgb(209, 235, 238);
+    color: rgb(102, 131, 145);
+    border-radius: 3px;
 }
 
-.ageFRESH {
-	color: green;
+.myqapp-alert-success {
+    background-color: rgb(83, 180, 79);
+    color: #fff;
 }
 
-.ageSTALE {
-	color: orange;
+.myqapp-alert-error {
+    background-color: #D13C38;
+    color: #fff;
 }
 
-.ageOLD {
-	color: red;
+.myqapp-alert-warning {
+    background-color: rgb(250, 191, 103);
+    color: rgb(151, 96, 13);
+}
+
+/* LAYOUT CSS */
+#layout {
+    padding-left:200px; /* "left col (nav + list)" width */
+    position: relative;
+}
+
+#nav, #list {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+}
+#nav {
+    margin-left:-200px; /* "left col (nav + list)" width */
+    width:200px;
+    background: rgb(37, 42, 58);
+    text-align: center;
+    padding: 2em 0;
+}
+
+#list {
+    margin-left: -350px;
+    width:350px;
+    border-right: 1px solid #ddd;
+}
+
+/* HELPER CLASSES */
+.primary-button,
+.secondary-button {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+.primary-button {
+    color: #fff;
+    background: #1b98f8;
+    margin: 1em 0;
+}
+.secondary-button {
+    background: #fff;
+    border: 1px solid #ddd;
+    color: #666;
+    padding: 0.5em 2em;
+    font-size: 80%;
+}
+
+
+
+/* Vertical Navigation Styles */
+#nav .pure-menu {
+    background: transparent;
+    border: none;
+    text-align: left;
+}
+#nav .pure-menu a:hover,
+#nav .pure-menu a:focus,
+#nav .pure-menu .active{
+    background: rgb(55, 60, 90);
+}
+#nav .pure-menu a {
+    color: #fff;
+    margin-left: 0.5em;
+}
+#nav .pure-menu-heading {
+    border-bottom: none;
+    font-size:110%;
+    color: rgb(75, 113, 151);
+}
+
+#nav .nav-menu-button {
+    display: none;
+}
+
+.feed-count {
+    color: rgb(75, 113, 151);
+}
+
+.feed-label-personal,
+.feed-label-work,
+.feed-label-travel {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    margin-right: 0.5em;
+    border-radius: 3px;
+}
+.feed-label-personal {
+    background: #ffc94c;
+}
+.feed-label-work {
+    background: #41ccb4;
+}
+.feed-label-travel {
+    background: #40c365;
+}
+
+.feed-paginator {
+    text-align: center;
+    margin-top: 0.5em;
+}
+
+
+
+/* feed Item Styles */
+.feed-item {
+    padding: 0.9em 1em;
+    border-bottom: 1px solid #ddd;
+    border-left: 6px solid transparent;
+    position: relative;
+}
+
+.feed-action {
+    border-radius: 5px;
+    padding: .2em 1em;
+    float: right;
+    margin-left: 1em;
+    margin-top: 0.5em;
+}
+
+.feed-name,
+.feed-title {
+    margin: 0;
+}
+
+.feed-title > a {
+    color: #333;
+}
+
+.feed-name {
+    text-transform: uppercase;
+    color: #999;
+}
+.feed-desc {
+    font-size: 80%;
+    margin: 0.4em 0;
+}
+
+.feed-categories {
+    font-size: 70%;
+    margin: 0.4em 0;
+    color: #999;
+}
+
+.feed-item:hover,
+.user-table tr:hover {
+    background: #eee;
+}
+
+.user-table {
+    border: none;
+}
+
+.user-table thead,
+.user-table thead>tr:hover {
+    background: none;
+}
+.user-table > .pure-table-odd {
+    background-color: #f9f9f9;
+}
+
+.feed-item-unread {
+    border-left: 6px solid #02a3c6;
+}
+
+/* feed Content Styles */
+.feed-content-header, .feed-content-body, .feed-content-footer {
+    padding: 1em 2em;
+}
+.feed-content-header {
+    border-bottom: 1px solid #ddd;
+}
+
+.feed-content-title {
+    margin: 0.5em 0 0;
+}
+.feed-content-subtitle {
+    font-size: 1em;
+    margin: 0;
+    font-weight: normal;
+}
+.feed-content-subtitle span {
+    color: #999;
+}
+.feed-content-controls {
+    margin-top: 2em;
+    text-align: right;
+}
+.feed-content-controls .secondary-button {
+    margin-bottom: 0.3em;
+}
+
+.feed-content {
+    padding: 0.5em 3em 0;
+}
+
+.feed-category {
+    margin: 0 0.1em;
+    padding: 0.3em 1em;
+    color: #fff;
+    background: #999;
+    font-size: 80%;
+}
+
+.stats-user {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.content-subhead {
+    text-transform: uppercase;
+    color: #aaa;
+    border-bottom: 1px solid #eee;
+    padding: 0.4em 0;
+    font-size: 80%;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+}
+
+
+@media (max-width: 867px) {
+
+    #list,
+    #main {
+        width: 100%;
+    }
+    #layout {
+        padding-left: -150px;
+    }
+    #list {
+        height: 33%;
+        border-right: 0;
+        border-bottom: 1px solid #ddd;
+    }
+    #main {
+        position: fixed;
+        top: 33%;
+        right: 0;
+        bottom: 0;
+        left: 150px;
+        overflow: auto;
+        width: auto; /* so that it's not 100% */
+    }
+
+    .stats-user {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    #layout, #nav, #list, #main {
+        position: static;
+        margin: 0;
+        padding: 0;
+    }
+    #nav {
+        width: 100%;
+        height: 40px;
+        position: relative;
+    }
+    #nav .nav-menu-button {
+        display: block;
+        top: 0.5em;
+        right: 0.5em;
+        position: absolute;
+    }
+    #nav.active {
+        height: 80%;
+    }
+    .nav-inner {
+        display: none;
+    }
+    #nav.active .nav-inner {
+        display: block;
+    }
+    .feed-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .stats-user {
+        width: 95%;
+    }
 }
