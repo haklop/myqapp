@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div class="pure-g-r content" id="layout" ng-controller="HeaderController">
+<div class="pure-g-r" id="layout" ng-controller="HeaderController">
     <div class="pure-u" id="nav">
         <a href="#" class="nav-menu-button">MyQApp</a>
 
@@ -34,7 +34,7 @@
     <div class="pure-u-1" ng-controller="AlertController">
         <div class="pure-u-3-4">
             <div class="myqapp-alert" ng-repeat="alert in alerts" ng-class="getClassAlert(alert)">
-                <a class="pure-button myqapp-alert-close" href="#" ng-click="removeAlert(alert)">x</a>
+                <a class="pure-button myqapp-alert-close" ng-click="removeAlert(alert)">x</a>
                 <span class="myqapp-alert-title">{{alert.title}}</span> {{alert.content}}</div>
         </div>
     </div>
