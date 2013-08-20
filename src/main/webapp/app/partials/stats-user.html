@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="stats in authorStats | orderBy:order:reverse" ng-class-odd="'pure-table-odd'">
+            <tr ng-repeat="stats in authorStats | orderBy:order:reverse">
                 <td>{{stats.memberFullName}}</td>
                 <td>
                     <strong>{{stats.originalNews + stats.translatedNews}}</strong>
