@@ -222,6 +222,7 @@ a {
 .user-table thead,
 .user-table thead>tr:hover {
     background: none;
+
 }
 .user-table > .pure-table-odd {
     background-color: #f9f9f9;
@@ -258,7 +259,8 @@ a {
     margin-bottom: 0.3em;
 }
 
-.feed-content {
+.feed-content,
+.stats-list-content {
     padding: 0.5em 3em 0;
 }
 
@@ -283,6 +285,30 @@ a {
     font-size: 80%;
     font-weight: 500;
     letter-spacing: 0.1em;
+}
+
+/* stats-list */
+.stats-list-content {
+    font-size: 95%;
+}
+.stats-list-header {
+    border-bottom: 1px solid #ddd;
+    padding: 1em 1em;
+}
+
+.stats-list-content {
+    padding: 1em 3em;
+}
+
+.stats-list-title {
+    margin: 0.5em 0 0;
+    font-size: 1.2em;
+}
+
+.stats-content-subtitle {
+    margin: 0;
+    font-weight: normal;
+    font-size: 80%;
 }
 
 

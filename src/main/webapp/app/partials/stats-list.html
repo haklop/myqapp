@@ -1,18 +1,27 @@
-<button class="btn" style="margin-bottom: 15px" ng-click="refreshStats()" ng-class="refreshing()" ng-disabled="refreshing()" ng-show="isEditor()">Rafraîchir les stats</button>
-<div>
-    <div class="well well-small" ng-repeat="list in lists">
-        <div class="row-fluid">
-            <div class="span4">
-                <div><strong>{{list.listName}}</strong> : {{list.originalNews + list.translatedNews + list.originalArticles + list.translatedArticles}} items</div>
-                <div>News : {{list.originalNews + list.translatedNews}} ({{list.originalNews}} original,
-                    {{list.translatedNews}} traduction)
-                </div>
-                <div>Articles : {{list.originalArticles + list.translatedArticles}} ({{list.originalArticles}} original,
-                    {{list.translatedArticles}} traduction)
-                </div>
+<div class="stats-list-content">
+    <div class="page-header pure-g">
+        <div class="pure-u-3-4">
+            <button class="pure-button feed-action" ng-click="refreshStats()" ng-class="refreshing()" ng-disabled="refreshing()" ng-show="isEditor()" title="Rafraîchir le feed">
+                <i class="icon-refresh"></i>
+            </button>
+            <h1 class="content-subhead">Statistiques par status</h1>
+        </div>
+    </div>
+
+    <div class="pure-u-1" ng-repeat="list in lists">
+        <div class="stats-list-header pure-g">
+            <div class="pure-u-1-4">
+                <h2 class="stats-list-title">{{list.listName}}</h2>
+                <p class="stats-content-subtitle">
+                    {{list.originalNews + list.translatedNews + list.originalArticles + list.translatedArticles}} items
+                    <br>
+                    News : {{list.originalNews + list.translatedNews}} ({{list.originalNews}} original, {{list.translatedNews}} traduction)
+                    <br>
+                    Articles : {{list.originalArticles + list.translatedArticles}} ({{list.originalArticles}} original, {{list.translatedArticles}} traduction)
+                </p>
             </div>
-            <div class="span8">
-                <table class="table table-striped">
+            <div class="pure-u-3-4">
+                <table class="pure-table pure-table-horizontal user-table">
                     <thead>
                     <tr>
                         <th><a href="" ng-click="order = name; reverse = !reverse;">Nom</a></th>
@@ -24,26 +33,18 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="stats in list.userStats | orderBy:order:reverse">
-                        <td><a ng-href="#/users/{{stats.member.id}}">{{stats.memberFullName}}</a></td>
+                        <td>{{stats.memberFullName}}</td>
                         <td>
                             <strong>{{stats.originalNews + stats.translatedNews}}</strong>
-                            ({{stats.originalNews}} <ng-pluralize count="stats.originalNews" when="{0:'originale', one:'originale', other:'originales'}"></ng-pluralize>,
-                            {{stats.translatedNews}} <ng-pluralize count="stats.translatedNews" when="{0:'traduction', one:'traduction', other:'traductions'}"></ng-pluralize>)
                         </td>
                         <td>
                             <strong>{{stats.originalArticles + stats.translatedArticles}}</strong>
-                            ({{stats.originalArticles}} <ng-pluralize count="stats.originalArticles" when="{0:'original', one:'original', other:'originaux'}"></ng-pluralize>,
-                            {{stats.translatedArticles}} <ng-pluralize count="stats.translatedArticles" when="{0:'traduction', one:'traduction', other:'traductions'}"></ng-pluralize>)
                         </td>
                         <td>
                             <strong>{{stats.validatedArticles + stats.validatedNews}}</strong>
-                            ({{stats.validatedArticles}} <ng-pluralize count="stats.validatedArticles" when="{0:'article', one:'article', other:'articles'}"></ng-pluralize>,
-                            {{stats.validatedNews}} news)
                         </td>
                         <td>
                             <strong>{{stats.mentoredArticles + stats.mentoredNews}}</strong>
-                            ({{stats.mentoredArticles}} <ng-pluralize count="stats.mentoredArticles" when="{0:'article', one:'article', other:'articles'}"></ng-pluralize>,
-                            {{stats.mentoredNews}} news)
                         </td>
                     </tr>
                     </tbody>
@@ -51,4 +52,5 @@
             </div>
         </div>
     </div>
+
 </div>
