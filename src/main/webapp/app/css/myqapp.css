@@ -14,7 +14,17 @@ a {
     border-bottom: none;
 }
 
+/* Markdown page */
 
+#md-layout {
+    padding-left:350px;
+    position: relative;
+}
+
+#md-main {
+}
+
+/* General */
 
 .myqapp-alert {
     position: relative;
@@ -58,7 +68,7 @@ a {
     position: relative;
 }
 
-#nav, #list {
+#nav, #md-list {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -72,9 +82,9 @@ a {
     padding: 2em 0;
 }
 
-#list {
-    margin-left: -350px;
+#md-list {
     width:350px;
+    margin-left:-350px;
     border-right: 1px solid #ddd;
 }
 
@@ -154,13 +164,17 @@ a {
 }
 
 
-
 /* feed Item Styles */
-.feed-item {
+.feed-item,
+.md-item{
     padding: 0.9em 1em;
     border-bottom: 1px solid #ddd;
     border-left: 6px solid transparent;
     position: relative;
+}
+
+.md-item {
+    border-top: 1px solid #ddd;
 }
 
 .feed-action {
@@ -196,6 +210,7 @@ a {
 }
 
 .feed-item:hover,
+.md-item:hover,
 .user-table tr:hover {
     background: #eee;
 }
@@ -273,14 +288,14 @@ a {
 
 @media (max-width: 867px) {
 
-    #list,
+    #md-list,
     #main {
         width: 100%;
     }
     #layout {
         padding-left: -150px;
     }
-    #list {
+    #md-list {
         height: 33%;
         border-right: 0;
         border-bottom: 1px solid #ddd;
@@ -301,7 +316,7 @@ a {
 }
 
 @media (max-width: 480px) {
-    #layout, #nav, #list, #main {
+    #layout, #nav, #md-list, #main {
         position: static;
         margin: 0;
         padding: 0;

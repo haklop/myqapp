@@ -1,3 +1,47 @@
+<div class="pure-g-r" id="md-layout">
+    <div class="pure-u-1" id="md-list">
+        <input type="text" ng-model="gitHubFilter" placeholder="Filter">
+        <hr>
+
+        <div class="md-item pure-g" ng-repeat="card in cards | filter:gitHubFilter" ng-click="fetchRaw(card.githubUrl, cardType(card))">
+            <div class="pure-u-3-4">
+                <h4 class="feed-title">{{card.name}}</h4>
+            </div>
+        </div>
+
+        <h5>Sans lien GitHub dans la description de la carte sur Trello:</h5>
+
+        <div class="md-item pure-g" ng-repeat="card in cardsNoGithub">
+            <div class="pure-u-3-4">
+                <h4 class="feed-title">{{card.name}}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="pure-u-1" id="md-main">
+        <form class="form-horizontal" name="generateMarkdownForm" novalidate>
+            <textarea style="width: 100%; height: 300px;" ng-model="markdown.text"></textarea>
+
+            <label class="radio inline">
+                <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
+            </label>
+            <label class="radio inline">
+                <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
+            </label>
+            <label class="radio inline">
+                <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/"
+                       ng-model="markdown.node" required/>
+            </label>
+            <label class="radio inline">
+                <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
+            </label>
+        </form>
+
+        <textarea style="width: 100%; height: 300px;" ng-model="generated" disabled></textarea>
+   </div>
+</div>
+
+        <!--
 <div class="row-fluid">
     <div class="span4">
         <input type="text" ng-model="gitHubFilter" placeholder="Filter">
@@ -21,9 +65,6 @@
         </table>
     </div>
     <div class="span8">
-        <div class="alerts">
-            <div class="alert fade" ng-repeat="alert in alerts" bs-alert="alert"></div>
-        </div>
 
         <form class="form-horizontal" name="generateMarkdownForm" novalidate>
             <textarea style="width: 100% !important; height: 300px;" ng-model="markdown.text"></textarea>
@@ -47,3 +88,4 @@
     </div>
 
 </div>
+        -->
