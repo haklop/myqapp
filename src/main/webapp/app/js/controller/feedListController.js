@@ -5,6 +5,9 @@ function FeedListCtrl($scope, $rootScope, $routeParams, Feed, RefreshFeed, Trell
         {"name": "Interview", "selected": true},
         {"name": "Presentation", "selected": true}
     ];
+
+    $scope.feedRefreshing = false;
+
     $scope.types = types;
 
     $scope.isEditor = UserService.isEditor;
@@ -61,7 +64,9 @@ function FeedListCtrl($scope, $rootScope, $routeParams, Feed, RefreshFeed, Trell
     };
 
     $scope.refreshFeed = function () {
+        $scope.feedRefreshing = true;
         RefreshFeed.query(function (f) {
+            $scope.feedRefreshing = false;
             $scope.feeds = f;
             $rootScope.$broadcast('handleAlert', {"title": "Mise à jour terminée", "type": "success", "content": "", category: 'message'});
         });

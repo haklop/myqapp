@@ -1,8 +1,8 @@
 <div class="feed-content">
     <div class="page-header pure-g">
         <div class="pure-u-3-4">
-            <button class="pure-button feed-action" ng-click="refreshFeed()" ng-show="isEditor()" title="Rafraîchir le feed">
-                <i class="icon-refresh"></i>
+            <button class="pure-button feed-action" ng-click="refreshFeed()" ng-show="isEditor()" ng-disabled="feedRefreshing" title="Rafraîchir le feed">
+                <i class="icon-refresh" ng-class="{icon-spin: feedRefreshing}"></i>
             </button>
             <h1 class="content-subhead">Flux RSS InfoQ</h1>
         </div>
