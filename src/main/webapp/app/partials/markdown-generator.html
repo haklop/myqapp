@@ -1,18 +1,38 @@
 <div class="pure-g-r" id="md-layout">
     <div class="pure-u-1" id="md-list">
-        <input type="text" ng-model="gitHubFilter" placeholder="Filter">
-        <hr>
+        <form class="pure-form md-filter">
+            <label for="filter">Filtrer</label>
+            <input id="filter" type="text" ng-model="gitHubFilter" placeholder="Filter">
+            <button class="feed-action pure-button" ng-click="retrieveList()" ng-disabled="isRefreshing"
+                    title="Rafraîchir la liste des éléments à publier">
+                <i class="icon-refresh" ng-class="{'icon-spin': isRefreshing}"></i>
+            </button>
+        </form>
+
+        <div class="pure-g md-spinner" ng-show="isRefreshing && !cards">
+            <i class="icon-spinner icon-spin icon-4x"></i>
+        </div>
 
         <div class="md-item pure-g" ng-repeat="card in cards | filter:gitHubFilter"
              ng-click="fetchRaw(card.githubUrl, cardType(card))"
              ng-class="{'md-article-border': isAnArticle(card), 'md-news-border': !isAnArticle(card)}">
+
+            <div class="pure-u">
+                <img class="md-trello-avatar" alt="Eric Ferraiuolo's avatar" src="/img/common/ericf-avatar.png" height="64" width="64">
+            </div>
             <div class="pure-u-3-4">
                 <h5 class="feed-name">{{card.dateLastActivity | date:'dd/MM/yyyy'}}</h5>
                 <h4 class="md-title">{{card.name}}</h4>
+                <a class="pure-button md-action" href="{{card.githubUrl}}" target="_blank" title="Consulter la traduction sur GitHub">
+                    <i class="icon-github"></i>
+                </a>
+                <a class="pure-button md-action" href="{{card.url}}" target="_blank" title="Consulter la traduction sur GitHub">
+                    <i class="icon-trello"></i>
+                </a>
             </div>
         </div>
 
-        <h5>Sans lien GitHub dans la description de la carte sur Trello:</h5>
+        <h5 ng-show="!isRefreshing && cardsNoGithub">Sans lien GitHub dans la description de la carte sur Trello:</h5>
 
         <div class="md-item pure-g" ng-repeat="card in cardsNoGithub">
             <div class="pure-u-3-4">

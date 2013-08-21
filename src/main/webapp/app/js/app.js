@@ -44,6 +44,9 @@ module.factory('httpInterceptor', function ($q, $rootScope) {
                                 content: 'Impossible de trouver le markdown sur GitHub. Etes-vous sûr que le lien dans la carte Trello est à jour ?'});
                         }
                         break;
+                    case 'unknownError':
+                        $rootScope.$broadcast('handleAlert', {title: 'Erreur inconnu lors de l\'execution de la requête', type: 'error', category: response.data.type,
+                            content: ''});
                 }
             }
             return $q.reject(response);

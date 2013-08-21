@@ -43,6 +43,28 @@ a {
     position: relative;
 }
 
+.md-action {
+    border-radius: 5px;
+    padding: .2em 0.4em;
+    float: right;
+    margin-left: 0.5em;
+    margin-top: 0.3em;
+}
+
+.md-filter {
+    padding: .2em .2em;
+}
+
+.md-trello-avatar {
+    border-radius: 3px;
+    margin-right: 0.5em;
+}
+
+.md-spinner {
+    margin-top: 5em;
+    text-align: center;
+}
+
 /* General */
 
 .myqapp-alert {

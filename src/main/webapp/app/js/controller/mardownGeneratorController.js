@@ -1,4 +1,4 @@
-function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw) {
+function MarkdownGeneratorCtrl($scope, $rootScope, MarkdownGenerator, TrelloList, GithubRaw) {
     $scope.markdown = {};
 
     $scope.alerts = []; // TODO : use AlertController
@@ -42,25 +42,40 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw)
         $scope.alerts.push(alert);
     });
 
-//    FIXME Ne pas mettre cet ID en dur ici
-    TrelloList.query({id: "51499c4cb867d5eb59006794"}, function (result) {
-        $scope.cards = [];
-        $scope.cardsNoGithub = [];
-        for (var i = 0; i < result.cards.length; i++) {
-            var card = result.cards[i];
-            if (card.desc.indexOf("github.com") !== -1) {
-                var urls = findUrls(card.desc);
-                for (var j = 0; j < urls.length; j++) {
-                    if (urls[j].indexOf("github.com") !== -1) {
-                        card.githubUrl = urls[j];
+    $scope.isRefreshing = false;
+
+    $scope.retrieveList = function retrieveList() {
+        $scope.isRefreshing = true;
+
+        // FIXME Ne pas mettre cet ID en dur ici
+        TrelloList.query({id: "51499c4cb867d5eb59006794"}, function (result) {
+            $scope.isRefreshing = false;
+
+            $scope.cards = [];
+            $scope.cardsNoGithub = [];
+            for (var i = 0; i < result.cards.length; i++) {
+                var card = result.cards[i];
+                if (card.desc.indexOf("github.com") !== -1) {
+                    var urls = findUrls(card.desc);
+                    for (var j = 0; j < urls.length; j++) {
+                        if (urls[j].indexOf("github.com") !== -1) {
+                            card.githubUrl = urls[j];
+                        } else if (urls[j].indexOf("infoq.com") !== -1) {
+                            card.infoqUrl = urls[j];
+                        }
                     }
+                    $scope.cards.push(card);
+                } else {
+                    $scope.cardsNoGithub.push(card);
                 }
-                $scope.cards.push(card);
-            } else {
-                $scope.cardsNoGithub.push(card);
             }
-        }
-    });
+        }, function() {
+            $scope.isRefreshing = false;
+
+        });
+    };
+
+    $scope.retrieveList();
 
     function findUrls(text) {
         var source = (text || '').toString();
