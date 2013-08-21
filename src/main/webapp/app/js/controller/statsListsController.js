@@ -1,4 +1,4 @@
-function StatsListCtrl($scope, StatsLists, Stats, UserService) {
+function StatsListCtrl($scope, $rootScope, StatsLists, Stats, UserService) {
     $scope.lists = StatsLists.query();
 
     $scope.predicate = $scope.name;
@@ -33,6 +33,10 @@ function StatsListCtrl($scope, StatsLists, Stats, UserService) {
         Stats.refresh(function () {
             $scope.authorStats = StatsLists.query();
             $scope.refreshInProgress = false;
+        }, function() {
+            $scope.refreshInProgress = false;
+            $rootScope.$broadcast('handleAlert', {"title": "Erreur lors du rafraichissement des stats",
+                "type": "error", "content": "", category: 'message'});
         });
     }
 
