@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -25,5 +26,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity handleValidationException() {
         return new ResponseEntity<>(new ErrorMessage(400, "invalidArgument", "Body not valid"), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpServerErrorException.class)
+    public ResponseEntity handleServerException(HttpServerErrorException e) {
+        logger.error("Unknown error while usinh an external service", e);
+        return new ResponseEntity<>(new ErrorMessage(e.getStatusCode().value(), "unknownError", "Error while using an external web service"),
+                e.getStatusCode());
     }
 }
