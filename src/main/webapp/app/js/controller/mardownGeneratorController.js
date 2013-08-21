@@ -23,6 +23,10 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw)
         return "";
     };
 
+    $scope.isAnArticle = function (card) {
+        return $scope.cardType(card) === 'article';
+    };
+
     $scope.fetchRaw = function (githubUrl, type) {
         GithubRaw.query({url: githubUrl}, function (result) {
             $scope.markdown.text = result.content;

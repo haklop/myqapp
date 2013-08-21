@@ -24,6 +24,25 @@ a {
 #md-main {
 }
 
+.md-title {
+    font-size: 0.90em;
+}
+
+.md-news-border {
+    border-left: 6px solid #34b27d;
+}
+
+.md-article-border {
+    border-left: 6px solid #dbdb57;
+}
+
+.md-item {
+    border-top: 1px solid #ddd;
+    padding: 0.9em 1em;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
 /* General */
 
 .myqapp-alert {
@@ -87,6 +106,8 @@ a {
     margin-left:-350px;
     border-right: 1px solid #ddd;
 }
+
+
 
 /* HELPER CLASSES */
 .primary-button,
@@ -165,16 +186,11 @@ a {
 
 
 /* feed Item Styles */
-.feed-item,
-.md-item{
+.feed-item{
     padding: 0.9em 1em;
     border-bottom: 1px solid #ddd;
     border-left: 6px solid transparent;
     position: relative;
-}
-
-.md-item {
-    border-top: 1px solid #ddd;
 }
 
 .feed-action {
@@ -186,7 +202,8 @@ a {
 }
 
 .feed-name,
-.feed-title {
+.feed-title,
+.md-title{
     margin: 0;
 }
 

@@ -3,9 +3,12 @@
         <input type="text" ng-model="gitHubFilter" placeholder="Filter">
         <hr>
 
-        <div class="md-item pure-g" ng-repeat="card in cards | filter:gitHubFilter" ng-click="fetchRaw(card.githubUrl, cardType(card))">
+        <div class="md-item pure-g" ng-repeat="card in cards | filter:gitHubFilter"
+             ng-click="fetchRaw(card.githubUrl, cardType(card))"
+             ng-class="{'md-article-border': isAnArticle(card), 'md-news-border': !isAnArticle(card)}">
             <div class="pure-u-3-4">
-                <h4 class="feed-title">{{card.name}}</h4>
+                <h5 class="feed-name">{{card.dateLastActivity | date:'dd/MM/yyyy'}}</h5>
+                <h4 class="md-title">{{card.name}}</h4>
             </div>
         </div>
 
@@ -13,7 +16,7 @@
 
         <div class="md-item pure-g" ng-repeat="card in cardsNoGithub">
             <div class="pure-u-3-4">
-                <h4 class="feed-title">{{card.name}}</h4>
+                <h4 class="md-title">{{card.name}}</h4>
             </div>
         </div>
     </div>
