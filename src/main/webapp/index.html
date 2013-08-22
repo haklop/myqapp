@@ -36,7 +36,7 @@
         <div class="pure-u-3-4">
             <div class="myqapp-alert" ng-repeat="alert in alerts" ng-class="getClassAlert(alert)">
                 <a class="pure-button myqapp-alert-close" ng-click="removeAlert(alert)">x</a>
-                <span class="myqapp-alert-title">{{alert.title}}</span> {{alert.content}}</div>
+                <span class="myqapp-alert-title">{{alert.title}}</span> <span ng-bind-html-unsafe="alert.content"></span></div>
         </div>
     </div>
 
