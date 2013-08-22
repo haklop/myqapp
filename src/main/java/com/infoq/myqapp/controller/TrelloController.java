@@ -60,10 +60,7 @@ public class TrelloController {
             return new ResponseEntity<>(new ErrorMessage(HttpStatus.CONFLICT.value(), "trello", "Card already inserted"),
                     HttpStatus.CONFLICT);
         } catch (HttpClientErrorException e) {
-            if (e.getStatusCode().value() == 401) {
-                return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is expired"),
-                        HttpStatus.FORBIDDEN);
-            }
+            return catchClientException(e);
         }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -77,8 +74,12 @@ public class TrelloController {
                     HttpStatus.FORBIDDEN);
         }
 
-        // TODO catch token error
-        return new ResponseEntity<>(trelloService.getLists(accessToken), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(trelloService.getLists(accessToken), HttpStatus.OK);
+        } catch (HttpClientErrorException e) {
+            return catchClientException(e);
+        }
+
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/list/{listId}")
@@ -90,8 +91,12 @@ public class TrelloController {
                     HttpStatus.FORBIDDEN);
         }
 
-        // TODO catch token error
-        return new ResponseEntity<>(trelloService.getList(accessToken, listId), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(trelloService.getList(accessToken, listId), HttpStatus.OK);
+        } catch (HttpClientErrorException e) {
+            return catchClientException(e);
+        }
+
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")
@@ -149,13 +154,27 @@ public class TrelloController {
                     HttpStatus.FORBIDDEN);
         }
 
-        List<Member> members = trelloService.getMembers(accessToken); // TODO catch token error
-        return new ResponseEntity<>(members, HttpStatus.OK);
+        try {
+            List<Member> members = trelloService.getMembers(accessToken);
+            return new ResponseEntity<>(members, HttpStatus.OK);
+        } catch (HttpClientErrorException e) {
+            return catchClientException(e);
+        }
+
     }
 
     private Token getToken(WebRequest request) {
         String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);
         UserProfile userProfile = userService.get(email);
         return userProfile.getTokenTrello();
+    }
+
+    private ResponseEntity catchClientException(HttpClientErrorException e) {
+        if (e.getStatusCode().value() == 401) {
+            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is expired"),
+                    HttpStatus.FORBIDDEN);
+        } else {
+            throw e;
+        }
     }
 }
