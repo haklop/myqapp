@@ -354,6 +354,10 @@ a {
     padding: 1em 1em;
 }
 
+.conf-form {
+    padding-left: 1em;
+}
+
 
 @media (max-width: 867px) {
 
