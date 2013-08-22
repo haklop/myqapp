@@ -1,4 +1,4 @@
-function HeaderController($scope, $location, $modal, $q, UserService) {
+function HeaderController($scope, $location, UserService) {
     $scope.userinfo = UserService.query();
 
     $scope.isActive = function (route) {

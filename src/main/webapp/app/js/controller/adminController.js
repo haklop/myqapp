@@ -7,11 +7,11 @@ function AdminCtrl($scope, User) {
             User.remove({userId: user.email});
             $scope.refresh();
         }
-    }
+    };
 
     $scope.refresh = function () {
         $scope.users = User.findAll();
-    }
+    };
 
     $scope.formatRoles = function (user) {
         var s = "";

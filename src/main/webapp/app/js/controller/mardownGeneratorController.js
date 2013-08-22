@@ -1,7 +1,5 @@
-function MarkdownGeneratorCtrl($scope, $rootScope, MarkdownGenerator, TrelloList, GithubRaw) {
+function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw) {
     $scope.markdown = {};
-
-    $scope.alerts = []; // TODO : use AlertController
 
     $scope.generateHtml = function () {
         if ($scope.markdown.text) {
@@ -37,10 +35,6 @@ function MarkdownGeneratorCtrl($scope, $rootScope, MarkdownGenerator, TrelloList
             }
         })
     };
-
-    $scope.$on('handleAlert', function(evt, alert) {
-        $scope.alerts.push(alert);
-    });
 
     $scope.isRefreshing = false;
 
