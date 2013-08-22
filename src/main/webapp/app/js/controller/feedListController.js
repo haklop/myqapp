@@ -44,7 +44,7 @@ function FeedListCtrl($scope, $rootScope, $routeParams, Feed, RefreshFeed, Trell
             if (response.status === 409) {
                 $rootScope.$broadcast('handleAlert', {"title": "Erreur lors de la création de la carte dans Trello",
                     "type": "warning", "content": "Carte déjà existante", category: 'message'});
-            } else {
+            } else if (response.status !== 403) {
                 $rootScope.$broadcast('handleAlert', {"title": "Erreur lors de la création de la carte dans Trello",
                     "type": "error", "content": "", category: 'message'});
             }

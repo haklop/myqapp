@@ -1,4 +1,24 @@
-<div class="row-fluid">
+<div class="feed-content">
+    <div class="page-header pure-g">
+        <div class="pure-u-3-4">
+            <button class="pure-button feed-action" ng-click="today()">
+                Today
+            </button>
+            <button class="pure-button feed-action" ng-click="nextMonth()">
+                <i class="icon-chevron-right"></i>
+            </button>
+            <button class="pure-button feed-action" ng-click="previousMonth()">
+                <i class="icon-chevron-left"></i>
+            </button>
+            <h1 class="content-subhead">Calendrier des conférences</h1>
+        </div>
+    </div>
+
+    <div class="pure-u-1">
+        <div id="conf-calendar">
+        </div>
+    </div>
+
     <div class="span3" >
         <fieldset ng-show="isEditor()">
             <legend>Ajouter une conférence</legend>
@@ -47,14 +67,6 @@
                 </div>
             </form>
         </fieldset>
-    </div>
-    <div class="span9">
-        <div class="alerts">
-            <div class="alert fade" ng-repeat="alert in alerts" bs-alert="alert"></div>
-        </div>
-
-        <div id="conf-calendar">
-        </div>
     </div>
 
 </div>

@@ -38,10 +38,10 @@ function AlertController($scope, $q, $modal) {
     };
 
     var modalTrelloToken = $modal({template: '/app/partials/trelloTokenModal.html',
-        persist: true, show: false, backdrop: 'static', scope: $scope});
+        persist: false, show: false, backdrop: 'static', scope: $scope});
 
     var modalGithubToken = $modal({template: '/app/partials/githubTokenModal.html',
-        persist: true, show: false, backdrop: 'static', scope: $scope});
+        persist: false, show: false, backdrop: 'static', scope: $scope});
 
 }
 

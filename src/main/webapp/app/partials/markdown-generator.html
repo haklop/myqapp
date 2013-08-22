@@ -42,25 +42,35 @@
     </div>
 
     <div class="pure-u-1" id="md-main">
-        <form class="form-horizontal" name="generateMarkdownForm" novalidate>
-            <textarea style="width: 100%; height: 300px;" ng-model="markdown.text"></textarea>
+        <div>
+            <form class="pure-form pure-form-stacked" name="generateMarkdownForm" novalidate>
+                <fieldset>
+                    <legend>Legend</legend>
+                    <textarea class="md-textarea pure-input-1" ng-model="markdown.text"></textarea>
 
-            <label class="radio inline">
-                <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
-            </label>
-            <label class="radio inline">
-                <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
-            </label>
-            <label class="radio inline">
-                <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/"
-                       ng-model="markdown.node" required/>
-            </label>
-            <label class="radio inline">
-                <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
-            </label>
-        </form>
+                    <label class="radio inline">
+                        <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
+                    </label>
+                    <label class="radio inline">
+                        <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/"
+                               ng-model="markdown.node" required/>
+                    </label>
+                    <label class="radio inline">
+                        <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
+                    </label>
 
-        <textarea style="width: 100%; height: 300px;" ng-model="generated" disabled></textarea>
+                </fieldset>
+            </form>
+
+            <form class="pure-form pure-form-stacked">
+                <textarea class="md-textarea pure-input-1" ng-model="generated" disabled></textarea>
+            </form>
+        </div>
+
+
    </div>
 </div>
 
