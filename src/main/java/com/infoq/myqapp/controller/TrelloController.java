@@ -3,11 +3,13 @@ package com.infoq.myqapp.controller;
 import com.infoq.myqapp.domain.ErrorMessage;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.UserProfile;
+import com.infoq.myqapp.domain.ValidatedContent;
 import com.infoq.myqapp.service.TrelloAuthenticationService;
 import com.infoq.myqapp.service.TrelloService;
 import com.infoq.myqapp.service.UserService;
 import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.domain.Member;
+import com.julienvey.trello.domain.TList;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
@@ -109,7 +111,9 @@ public class TrelloController {
         }
 
         try {
-            return new ResponseEntity<>(trelloService.getValidatedList(accessToken), HttpStatus.OK);
+            TList list = trelloService.getValidatedList(accessToken);
+            List<ValidatedContent> validatedContents = trelloService.enhancedValidatedContentList(list);
+            return new ResponseEntity<>(validatedContents, HttpStatus.OK);
         } catch (HttpClientErrorException e) {
             return catchClientException(e);
         }

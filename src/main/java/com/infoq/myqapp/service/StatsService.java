@@ -283,11 +283,12 @@ public class StatsService {
 
             TrelloMember trelloMember = new TrelloMember();
             trelloMember.setFullName(memberRetrieveFromTrello.getFullName());
-            trelloMember.setGravatarHash(memberRetrieveFromTrello.getGravatarHash());
             trelloMember.setTrelloId(memberRetrieveFromTrello.getId());
 
-            if (memberRetrieveFromTrello.getAvatarHash() != null) {
-                trelloMember.setTrelloAvatarUrl("https://trello-avatars.s3.amazonaws.com/" + memberRetrieveFromTrello.getAvatarHash() + "/170.png");
+            if (memberRetrieveFromTrello.getAvatarHash() != null && !memberRetrieveFromTrello.getAvatarHash().isEmpty()) {
+                trelloMember.setAvatarUrl("https://trello-avatars.s3.amazonaws.com/" + memberRetrieveFromTrello.getAvatarHash() + "/170.png");
+            } else if (memberRetrieveFromTrello.getGravatarHash() != null && !memberRetrieveFromTrello.getGravatarHash().isEmpty()) {
+                trelloMember.setAvatarUrl("http://www.gravatar.com/avatar/" + memberRetrieveFromTrello.getGravatarHash() + "?s=170");
             }
 
             trelloMembers.add(trelloMember);

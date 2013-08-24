@@ -1,9 +1,8 @@
 package com.infoq.myqapp.service;
 
-import com.infoq.myqapp.domain.FeedEntry;
-import com.infoq.myqapp.domain.TrelloHeartbeat;
-import com.infoq.myqapp.domain.TrelloLabel;
+import com.infoq.myqapp.domain.*;
 import com.infoq.myqapp.repository.FeedRepository;
+import com.infoq.myqapp.repository.TrelloMemberRepository;
 import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.*;
@@ -40,6 +39,9 @@ public class TrelloService {
 
     @Resource
     private FeedRepository feedRepository;
+
+    @Resource
+    private TrelloMemberRepository trelloMemberRepository;
 
     public void addCardToTrello(FeedEntry feedEntry, Token accessToken) {
         FeedEntry entry = feedRepository.findOne(feedEntry.getLink());
@@ -78,9 +80,9 @@ public class TrelloService {
         return getList(accesToken, trelloValidatedListId);
     }
 
-    private Member getUserInfo(String username, Token accessToken) {
+    public Member getUserInfo(String username, Token accessToken) {
         Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
-        return trelloApi.getBasicMemberInformation(username);
+        return trelloApi.getMemberInformation(username);
     }
 
     public List<Member> getMembers(Token accessToken) {
@@ -131,6 +133,55 @@ public class TrelloService {
         }
 
         return result;
+    }
+
+    public List<ValidatedContent> enhancedValidatedContentList(TList list) {
+        List<ValidatedContent> validatedContents = new ArrayList<>();
+        for (Card card : list.getCards()) {
+            ValidatedContent content = new ValidatedContent();
+            content.setName(card.getName());
+            content.setDateLastActivity(card.getDateLastActivity());
+            content.setTrelloUrl(card.getUrl());
+
+            content.setOriginal(false);
+            content.setMentoring(false);
+            content.setArticle(false);
+            for (Label label : card.getLabels()) {
+                switch (label.getName()) {
+                    case "Articles":
+                        content.setArticle(true);
+                        break;
+                    case "Original":
+                        content.setOriginal(true);
+                        break;
+                    case "Mentorat":
+                        content.setMentoring(true);
+                        break;
+                }
+            }
+
+            int i = 0;
+            for (String memberId : card.getIdMembers()) {
+                TrelloMember trelloMember = trelloMemberRepository.findOne(memberId);
+                if (trelloMember != null) {
+                    if (i == 0 && !content.isMentoring()) {
+                        content.setAuthor(trelloMember);
+                    } else if (i == 0) {
+                        content.setValidator(trelloMember);
+                        content.setMentor(trelloMember);
+                    } else if (i == 1) {
+                        content.setValidator(trelloMember);
+                    }
+                }
+                i++;
+            }
+
+            //content.setGithubUrl();
+            //content.setInfoqUrl();
+            validatedContents.add(content);
+        }
+
+        return validatedContents;
     }
 
     private Card buildCardFromFeedEntry(FeedEntry feedEntry) {

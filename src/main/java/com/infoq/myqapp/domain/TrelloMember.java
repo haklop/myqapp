@@ -8,8 +8,7 @@ public class TrelloMember {
     private String trelloId;
     private String fullName;
 
-    private String trelloAvatarUrl;
-    private String gravatarHash;
+    private String avatarUrl;
 
     public String getTrelloId() {
         return trelloId;
@@ -27,19 +26,11 @@ public class TrelloMember {
         this.fullName = fullName;
     }
 
-    public String getTrelloAvatarUrl() {
-        return trelloAvatarUrl;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setTrelloAvatarUrl(String trelloAvatarUrl) {
-        this.trelloAvatarUrl = trelloAvatarUrl;
-    }
-
-    public String getGravatarHash() {
-        return gravatarHash;
-    }
-
-    public void setGravatarHash(String gravatarHash) {
-        this.gravatarHash = gravatarHash;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }
