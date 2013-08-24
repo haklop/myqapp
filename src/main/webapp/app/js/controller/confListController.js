@@ -9,6 +9,7 @@ function ConfListCtrl($scope, $rootScope, Confs, UserService) {
                 $rootScope.$broadcast('handleAlert', {"title": "Conference ajoutée", "type": "success", "content": "",
                     category: 'message'});
                 $scope.newconf = {};
+                $('#conf-calendar').fullCalendar('refetchEvents');
 
             }, function () {
                 $rootScope.$broadcast('handleAlert', {"title": "Erreur lors de la création de la conference", "type": "error", "content": "",

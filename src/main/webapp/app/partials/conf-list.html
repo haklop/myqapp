@@ -31,26 +31,16 @@
                         <input type="text" id="inputName" placeholder="Nom de la conférence" ng-model="newconf.name" required>
 
                         <label for="inputLocation">Lieux</label>
-                        <input type="text" id="inputLocation" placeholder="Lieux de la conférence" ng-model="newconf.location"
-                               required>
+                        <input type="text" id="inputLocation" placeholder="Lieux de la conférence" ng-model="newconf.location" required>
 
                         <label for="inputWebsite">URL</label>
-                        <input type="url" id="inputWebsite" placeholder="Site web de la conférence" ng-model="newconf.website"
-                               required>
+                        <input type="url" id="inputWebsite" placeholder="Site web de la conférence" ng-model="newconf.website" required>
 
                         <label for="inputStartDate">Début</label>
-                        <input id="inputStartDate" class="input-small" type="date" ng-model="newconf.startDate"
-                               data-date-format="dd/mm/yyyy" bs-datepicker data-toggle="datepicker" required>
-                        <!--button type="button" class="pure-button" data-toggle="datepicker"><i class="icon-calendar"></i>
-                        </button-->
+                        <input id="inputStartDate" class="input-small" type="date" ng-model="newconf.startDate" required>
 
                         <label for="inputEndDate">Fin</label>
-                        <input id="inputEndDate" class="input-small" type="date" ng-model="newconf.endDate"
-                               data-date-weekStart="1" data-date-format="dd/mm/yyyy" bs-datepicker
-                               data-toggle="datepicker" required>
-                        <!--button type="button" class="pure-button" data-toggle="datepicker"><i class="icon-calendar"></i>
-                        </button-->
-
+                        <input id="inputEndDate" class="input-small" type="date" ng-model="newconf.endDate" required>
 
                         <button type="submit" class="pure-button pure-button-primary">Ajouter</button>
 
