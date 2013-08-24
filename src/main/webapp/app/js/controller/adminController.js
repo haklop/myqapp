@@ -18,6 +18,22 @@ function AdminCtrl($scope, User, UserService) {
         });
     };
 
+    $scope.roles = [
+        {
+            name: 'ROLE_EDITOR',
+            checked: false
+        },
+        {
+            name: 'ROLE_ADMIN',
+            checked: false
+        }
+    ];
+
+    $scope.newUser = {
+        roles: $scope.roles.slice(0),
+        created: false
+    };
+
     $scope.formatRoles = function (user) {
         var s = "";
         var separator = "";
@@ -46,6 +62,21 @@ function AdminCtrl($scope, User, UserService) {
         });
     };
 
+    $scope.createUser = function (user) {
+        var authorities = [];
+        for (var i = 0; i < user.roles.length; i++) {
+            if (user.roles[i].checked) {
+                authorities.push(user.roles[i].name)
+            }
+        }
+
+        user.authorities = authorities;
+        User.create(user, function () {
+            initNewUser();
+            $scope.refresh();
+        });
+    };
+
     $scope.getRoles = function(user) {
         var roles = $scope.roles.slice(0);
         for (var i = 0; i < roles.length; i++) {
@@ -59,14 +90,10 @@ function AdminCtrl($scope, User, UserService) {
         return UserService.hasAuthority(user, role);
     };
 
-    $scope.roles = [
-        {
-            name: 'ROLE_EDITOR',
-            checked: false
-        },
-        {
-            name: 'ROLE_ADMIN',
-            checked: false
-        }
-    ];
+    function initNewUser() {
+        $scope.newUser = {
+            roles: $scope.roles.slice(0),
+            created: false
+        };
+    }
 }

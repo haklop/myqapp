@@ -4,7 +4,7 @@
             <button class="pure-button feed-action" ng-click="refresh()" ng-disabled="isRefreshing" title="Rafraîchir le feed">
                 <i class="icon-refresh" ng-class="{'icon-spin': feedRefreshing}"></i>
             </button>
-            <a class="pure-button feed-action" title="Ajouter un utilisateur">
+            <a class="pure-button feed-action" title="Ajouter un utilisateur" ng-click="newUser.created=true">
                 <i class="icon-plus">Nouvel utilisateur</i>
             </a>
 
@@ -24,16 +24,35 @@
                 <th></th>
             </tr>
             </thead>
+            <tbody ng-show="newUser.created">
+                <td>
+                    <input type="text" placeholder="Prénom" ng-model="newUser.firstName" required>
+                </td>
+                <td>
+                    <input type="text" placeholder="Nom" ng-model="newUser.lastName" required>
+                </td>
+                <td>
+                    <input type="email" placeholder="Email" ng-model="newUser.email" required>
+                </td>
+                <td>
+                    <label ng-repeat="role in newUser.roles">
+                        <input type="checkbox" value="{{role.name}}" ng-model="newUser.roles[$index].checked"> {{role.name}}<br>
+                    </label>
+                </td>
+                <td><a href="" class="icon-save" ng-click="createUser(newUser)" title="Créer l'utilisateur"></a></td>
+                <td><a href="" class="icon-undo" ng-click="newUser.created=false" title="Annuler"></a></td>
+            </tbody>
+
             <tbody ng-repeat="user in users" ng-switch="user.edited" ng-init="user.roles=getRoles(user)">
             <tr ng-switch-when="true">
                 <td>
-                    <input type="text" id="inputFirstName" placeholder="Prénom" ng-model="user.firstName" required>
+                    <input type="text" placeholder="Prénom" ng-model="user.firstName" required>
                 </td>
                 <td>
-                    <input type="text" id="inputLastName" placeholder="Nom" ng-model="user.lastName" required>
+                    <input type="text" placeholder="Nom" ng-model="user.lastName" required>
                 </td>
                 <td>
-                    <input type="email" id="inputEmail" placeholder="Email" ng-model="user.email" required>
+                    <input type="email" placeholder="Email" ng-model="user.email" required>
                 </td>
                 <td>
                     <label ng-repeat="role in user.roles">
@@ -42,7 +61,7 @@
                     </label>
                 </td>
                 <td><a href="" class="icon-save" ng-click="updateUser(user)" title="Enregistrer les modifications"></a></td>
-                <td></td>
+                <td><a href="" class="icon-undo" ng-click="refresh()" title="Annuler"></a></td>
 
             </tr>
             <tr ng-switch-default>
