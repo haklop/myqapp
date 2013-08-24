@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.julienvey.trello.utils.ArgUtils.arg;
 
@@ -176,12 +178,30 @@ public class TrelloService {
                 i++;
             }
 
-            //content.setGithubUrl();
-            //content.setInfoqUrl();
+            List<String> urls = extractUrls(card.getDesc());
+            for (String url : urls) {
+                if (url.contains("github.com")) {
+                    content.setGithubUrl(url);
+                } else if (url.contains("infoq.com")) {
+                    content.setInfoqUrl(url);
+                }
+            }
+
             validatedContents.add(content);
         }
 
         return validatedContents;
+    }
+
+    private List<String> extractUrls(String content) {
+        List<String> result = new ArrayList<String>();
+        String urlPattern = "((https?):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        Pattern p = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(content);
+        while (m.find()) {
+            result.add(content.substring(m.start(0), m.end(0)));
+        }
+        return result;
     }
 
     private Card buildCardFromFeedEntry(FeedEntry feedEntry) {

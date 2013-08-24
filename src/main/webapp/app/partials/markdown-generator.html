@@ -9,24 +9,24 @@
             </button>
         </form>
 
-        <div class="pure-g md-spinner" ng-show="isRefreshing && !cards">
+        <div class="pure-g md-spinner" ng-show="isRefreshing && cards.length === 0">
             <i class="icon-spinner icon-spin icon-4x"></i>
         </div>
 
         <div class="md-item pure-g" ng-repeat="card in cards | filter:gitHubFilter"
-             ng-click="fetchRaw(card.githubUrl, cardType(card))"
-             ng-class="{'md-article-border': isAnArticle(card), 'md-news-border': !isAnArticle(card)}">
+             ng-click="fetchRaw(card.githubUrl, card.article)"
+             ng-class="{'md-article-border': card.article, 'md-news-border': !card.article}">
 
             <div class="pure-u">
-                <img class="md-trello-avatar" alt="Eric Ferraiuolo's avatar" src="/img/common/ericf-avatar.png" height="64" width="64">
+                <img class="md-trello-avatar" alt="{{card.fullName}}" ng-src="{{card.avatarUrl}}" height="64" width="64">
             </div>
             <div class="pure-u-3-4">
                 <h5 class="feed-name">{{card.dateLastActivity | date:'dd/MM/yyyy'}}</h5>
                 <h4 class="md-title">{{card.name}}</h4>
-                <a class="pure-button md-action" href="{{card.githubUrl}}" target="_blank" title="Consulter la carte Trello">
+                <a class="pure-button md-action" href="{{card.githubUrl}}" target="_blank" title="Consulter la traduction sur GitHub">
                     <i class="icon-github"></i>
                 </a>
-                <a class="pure-button md-action" href="{{card.url}}" target="_blank" title="Consulter la traduction sur GitHub">
+                <a class="pure-button md-action" href="{{card.trelloUrl}}" target="_blank" title="Consulter la carte Trello">
                     <i class="icon-trello"></i>
                 </a>
             </div>
@@ -34,9 +34,19 @@
 
         <h5 ng-show="!isRefreshing && cardsNoGithub">Sans lien GitHub dans la description de la carte sur Trello:</h5>
 
-        <div class="md-item pure-g" ng-repeat="card in cardsNoGithub">
+        <div class="md-item pure-g" ng-repeat="card in cardsNoGithub | filter:gitHubFilter"
+             ng-click="fetchRaw(card.githubUrl, card.article)"
+             ng-class="{'md-article-border': card.article, 'md-news-border': !card.article}">
+
+            <div class="pure-u">
+                <img class="md-trello-avatar" alt="{{card.fullName}}" ng-src="{{card.avatarUrl}}" height="64" width="64">
+            </div>
             <div class="pure-u-3-4">
+                <h5 class="feed-name">{{card.dateLastActivity | date:'dd/MM/yyyy'}}</h5>
                 <h4 class="md-title">{{card.name}}</h4>
+                <a class="pure-button md-action" href="{{card.trelloUrl}}" target="_blank" title="Consulter la carte Trello">
+                    <i class="icon-trello"></i>
+                </a>
             </div>
         </div>
     </div>
