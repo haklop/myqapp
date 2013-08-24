@@ -24,7 +24,7 @@
         <fest-assert.version>1.4</fest-assert.version>
         <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
         <scribe.version>1.3.3</scribe.version>
-        <trello-java-wrapper.version>0.2</trello-java-wrapper.version>
+        <trello-java-wrapper.version>0.3-SNAPSHOT</trello-java-wrapper.version>
         <guava.version>14.0.1</guava.version>
         <mongo-java-driver.version>2.10.1</mongo-java-driver.version>
         <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>

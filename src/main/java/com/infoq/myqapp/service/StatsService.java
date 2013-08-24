@@ -3,12 +3,14 @@ package com.infoq.myqapp.service;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.infoq.myqapp.domain.*;
+import com.infoq.myqapp.repository.TrelloMemberRepository;
 import com.infoq.myqapp.repository.UserActivityRepository;
 import com.infoq.myqapp.repository.UserStatRepository;
 import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
+import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -49,6 +51,9 @@ public class StatsService {
 
     @Resource
     private UserActivityRepository userActivityRepository;
+
+    @Resource
+    private TrelloMemberRepository trelloMemberRepository;
 
     @Resource
     private TrelloService trelloService;
@@ -161,7 +166,10 @@ public class StatsService {
         UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("ROLE_ADMIN")),
                 UserProfile.class);
 
-        Map<String, Member> memberMap = mapMemberList(trelloService.getMembers(adminUser.getTokenTrello()));
+        List<Member> members = trelloService.getMembers(adminUser.getTokenTrello());
+        registerTrelloMember(members, adminUser.getTokenTrello());
+
+        Map<String, Member> memberMap = mapMemberList(members);
         List<TList> lists = trelloService.getLists(adminUser.getTokenTrello());
 
         userStatRepository.deleteAll();
@@ -266,5 +274,25 @@ public class StatsService {
         noneMember.setId(NONE);
         memberMap.put(NONE, noneMember);
         return memberMap;
+    }
+
+    private void registerTrelloMember(List<Member> members, Token token) {
+        List<TrelloMember> trelloMembers = new ArrayList<>();
+        for (Member member : members) {
+            Member memberRetrieveFromTrello = trelloService.getUserInfo(member.getUsername(), token);
+
+            TrelloMember trelloMember = new TrelloMember();
+            trelloMember.setFullName(memberRetrieveFromTrello.getFullName());
+            trelloMember.setGravatarHash(memberRetrieveFromTrello.getGravatarHash());
+            trelloMember.setTrelloId(memberRetrieveFromTrello.getId());
+
+            if (memberRetrieveFromTrello.getAvatarHash() != null) {
+                trelloMember.setTrelloAvatarUrl("https://trello-avatars.s3.amazonaws.com/" + memberRetrieveFromTrello.getAvatarHash() + "/170.png");
+            }
+
+            trelloMembers.add(trelloMember);
+        }
+
+        trelloMemberRepository.save(trelloMembers);
     }
 }
