@@ -57,6 +57,10 @@ a {
     margin-top: 0.3em;
 }
 
+.md-form-group {
+    margin-bottom: 0.2em;
+}
+
 .md-filter {
     padding: .2em .2em;
 }

@@ -53,82 +53,42 @@
 
     <div class="pure-u-1">
         <div id="md-main">
-            <form class="pure-form pure-form-stacked" name="generateMarkdownForm" novalidate>
+            <form class="pure-form" name="generateMarkdownForm" novalidate>
                 <fieldset>
-                    <legend>Legend</legend>
-                    <textarea class="md-textarea pure-input-1" ng-model="markdown.text"></textarea>
+                    <legend>Génération du HTML</legend>
+                    <div class="pure-g-r">
+                        <div class="pure-u-1 md-form-group">
+                            <textarea class="md-textarea pure-input-1" ng-model="markdown.text"></textarea>
+                        </div>
+                    </div>
 
-                    <label class="radio inline">
-                        <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
-                    </label>
-                    <label class="radio inline">
-                        <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
-                    </label>
-                    <label class="radio inline">
-                        <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/"
-                               ng-model="markdown.node" required/>
-                    </label>
-                    <label class="radio inline">
-                        <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
-                    </label>
+                    <div class="pure-g-r">
+                        <div class="pure-u-1 md-form-group">
+                            <label for="newsRadio">
+                                <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
+                            </label>
+
+                            <label for="articleRadio">
+                                <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
+                            </label>
+
+                            <input type="text" name="node" id="node" placeholder="/fr/articles/" ng-model="markdown.node" required/>
+                        </div>
+                    </div>
+
+                    <div class="pure-g-r">
+                        <div class="pure-u-1 md-form-group">
+                            <button class="pure-button pure-button-primary" ng-click="generateHtml()">Générer HTML</button>
+                        </div>
+                    </div>
 
                 </fieldset>
             </form>
 
             <form class="pure-form pure-form-stacked">
-                <textarea class="md-textarea pure-input-1" ng-model="generated" disabled></textarea>
+                <textarea class="md-textarea pure-input-1" ng-model="generated"></textarea>
             </form>
         </div>
 
-
    </div>
 </div>
-
-        <!--
-<div class="row-fluid">
-    <div class="span4">
-        <input type="text" ng-model="gitHubFilter" placeholder="Filter">
-        <table class="table table-striped">
-            <tbody>
-            <tr ng-repeat="card in cards | filter:gitHubFilter ">
-                <td><a href="{{card.githubUrl}}">{{card.name}}</a></td>
-                <td><button class="btn btn-success" ng-click="fetchRaw(card.githubUrl, cardType(card))">Fetch</button></td>
-            </tr>
-            </tbody>
-        </table>
-        <hr>
-
-        Sans lien GitHub dans la description de la carte sur Trello
-        <table class="table table-striped">
-            <tbody>
-            <tr ng-repeat="card in cardsNoGithub">
-                <td><a href="{{card.url}}">{{card.name}}</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="span8">
-
-        <form class="form-horizontal" name="generateMarkdownForm" novalidate>
-            <textarea style="width: 100% !important; height: 300px;" ng-model="markdown.text"></textarea>
-
-            <label class="radio inline">
-                <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
-            </label>
-            <label class="radio inline">
-                <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
-            </label>
-            <label class="radio inline">
-                <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/"
-                       ng-model="markdown.node" required/>
-            </label>
-            <label class="radio inline">
-                <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
-            </label>
-        </form>
-
-        <textarea style="width: 100% !important; height: 300px;" ng-model="generated" disabled></textarea>
-    </div>
-
-</div>
-        -->
