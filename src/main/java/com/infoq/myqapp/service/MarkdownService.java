@@ -90,9 +90,21 @@ public class MarkdownService {
 
         //remove the link to akamai
         Element parent = image.parent();
-        if ("a".equals(parent.tagName()) && parent.attr("href").contains("akamai") && parent.attr("href").contains("github")) {
+        if (parentIsDirty(parent)) {
             image.parent().replaceWith(image);
         }
+    }
+
+    private boolean parentIsDirty(Element parent) {
+        if ("a".equals(parent.tagName())) {
+            if (parent.attr("href").contains("akamai") && parent.attr("href").contains("github")) {
+                return true;
+            } else if (parent.attr("href").contains("fastly.net") && parent.attr("href").contains("github")) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     private String removeBody(Document myAmazingContent) {
