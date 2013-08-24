@@ -4,6 +4,7 @@
             <a class="pure-button feed-action" title="Ajouter un utilisateur">
                 <i class="icon-plus">Nouvel utilisateur</i>
             </a>
+
             <h1 class="content-subhead">Administration</h1>
         </div>
     </div>
@@ -11,57 +12,77 @@
     <div class="pure-u-1 stats-user-list">
         <table class="pure-table pure-table-horizontal user-table">
             <thead>
-                <tr>
-                    <th>Prénom</th>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th>Rôles</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="user in users">
-                    <td>{{user.firstName}}</td>
-                    <td>{{user.lastName}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{formatRoles(user)}}</td>
-                    <td><a href="" class="icon-pencil" bs-modal="'app/partials/userCreationModal.html'" ng-controller="UserModificationCtrl" title="Modifier"></a></td>
-                    <td><a href="" class="icon-trash" ng-click="remove(user)" title="Supprimer"></a></td>
-                </tr>
-                </tbody>
+            <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôles</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="user in users" ng-switch="user.edited" ng-init="user.roles=getRoles(user)">
+            <tr ng-switch-when="true">
+                <td>
+                    <input type="text" id="inputFirstName" placeholder="Prénom" ng-model="user.firstName" required>
+                </td>
+                <td>
+                    <input type="text" id="inputLastName" placeholder="Nom" ng-model="user.lastName" required>
+                </td>
+                <td>
+                    <input type="email" id="inputEmail" placeholder="Email" ng-model="user.email" required>
+                </td>
+                <td>
+                    <label ng-repeat="role in user.roles">
+                        <input type="checkbox" value="{{role.name}}" ng-checked="hasAuthority(user, role.name)"
+                               ng-model="user.roles[$index].checked"> {{role.name}}<br>
+                    </label>
+                </td>
+                <td><a href="" class="icon-save" ng-click="updateUser(user)" title="Enregistrer les modifications"></a></td>
+                <td></td>
+
+            </tr>
+            <tr ng-switch-default>
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>{{user.email}}</td>
+                <td>{{formatRoles(user)}}</td>
+                <td><a href="" class="icon-pencil" ng-click="user.edited=true" title="Modifier"></a></td>
+                <td><a href="" class="icon-trash" ng-click="remove(user)" title="Supprimer"></a></td>
+            </tr>
+            </tbody>
         </table>
     </div>
 </div>
 
 
-        <!--
+<!--
 
 <a type="button" class="btn" bs-modal="'app/partials/userCreationModal.html'" ng-controller="UserCreationCtrl">Nouvel utilisateur</a>
 
 <div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Rôles</th>
-            <th width="20px"></th>
-            <th width="20px"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="user in users">
-            <td>{{user.firstName}}</td>
-            <td>{{user.lastName}}</td>
-            <td>{{user.email}}</td>
-            <td>{{formatRoles(user)}}</td>
-            <td><a href="" class="icon-pencil" bs-modal="'app/partials/userCreationModal.html'" ng-controller="UserModificationCtrl"></a></td>
-            <td><a href="" class="icon-trash" ng-click="remove(user)"></a></td>
-        </tr>
-        </tbody>
-    </table>
+<table class="table table-striped">
+<thead>
+<tr>
+    <th>Prénom</th>
+    <th>Nom</th>
+    <th>Email</th>
+    <th>Rôles</th>
+    <th width="20px"></th>
+    <th width="20px"></th>
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat="user in users">
+    <td>{{user.firstName}}</td>
+    <td>{{user.lastName}}</td>
+    <td>{{user.email}}</td>
+    <td>{{formatRoles(user)}}</td>
+    <td><a href="" class="icon-pencil" bs-modal="'app/partials/userCreationModal.html'" ng-controller="UserModificationCtrl"></a></td>
+    <td><a href="" class="icon-trash" ng-click="remove(user)"></a></td>
+</tr>
+</tbody>
+</table>
 </div>
 
-                -->
+        -->
