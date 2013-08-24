@@ -24,6 +24,10 @@ angularModule.factory('TrelloList', function ($resource) {
     });
 });
 
+angularModule.factory('TrelloValidatedList', function ($resource) {
+    return $resource('api/trello/validated');
+});
+
 angularModule.factory('TrelloMember', function ($resource) {
     return $resource('api/trello/userinfo', {}, {
         query: {method: 'GET'}

@@ -1,4 +1,4 @@
-function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw) {
+function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, GithubRaw) {
     $scope.markdown = {};
 
     $scope.generateHtml = function () {
@@ -41,8 +41,7 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw)
     $scope.retrieveList = function retrieveList() {
         $scope.isRefreshing = true;
 
-        // FIXME Ne pas mettre cet ID en dur ici
-        TrelloList.query({id: "51499c4cb867d5eb59006794"}, function (result) {
+        TrelloValidatedList.get({}, function (result) {
             $scope.isRefreshing = false;
 
             $scope.cards = [];

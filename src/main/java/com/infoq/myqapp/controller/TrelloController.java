@@ -99,6 +99,22 @@ public class TrelloController {
 
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/validated")
+    @ResponseBody
+    public ResponseEntity getValidatedContent(WebRequest request) {
+        Token accessToken = getToken(request);
+        if (accessToken == null || accessToken.isEmpty()) {
+            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is missing"),
+                    HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            return new ResponseEntity<>(trelloService.getValidatedList(accessToken), HttpStatus.OK);
+        } catch (HttpClientErrorException e) {
+            return catchClientException(e);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login(WebRequest request, HttpServletRequest httpServletRequest) {
         String email = (String) request.getAttribute(GoogleController.ATTR_GOOGLE_EMAIL, RequestAttributes.SCOPE_SESSION);

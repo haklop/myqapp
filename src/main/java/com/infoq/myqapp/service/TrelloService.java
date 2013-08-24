@@ -32,6 +32,9 @@ public class TrelloService {
     @Value("${editingprocess.stats.board.id}")
     private String trelloBoardForStatsId;
 
+    @Value("${editingprocess.list.validated.id}")
+    private String trelloValidatedListId;
+
     @Value("${trello.oauth.key}")
     private String trelloKey;
 
@@ -64,6 +67,15 @@ public class TrelloService {
         Board board = trelloApi.getBoard(trelloBoardForStatsId);
 
         return board.fetchLists(arg("cards", "open"));
+    }
+
+    public TList getList(Token accessToken, String listId) {
+        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
+        return trelloApi.getList(listId, arg("cards", "open"));
+    }
+
+    public TList getValidatedList(Token accesToken) {
+        return getList(accesToken, trelloValidatedListId);
     }
 
     private Member getUserInfo(String username, Token accessToken) {
@@ -126,10 +138,5 @@ public class TrelloService {
         cardToCreate.setName(feedEntry.getTitle());
         cardToCreate.setDesc(feedEntry.getLink());
         return cardToCreate;
-    }
-
-    public TList getList(Token accessToken, String listId) {
-        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
-        return trelloApi.getList(listId, arg("cards", "open"));
     }
 }
