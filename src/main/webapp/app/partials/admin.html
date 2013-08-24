@@ -1,6 +1,9 @@
 <div class="feed-content">
     <div class="page-header pure-g">
         <div class="pure-u-3-4">
+            <button class="pure-button feed-action" ng-click="refresh()" ng-disabled="isRefreshing" title="Rafraîchir le feed">
+                <i class="icon-refresh" ng-class="{'icon-spin': feedRefreshing}"></i>
+            </button>
             <a class="pure-button feed-action" title="Ajouter un utilisateur">
                 <i class="icon-plus">Nouvel utilisateur</i>
             </a>

@@ -9,8 +9,13 @@ function AdminCtrl($scope, User, UserService) {
         }
     };
 
+    $scope.isRefreshing = false;
+
     $scope.refresh = function () {
-        $scope.users = User.findAll();
+        $scope.isRefreshing = true;
+        $scope.users = User.findAll(function () {
+            $scope.isRefreshing = false;
+        });
     };
 
     $scope.formatRoles = function (user) {
