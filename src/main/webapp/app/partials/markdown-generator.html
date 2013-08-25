@@ -15,7 +15,7 @@
 
         <div class="md-item pure-g" ng-repeat="card in cards | filter:gitHubFilter"
              ng-click="fetchRaw(card.githubUrl, card.article)"
-             ng-class="{'md-article-border': card.article, 'md-news-border': !card.article}">
+             ng-class="{'md-article-border': card.article, 'md-news-border': !card.article, 'md-item-selected': isSelected(card)}">
 
             <div class="pure-u">
                 <img class="md-trello-avatar" alt="{{card.fullName}}" ng-src="{{card.avatarUrl}}" height="64" width="64">
@@ -74,7 +74,8 @@
 
                             <input type="text" name="node" id="node" placeholder="/fr/articles/" ng-model="markdown.node" required/>
 
-                            <button class="pure-button pure-button-primary" ng-click="generateHtml()">Générer HTML</button>
+                            <button class="pure-button pure-button-primary" ng-click="generateHtml()"
+                                    ng-class="{'pure-button-disabled': isGeneratingHtml}">Générer HTML</button>
                         </div>
                     </div>
 

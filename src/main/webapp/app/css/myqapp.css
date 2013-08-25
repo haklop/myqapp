@@ -270,6 +270,7 @@ a {
 
 .feed-item:hover,
 .md-item:hover,
+.md-item-selected,
 .user-table tr:hover {
     background: #eee;
 }

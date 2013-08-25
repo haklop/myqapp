@@ -2,16 +2,22 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
     $scope.markdown = {};
     $scope.cards = [];
     $scope.cardsNoGithub = [];
+    $scope.selectedUrl;
 
     $scope.generateHtml = function () {
+        $scope.isGeneratingHtml = true;
         if ($scope.markdown.text) {
             MarkdownGenerator.generate(JSON.stringify($scope.markdown), function (result) {
                 $scope.generated = result.value;
+                $scope.isGeneratingHtml = false;
+            }, function (error) {
+                $scope.isGeneratingHtml = false;
             });
         }
     };
 
     $scope.fetchRaw = function (githubUrl, isArticle) {
+        $scope.selectedUrl = githubUrl;
         GithubRaw.query({url: githubUrl}, function (result) {
             $scope.markdown.text = result.content;
             $scope.markdown.type = isArticle ? "article" : "news";
@@ -53,6 +59,10 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
             $scope.isRefreshing = false;
 
         });
+    };
+
+    $scope.isSelected = function (card) {
+        return card.githubUrl === $scope.selectedUrl;
     };
 
     $scope.retrieveList();
