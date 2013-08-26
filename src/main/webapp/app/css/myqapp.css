@@ -394,6 +394,18 @@ a {
     padding: 1em 1em;
 }
 
+.ageFRESH {
+    color: green;
+}
+
+.ageSTALE {
+    color: orange;
+}
+
+.ageOLD {
+    color: red;
+}
+
 .conf-form {
     padding-left: 1em;
 }
