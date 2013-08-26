@@ -79,34 +79,55 @@ a {
 
 .myqapp-alert {
     position: relative;
-    margin-bottom: 1em;
+    margin: 1em;
     padding: 1em;
-    background-color: rgb(209, 235, 238);
-    color: rgb(102, 131, 145);
+    color: #3a87ad;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
     border-radius: 3px;
 }
 
 .myqapp-alert-success {
-    background-color: rgb(83, 180, 79);
-    color: #fff;
+    color: #468847;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
 }
 
 .myqapp-alert-error {
-    background-color: #D13C38;
-    color: #fff;
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
 }
 
 .myqapp-alert-warning {
-    background-color: rgb(250, 191, 103);
-    color: rgb(151, 96, 13);
+    color: #c09853;
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
 }
 
 .myqapp-alert-close {
-    border-radius: 5px;
-    padding: .2em 1em;
+    position: relative;
+    top: -2px;
+    line-height: 20px;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
     float: right;
-    margin-left: 1em;
-    margin-top: -0.25em;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.2;
+}
+
+.myqapp-alert-close:hover,
+.myqapp-alert-close:focus {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.4;
 }
 
 .myqapp-alert-title {
