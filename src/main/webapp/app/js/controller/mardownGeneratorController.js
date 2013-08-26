@@ -2,7 +2,6 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
     $scope.markdown = {};
     $scope.cards = [];
     $scope.cardsNoGithub = [];
-    $scope.selectedUrl;
 
     $scope.generateHtml = function () {
         $scope.isGeneratingHtml = true;
@@ -10,7 +9,7 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
             MarkdownGenerator.generate(JSON.stringify($scope.markdown), function (result) {
                 $scope.generated = result.value;
                 $scope.isGeneratingHtml = false;
-            }, function (error) {
+            }, function () {
                 $scope.isGeneratingHtml = false;
             });
         }
@@ -19,6 +18,7 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
     $scope.fetchRaw = function (githubUrl, isArticle) {
         $scope.selectedUrl = githubUrl;
         GithubRaw.query({url: githubUrl}, function (result) {
+            $scope.generated = '';
             $scope.markdown.text = result.content;
             $scope.markdown.type = isArticle ? "article" : "news";
         }, function (error) {
