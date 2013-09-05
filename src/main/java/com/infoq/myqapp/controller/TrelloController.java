@@ -8,6 +8,7 @@ import com.infoq.myqapp.service.TrelloService;
 import com.infoq.myqapp.service.UserService;
 import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.domain.Member;
+import com.julienvey.trello.exception.TrelloHttpException;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
@@ -64,6 +65,16 @@ public class TrelloController {
                 return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is expired"),
                         HttpStatus.FORBIDDEN);
             }
+            throw e;
+        } catch (TrelloHttpException e) {
+            if (e.getCause() != null && e.getCause() instanceof HttpClientErrorException) {
+                HttpClientErrorException exception = (HttpClientErrorException) e.getCause();
+                if (exception.getStatusCode().value() == 401) {
+                    return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is expired"),
+                            HttpStatus.FORBIDDEN);
+                }
+            }
+            throw e;
         }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
