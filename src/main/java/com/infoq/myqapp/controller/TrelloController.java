@@ -10,6 +10,7 @@ import com.infoq.myqapp.service.UserService;
 import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
+import com.julienvey.trello.exception.TrelloHttpException;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
@@ -196,5 +197,16 @@ public class TrelloController {
         } else {
             throw e;
         }
+    }
+
+    @ExceptionHandler(TrelloHttpException.class)
+    public ResponseEntity handleTrelloException(TrelloHttpException e) {
+        if (e.getCause() != null && e.getCause() instanceof HttpClientErrorException) {
+            HttpClientErrorException exception = (HttpClientErrorException) e.getCause();
+            return catchClientException(exception);
+        }
+        logger.warn("Unknown Trello Exception", e);
+        return new ResponseEntity<>(new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "trello", "Something looks wrong with Trello"),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
