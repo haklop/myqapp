@@ -11,6 +11,8 @@ public class ValidatedContent {
     private String githubUrl;
     private String infoqUrl;
 
+    private String node;
+
     private boolean isArticle;
     private boolean isOriginal;
     private boolean isMentoring;
@@ -53,6 +55,14 @@ public class ValidatedContent {
 
     public String getInfoqUrl() {
         return infoqUrl;
+    }
+
+    public String getNode() {
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
     }
 
     public void setInfoqUrl(String infoqUrl) {

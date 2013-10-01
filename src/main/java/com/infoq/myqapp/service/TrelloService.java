@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -184,6 +186,15 @@ public class TrelloService {
                     content.setGithubUrl(url);
                 } else if (url.contains("infoq.com")) {
                     content.setInfoqUrl(url);
+                }
+            }
+
+            if (content.getInfoqUrl() != null) {
+                String infoqNode = content.getInfoqUrl().substring(content.getInfoqUrl().lastIndexOf('/') + 1);
+                if (content.isArticle()) {
+                    content.setNode(infoqNode);
+                } else {
+                    content.setNode(new SimpleDateFormat("yyyy/MM").format(Calendar.getInstance().getTime()) + "/" + infoqNode);
                 }
             }
 

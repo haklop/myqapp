@@ -14,7 +14,7 @@
         </div>
 
         <div class="md-item pure-g" ng-repeat="card in cards | filter:gitHubFilter"
-             ng-click="fetchRaw(card.githubUrl, card.article)"
+             ng-click="fetchRaw(card.githubUrl, card.article, card.node)"
              ng-class="{'md-article-border': card.article, 'md-news-border': !card.article, 'md-item-selected': isSelected(card)}">
 
             <div class="pure-u">
@@ -38,7 +38,7 @@
         <h5 ng-show="!isRefreshing && cardsNoGithub">Sans lien GitHub dans la description de la carte sur Trello:</h5>
 
         <div class="md-item pure-g" ng-repeat="card in cardsNoGithub | filter:gitHubFilter"
-             ng-click="fetchRaw(card.githubUrl, card.article)"
+             ng-click="fetchRaw(card.githubUrl, card.article, card.node)"
              ng-class="{'md-article-border': card.article, 'md-news-border': !card.article}">
 
             <div class="pure-u">

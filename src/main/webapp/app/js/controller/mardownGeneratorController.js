@@ -15,12 +15,14 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
         }
     };
 
-    $scope.fetchRaw = function (githubUrl, isArticle) {
+    $scope.fetchRaw = function (githubUrl, isArticle, nodeName) {
         $scope.selectedUrl = githubUrl;
         GithubRaw.query({url: githubUrl}, function (result) {
             $scope.generated = '';
             $scope.markdown.text = result.content;
             $scope.markdown.type = isArticle ? "article" : "news";
+            $scope.markdown.node = nodeName;
+
         }, function (error) {
             if (error.status == 412) {
                 alert("Le contenu recupéré n'appartient pas à la branche master, veuillez mettre à jour l'URL dans Trello");
