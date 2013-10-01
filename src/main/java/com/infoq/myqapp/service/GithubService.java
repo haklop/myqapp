@@ -10,11 +10,12 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class GithubService {
 
-    private static final String GITHUB_API_REPO_URL = "https://api.github.com/repos/Zenika/TheQ/contents/";
+    private static final String GITHUB_API_REPO_URL = "https://api.github.com/repos/pmq/TheQ/contents/";
+    private static final String GITHUB_REPO_MASTER_URL = "https://github.com/pmq/TheQ/blob/master/";
     private static final String ACCESS_TOKEN_QUERY_STRING = "?access_token={accessToken}";
 
     public GitHubContent getRaw(String url, Token accessToken) {
-        if (!url.startsWith("https://github.com/Zenika/TheQ/blob/master/")) {
+        if (!url.startsWith(GITHUB_REPO_MASTER_URL)) {
             throw new IllegalStateException("Fetched content should be taken from branch master");
         }
         String rawUrl = getRawUrl(url);
@@ -33,6 +34,6 @@ public class GithubService {
     }
 
     private String getRawUrl(String url) {
-        return url.replace("https://github.com/Zenika/TheQ/blob/master/", "");
+        return url.replace(GITHUB_REPO_MASTER_URL, "");
     }
 }

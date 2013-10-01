@@ -6,6 +6,7 @@ import com.infoq.myqapp.domain.GitHubMarkdown;
 import com.infoq.myqapp.domain.MyQAppMarkdown;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
+import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
 import org.springframework.beans.factory.annotation.Value;
@@ -138,8 +139,10 @@ public class MarkdownService {
             }
 
             Element parent = pre.parent();
-            if (parent.className().equals("highlight") && "div".equals(parent.tagName())) {
-                parent.replaceWith(pre);
+            if (parent.className().startsWith("highlight") && "div".equals(parent.tagName())) {
+                Element paragraph = new Element(Tag.valueOf("p"), "");
+                paragraph.appendChild(pre);
+                parent.replaceWith(paragraph);
             }
         }
     }
