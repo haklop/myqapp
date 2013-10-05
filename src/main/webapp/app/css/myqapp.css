@@ -422,6 +422,15 @@ a {
     .stats-user {
         width: 95%;
     }
+
+    .feed-content,
+    .stats-list-content {
+        padding: 0;
+    }
+
+    .my-hidden-phone {
+        display: none;
+    }
 }
 
 @media (max-width:1201px) {
@@ -430,6 +439,7 @@ a {
         width:100%;
     }
 }
+
 
 
 
