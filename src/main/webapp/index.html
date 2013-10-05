@@ -2,7 +2,9 @@
 <html ng-app="myqapp">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.1/pure-min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="app/css/myqapp.css">
@@ -13,21 +15,21 @@
 <body>
 
 <div class="pure-g-r" id="layout" ng-controller="HeaderController">
-    <div class="pure-u" id="nav">
-        <a href="#" class="nav-menu-button">MyQApp</a>
+    <a href="#menu" id="menuLink" class="pure-menu-link">
+        <span></span>
+    </a>
 
-        <div class="nav-inner">
-            <div class="pure-menu pure-menu-open">
-                <ul>
-                    <li class="pure-menu-heading">MyQApp</li>
-                    <li><a ng-class="{active: isActive('/feed')}" href="#/feed">Flux</a></li>
-                    <li><a ng-class="{active: isActive('/stats')}" href="#/stats">Stats Listes</a></li>
-                    <li><a ng-class="{active: isActive('/users')}" href="#/users">Stats Contributeurs</a></li>
-                    <li><a ng-class="{active: isActive('/conf')}" href="#/conf">Conférences</a></li>
-                    <li ng-show="isEditor()"><a ng-class="{active: isActive('/markdown')}" href="#/markdown">Markdown</a></li>
-                    <li ng-show="isAdmin()"><a ng-class="{active: isActive('/admin')}" href="#/admin">Admin</a></li>
-                </ul>
-            </div>
+    <div class="pure-u" id="menu">
+        <div class="pure-menu pure-menu-open">
+            <a class="pure-menu-heading" href="/">MyQApp</a>
+            <ul>
+                <li><a ng-class="{'pure-menu-selected': isActive('/feed')}" href="#/feed">Flux</a></li>
+                <li><a ng-class="{'pure-menu-selected': isActive('/stats')}" href="#/stats">Stats Listes</a></li>
+                <li><a ng-class="{'pure-menu-selected': isActive('/users')}" href="#/users">Stats Contributeurs</a></li>
+                <li><a ng-class="{'pure-menu-selected': isActive('/conf')}" href="#/conf">Conférences</a></li>
+                <li ng-show="isEditor()"><a ng-class="{'pure-menu-selected': isActive('/markdown')}" href="#/markdown">Markdown</a></li>
+                <li ng-show="isAdmin()"><a ng-class="{'pure-menu-selected': isActive('/admin')}" href="#/admin">Admin</a></li>
+            </ul>
         </div>
     </div>
 
@@ -61,6 +63,39 @@
 <script src="app/js/controller/adminController.js"></script>
 <script src="app/js/controller/userCreationController.js"></script>
 <script src="app/js/controller/userModificationController.js"></script>
+
+<script type="text/javascript">
+    var menu = document.getElementById('menu'),
+            menuLink = document.getElementById('menuLink'),
+            layout = document.getElementById('layout'),
+
+            toggleClass = function (element, className) {
+                var classes = element.className.split(/\s+/),
+                        length = classes.length,
+                        i = 0;
+
+                for(; i < length; i++) {
+                    if (classes[i] === className) {
+                        classes.splice(i, 1);
+                        break;
+                    }
+                }
+                // The className is not found
+                if (length === classes.length) {
+                    classes.push(className);
+                }
+
+                element.className = classes.join(' ');
+            };
+
+    menuLink.onclick = function (e) {
+        e.preventDefault();
+        var active = 'active';
+        toggleClass(layout, active);
+        toggleClass(menu, active);
+        toggleClass(menuLink, active);
+    };
+</script>
 
 </body>
 </html>

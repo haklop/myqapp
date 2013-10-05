@@ -17,7 +17,7 @@ a {
 /* Markdown page */
 
 #md-layout {
-    padding-left:350px;
+    padding-left:300px;
     position: relative;
 }
 
@@ -44,9 +44,10 @@ a {
 
 .md-item {
     border-top: 1px solid #ddd;
-    padding: 0.9em 1em;
+    padding: 0.6em 0.2em;
     border-bottom: 1px solid #ddd;
     position: relative;
+    margin: 0;
 }
 
 .md-action {
@@ -136,27 +137,20 @@ a {
 
 /* LAYOUT CSS */
 #layout {
-    padding-left:200px; /* "left col (nav + list)" width */
+    padding-left:150px; /* "left col (nav + list)" width */
     position: relative;
 }
 
-#nav, #md-list {
+#md-list {
     position: fixed;
     top: 0;
     bottom: 0;
     overflow: auto;
 }
-#nav {
-    margin-left:-200px; /* "left col (nav + list)" width */
-    width:200px;
-    background: rgb(37, 42, 58);
-    text-align: center;
-    padding: 2em 0;
-}
 
 #md-list {
-    width:350px;
-    margin-left:-350px;
+    width:300px;
+    margin-left:-300px;
     border-right: 1px solid #ddd;
 }
 
@@ -189,33 +183,6 @@ a {
     color: #666;
     padding: 0.5em 2em;
     font-size: 80%;
-}
-
-
-
-/* Vertical Navigation Styles */
-#nav .pure-menu {
-    background: transparent;
-    border: none;
-    text-align: left;
-}
-#nav .pure-menu a:hover,
-#nav .pure-menu a:focus,
-#nav .pure-menu .active{
-    background: rgb(55, 60, 90);
-}
-#nav .pure-menu a {
-    color: #fff;
-    margin-left: 0.5em;
-}
-#nav .pure-menu-heading {
-    border-bottom: none;
-    font-size:110%;
-    color: rgb(75, 113, 151);
-}
-
-#nav .nav-menu-button {
-    display: none;
 }
 
 .feed-count {
@@ -441,31 +408,12 @@ a {
 }
 
 @media (max-width: 480px) {
-    #layout, #nav, #md-list, #main {
+    #layout, #md-list, #main {
         position: static;
         margin: 0;
         padding: 0;
     }
-    #nav {
-        width: 100%;
-        height: 40px;
-        position: relative;
-    }
-    #nav .nav-menu-button {
-        display: block;
-        top: 0.5em;
-        right: 0.5em;
-        position: absolute;
-    }
-    #nav.active {
-        height: 80%;
-    }
-    .nav-inner {
-        display: none;
-    }
-    #nav.active .nav-inner {
-        display: block;
-    }
+
     .feed-avatar {
         width: 40px;
         height: 40px;
@@ -481,4 +429,177 @@ a {
     .r-tablet-full-width {
         width:100%;
     }
+}
+
+
+
+
+#menu {
+    margin-left: -150px; /* "#menu" width */
+    width: 150px;
+    position: fixed;
+    top: 0;
+    left: 150px;
+    bottom: 0;
+    z-index: 1000; /* so the menu or its navicon stays above all content */
+    background: rgb(37, 42, 58);
+    overflow-y: auto;
+    -webkit-overflow-scroll: touch;
+}
+#menu a {
+    color: #fff;
+    border: none;
+    white-space: normal;
+    padding: 0.6em 0 0.6em 0.6em;
+}
+
+#menu .pure-menu-open {
+    background: transparent;
+    border: 0;
+}
+
+#menu .pure-menu ul {
+    border: none;
+    background: transparent;
+}
+
+#menu .pure-menu ul,
+#menu .pure-menu .menu-item-divided {
+    border-top: 1px solid #333;
+}
+
+#menu .pure-menu li a:hover,
+#menu .pure-menu li a:focus {
+    background: #333;
+}
+
+.pure-menu-link {
+    display: none; /* show this only on small screens */
+    top: 0;
+    left: 150px; /* "#menu width" */
+    background: #000;
+    background: rgba(0,0,0,0.7);
+    font-size: 10px; /* change this value to increase/decrease button size */
+    z-index: 10;
+    width: 2em;
+    height: auto;
+    padding: 2.1em 1.6em;
+}
+
+.pure-menu-link:hover,
+.pure-menu-link:focus {
+    background: #000;
+}
+
+.pure-menu-link span {
+    position: relative;
+    display: block;
+}
+
+.pure-menu-link span,
+.pure-menu-link span:before,
+.pure-menu-link span:after {
+    background-color: #fff;
+    width: 100%;
+    height: .2em;
+    -webkit-transition: all 0.8s;
+    -moz-transition: all 0.8s;
+    -ms-transition: all 0.8s;
+    -o-transition: all 0.8s;
+    transition: all 0.8s;
+}
+
+.pure-menu-link span:before,
+.pure-menu-link span:after {
+    position: absolute;
+    margin-top: -.6em;
+    content: " ";
+}
+
+.pure-menu-link span:after {
+    margin-top: .6em;
+}
+
+.pure-menu-link.active span {
+    background: transparent;
+}
+
+.pure-menu-link.active span:before {
+    -webkit-transform: rotate(45deg) translate(.5em, .4em);
+    -moz-transform: rotate(45deg) translate(.5em, .4em);
+    -ms-transform: rotate(45deg) translate(.5em, .4em);
+    -o-transform: rotate(45deg) translate(.5em, .4em);
+    transform: rotate(45deg) translate(.5em, .4em);
+}
+
+.pure-menu-link.active span:after {
+    -webkit-transform: rotate(-45deg) translate(.45em, -.35em);
+    -moz-transform: rotate(-45deg) translate(.45em, -.35em);
+    -ms-transform: rotate(-45deg) translate(.45em, -.35em);
+    -o-transform: rotate(-45deg) translate(.45em, -.35em);
+    transform: rotate(-45deg) translate(.45em, -.35em);
+}
+
+#menu .pure-menu-heading {
+    font-size: 110%;
+    color: rgb(75, 113, 151);
+}
+#menu .pure-menu-heading:hover,
+#menu .pure-menu-heading:focus {
+    color: #999;
+}
+
+#menu .pure-menu-selected {
+    background: #1f8dd6;
+}
+
+#menu .pure-menu-selected a {
+    color: #fff;
+}
+
+#menu li.pure-menu-selected a:hover,
+#menu li.pure-menu-selected a:focus {
+    background: none;
+}
+
+@media (max-width: 870px) {
+
+    /* Navigation Push Styles */
+    #layout {
+        position: relative;
+        padding-left: 0;
+    }
+    #layout.active {
+        position: relative;
+        left: 150px;
+    }
+    #layout.active #menu {
+        left: 150px;
+        width: 150px;
+    }
+
+    #menu {
+        left: 0;
+    }
+
+    .pure-menu-link {
+        position: fixed;
+        left: 0;
+        display: block;
+    }
+
+    #layout.active .pure-menu-link {
+        left: 150px;
+    }
+}
+
+/* Add transition to containers so they can push in and out */
+#layout,
+#menu,
+.pure-menu-link {
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    -ms-transition: all 0.2s ease-out;
+    -o-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
 }
