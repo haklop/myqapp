@@ -475,3 +475,10 @@ a {
         width: 95%;
     }
 }
+
+@media (max-width:1201px) {
+
+    .r-tablet-full-width {
+        width:100%;
+    }
+}

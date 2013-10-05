@@ -1,6 +1,6 @@
 <div class="feed-content">
     <div class="page-header pure-g-r">
-        <div class="pure-u-3-4">
+        <div class="pure-u-3-4 r-tablet-full-width">
             <button class="pure-button feed-action" ng-click="refreshFeed()" ng-show="isEditor()" ng-disabled="feedRefreshing" title="Rafraîchir le feed">
                 <i class="icon-refresh" ng-class="{'icon-spin': feedRefreshing}"></i>
             </button>
@@ -11,7 +11,7 @@
 
     <div ng-repeat="feed in feeds.content" class="feed-item pure-g-r">
 
-        <div class="pure-u-3-4">
+        <div class="pure-u-3-4 r-tablet-full-width">
             <a ng-show="feed.addedInTrello" ng-href="{{feed.urlTrello}}" class="pure-button pure-button-disabled feed-action"
                title="View on Trello" target="_blank">Added</a>
             <a ng-show="(feed.type == 'Article' || feed.type == 'News') && !feed.addedInTrello" class="pure-button pure-button-primary feed-action"
@@ -32,16 +32,16 @@
     </div>
 
     <div class="pure-g-r">
-        <div class="pure-u-3-4">
+        <div class="pure-u-3-4 r-tablet-full-width">
             <ul class="pure-paginator feed-paginator">
                 <li><a class="pure-button prev" ng-show="feeds.number > 0" ng-href="#/feed/{{feeds.number - 1}}">&#171;</a></li>
-                <li><a class="pure-button" ng-show="feeds.number > 1" ng-href="#/feed/{{feeds.number - 2}}">{{feeds.number - 1}}</a></li>
+                <li><a class="pure-button pure-hidden-phone" ng-show="feeds.number > 1" ng-href="#/feed/{{feeds.number - 2}}">{{feeds.number - 1}}</a></li>
                 <li><a class="pure-button" ng-show="feeds.number > 0" ng-href="#/feed/{{feeds.number - 1}}">{{feeds.number}}</a></li>
                 <li><a class="pure-button pure-button-active" href="#">{{feeds.number + 1}}</a></li>
                 <li><a class="pure-button" ng-href="#/feed/{{feeds.number + 1 }}">{{feeds.number + 2}}</a></li>
-                <li><a class="pure-button" ng-href="#/feed/{{feeds.number + 2 }}">{{feeds.number + 3}}</a></li>
-                <li><a class="pure-button" ng-show="feeds.number < 2" ng-href="#/feed/{{feeds.number + 3 }}">{{feeds.number + 4}}</a></li>
-                <li><a class="pure-button" ng-show="feeds.number < 1" ng-href="#/feed/{{feeds.number + 4 }}">{{feeds.number + 5}}</a></li>
+                <li><a class="pure-button pure-hidden-phone" ng-href="#/feed/{{feeds.number + 2 }}">{{feeds.number + 3}}</a></li>
+                <li><a class="pure-button pure-hidden-phone" ng-show="feeds.number < 2" ng-href="#/feed/{{feeds.number + 3 }}">{{feeds.number + 4}}</a></li>
+                <li><a class="pure-button pure-hidden-phone" ng-show="feeds.number < 1" ng-href="#/feed/{{feeds.number + 4 }}">{{feeds.number + 5}}</a></li>
                 <li><a class="pure-button next" ng-href="#/feed/{{feeds.number + 1 }}">&#187;</a></li>
             </ul>
         </div>
