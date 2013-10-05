@@ -381,23 +381,23 @@ a {
 @media (max-width: 867px) {
 
     #md-list,
-    #main {
+    #md-main{
         width: 100%;
     }
     #layout {
         padding-left: -150px;
     }
     #md-list {
-        height: 33%;
+        height: 30%;
         border-right: 0;
         border-bottom: 1px solid #ddd;
     }
-    #main {
+    #md-main {
         position: fixed;
-        top: 33%;
+        top: 30%;
         right: 0;
         bottom: 0;
-        left: 150px;
+        left: 0px;
         overflow: auto;
         width: auto; /* so that it's not 100% */
     }
@@ -408,7 +408,7 @@ a {
 }
 
 @media (max-width: 480px) {
-    #layout, #md-list, #main {
+    #layout, #md-list, #md-main, #md-layout {
         position: static;
         margin: 0;
         padding: 0;

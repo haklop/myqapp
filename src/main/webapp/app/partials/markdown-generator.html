@@ -17,7 +17,7 @@
              ng-click="fetchRaw(card.githubUrl, card.article, card.node)"
              ng-class="{'md-article-border': card.article, 'md-news-border': !card.article, 'md-item-selected': isSelected(card)}">
 
-            <div class="pure-u">
+            <div class="pure-u pure-hidden-phone">
                 <img class="md-trello-avatar" alt="{{card.fullName}}" ng-src="{{card.avatarUrl}}" height="64" width="64">
             </div>
             <div class="pure-u-3-4">
