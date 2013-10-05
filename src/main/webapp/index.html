@@ -2,43 +2,59 @@
 <html ng-app="myqapp">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap-datepicker/bootstrap-datepicker.css"/>
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.1/pure-min.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="app/css/myqapp.css">
+
     <link rel="stylesheet" type="text/css" href="lib/fullcalendar/fullcalendar.css"/>
-    <link rel="stylesheet" type="text/css" href="app/css/myqapp.css"/>
+
 </head>
 <body>
-<div class="navbar navbar-static-top banner" ng-controller="HeaderController">
-    <div class="navbar-inner">
-        <a class="brand" href="#/">MyQ, The App for The Best</a>
-        <ul class="nav pull-right">
-            <li><a href="">Bienvenue {{userinfo.firstName}} {{userinfo.lastName}}</a></li>
-            <li ng-class="{active: isActive('/feed')}"><a href="#/feed">Flux</a></li>
-            <li ng-class="{active: isActive('/stats')}"><a href="#/stats">Stats Listes</a></li>
-            <li ng-class="{active: isActive('/users')}"><a href="#/users">Stats Contributeurs</a></li>
-            <li ng-class="{active: isActive('/conf')}"><a href="#/conf">Conférences</a></li>
-            <li ng-show="isEditor()" ng-class="{active: isActive('/markdown')}"><a href="#/markdown">Markdown</a></li>
-            <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}"><a href="#/admin">Admin</a></li>
-        </ul>
+
+<div class="pure-g-r" id="layout" ng-controller="HeaderController">
+    <a href="#menu" id="menuLink" class="pure-menu-link">
+        <span></span>
+    </a>
+
+    <div class="pure-u" id="menu">
+        <div class="pure-menu pure-menu-open">
+            <a class="pure-menu-heading" href="/">MyQApp</a>
+            <ul>
+                <li><a ng-class="{'pure-menu-selected': isActive('/feed')}" href="#/feed">Flux</a></li>
+                <li><a ng-class="{'pure-menu-selected': isActive('/stats')}" href="#/stats">Stats Listes</a></li>
+                <li><a ng-class="{'pure-menu-selected': isActive('/users')}" href="#/users">Stats Contributeurs</a></li>
+                <li><a ng-class="{'pure-menu-selected': isActive('/conf')}" href="#/conf">Conférences</a></li>
+                <li ng-show="isEditor()"><a ng-class="{'pure-menu-selected': isActive('/markdown')}" href="#/markdown">Markdown</a></li>
+                <li ng-show="isAdmin()"><a ng-class="{'pure-menu-selected': isActive('/admin')}" href="#/admin">Admin</a></li>
+            </ul>
+        </div>
     </div>
+
+    <div class="pure-u-1" ng-controller="AlertController">
+        <div class="pure-u-3-4 r-tablet-full-width">
+            <div class="myqapp-alert alert-ontop" ng-repeat="alert in alerts" ng-class="getClassAlert(alert)">
+                <button class="pure-button myqapp-alert-close" ng-click="removeAlert(alert)">x</button>
+                <span class="myqapp-alert-title">{{alert.title}}</span> <span ng-bind-html-unsafe="alert.content"></span></div>
+        </div>
+    </div>
+
+    <div ng-view class="pure-u-1"></div>
 </div>
 
-<div class="container-fluid">
-    <div ng-view class="mainContent"></div>
-</div>
-
-<script src="lib/jquery/jquery-1.9.1.min.js"></script>
+<script src="lib/jquery/jquery-1.10.2.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="lib/angular/angular.min.js"></script>
 <script src="lib/angular/lib/angular-resource.min.js"></script>
-<script src="lib/bootstrap/js/bootstrap.min.js"></script>
-<script src="lib/angular/lib/angularstrap.js"></script>
-<script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
 <script src="lib/fullcalendar/fullcalendar.min.js"></script>
 
 <script src="app/js/app.js"></script>
 <script src="app/js/services.js"></script>
 <script src="app/js/controller/feedListController.js"></script>
 <script src="app/js/controller/headerController.js"></script>
+<script src="app/js/controller/alertController.js"></script>
 <script src="app/js/controller/statsListsController.js"></script>
 <script src="app/js/controller/statsUserController.js"></script>
 <script src="app/js/controller/userDetailController.js"></script>
@@ -47,5 +63,39 @@
 <script src="app/js/controller/adminController.js"></script>
 <script src="app/js/controller/userCreationController.js"></script>
 <script src="app/js/controller/userModificationController.js"></script>
+
+<script type="text/javascript">
+    var menu = document.getElementById('menu'),
+            menuLink = document.getElementById('menuLink'),
+            layout = document.getElementById('layout'),
+
+            toggleClass = function (element, className) {
+                var classes = element.className.split(/\s+/),
+                        length = classes.length,
+                        i = 0;
+
+                for(; i < length; i++) {
+                    if (classes[i] === className) {
+                        classes.splice(i, 1);
+                        break;
+                    }
+                }
+                // The className is not found
+                if (length === classes.length) {
+                    classes.push(className);
+                }
+
+                element.className = classes.join(' ');
+            };
+
+    menuLink.onclick = function (e) {
+        e.preventDefault();
+        var active = 'active';
+        toggleClass(layout, active);
+        toggleClass(menu, active);
+        toggleClass(menuLink, active);
+    };
+</script>
+
 </body>
 </html>

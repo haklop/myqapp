@@ -1,56 +1,65 @@
-<button class="btn" ng-click="refreshStats()" ng-class="refreshing()" ng-disabled="refreshing()" ng-show="isEditor()">Rafraîchir les stats</button>
-<div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th><a href="" ng-click="order = name; reverse = !reverse;">Nom</a></th>
-            <th><a href="" ng-click="order = news; reverse = !reverse;">News</a></th>
-            <th><a href="" ng-click="order = articles; reverse = !reverse;">Articles</a></th>
-            <th><a href="" ng-click="order = valids; reverse = !reverse;">Validations</a></th>
-            <th><a href="" ng-click="order = mentors; reverse = !reverse;">Mentorats</a></th>
-            <th ng-show="isAdmin()" ><a href="" title="< 15 jours / < 21 jours / dernière activité">Activité récente / dernière activité</a></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="stats in authorStats | orderBy:order:reverse">
-            <td><a ng-href="#/users/{{stats.member.id}}">{{stats.memberFullName}}</a></td>
-            <td>
-                <strong>{{stats.originalNews + stats.translatedNews}}</strong>
-                ({{stats.originalNews}} <ng-pluralize count="stats.originalNews" when="{0:'originale', one:'originale', other:'originales'}"></ng-pluralize>,
-                {{stats.translatedNews}} <ng-pluralize count="stats.translatedNews" when="{0:'traduction', one:'traduction', other:'traductions'}"></ng-pluralize>)
-            </td>
-            <td>
-                <strong>{{stats.originalArticles + stats.translatedArticles}}</strong>
-                ({{stats.originalArticles}} <ng-pluralize count="stats.originalArticles" when="{0:'original', one:'original', other:'originaux'}"></ng-pluralize>,
-                {{stats.translatedArticles}} <ng-pluralize count="stats.translatedArticles" when="{0:'traduction', one:'traduction', other:'traductions'}"></ng-pluralize>)
-            </td>
-            <td>
-                <strong>{{stats.validatedArticles + stats.validatedNews}}</strong>
-                ({{stats.validatedArticles}} <ng-pluralize count="stats.validatedArticles" when="{0:'article', one:'article', other:'articles'}"></ng-pluralize>,
-                {{stats.validatedNews}} news)
-            </td>
-            <td>
-                <strong>{{stats.mentoredArticles + stats.mentoredNews}}</strong>
-                ({{stats.mentoredArticles}} <ng-pluralize count="stats.mentoredArticles" when="{0:'article', one:'article', other:'articles'}"></ng-pluralize>,
-                {{stats.mentoredNews}} news)
-            </td>
-            <td ng-show="isAdmin()" >
-                <strong>{{(stats.activity | filter:{heartbeatStatus:'FRESH'}).length}}</strong> /
-                {{(stats.activity | filter:{heartbeatStatus:'STALE'}).length}} /
+<div class="feed-content">
+    <div class="page-header pure-g">
+        <div class="pure-u-3-4 r-tablet-full-width">
+            <button class="pure-button feed-action" ng-click="refreshStats()" ng-class="refreshing()" ng-disabled="refreshing()" ng-show="isEditor()" title="Rafraîchir les stats">
+                <i class="icon-refresh"></i>
+            </button>
+            <h1 class="content-subhead">Stats utilisateurs</h1>
+        </div>
+    </div>
+
+    <div class="pure-u-1 stats-user-list">
+        <table class="pure-table pure-table-horizontal user-table">
+            <thead>
+            <tr>
+                <th><a href="" ng-click="order = name; reverse = !reverse;">Nom</a></th>
+                <th><a href="" ng-click="order = news; reverse = !reverse;">News</a></th>
+                <th><a href="" ng-click="order = articles; reverse = !reverse;">Articles</a></th>
+                <th><a href="" ng-click="order = valids; reverse = !reverse;">Validations</a></th>
+                <th><a href="" ng-click="order = mentors; reverse = !reverse;">Mentorats</a></th>
+                <th ng-show="isAdmin()" ><a href="" title="< 15 jours / < 21 jours / dernière activité">Activité récente / dernière activité</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="stats in authorStats | orderBy:order:reverse">
+                <td>{{stats.memberFullName}}</td>
+                <td>
+                    <strong>{{stats.originalNews + stats.translatedNews}}</strong>
+                    ({{stats.originalNews}} <ng-pluralize count="stats.originalNews" when="{0:'originale', one:'originale', other:'originales'}"></ng-pluralize>,
+                    {{stats.translatedNews}} <ng-pluralize count="stats.translatedNews" when="{0:'traduction', one:'traduction', other:'traductions'}"></ng-pluralize>)
+                </td>
+                <td>
+                    <strong>{{stats.originalArticles + stats.translatedArticles}}</strong>
+                    ({{stats.originalArticles}} <ng-pluralize count="stats.originalArticles" when="{0:'original', one:'original', other:'originaux'}"></ng-pluralize>,
+                    {{stats.translatedArticles}} <ng-pluralize count="stats.translatedArticles" when="{0:'traduction', one:'traduction', other:'traductions'}"></ng-pluralize>)
+                </td>
+                <td>
+                    <strong>{{stats.validatedArticles + stats.validatedNews}}</strong>
+                    ({{stats.validatedArticles}} <ng-pluralize count="stats.validatedArticles" when="{0:'article', one:'article', other:'articles'}"></ng-pluralize>,
+                    {{stats.validatedNews}} news)
+                </td>
+                <td>
+                    <strong>{{stats.mentoredArticles + stats.mentoredNews}}</strong>
+                    ({{stats.mentoredArticles}} <ng-pluralize count="stats.mentoredArticles" when="{0:'article', one:'article', other:'articles'}"></ng-pluralize>,
+                    {{stats.mentoredNews}} news)
+                </td>
+                <td ng-show="isAdmin()" >
+                    <strong>{{(stats.activity | filter:{heartbeatStatus:'FRESH'}).length}}</strong> /
+                    {{(stats.activity | filter:{heartbeatStatus:'STALE'}).length}} /
                 <span ng-class="'age'+(stats.activity | orderBy:'heartbeatDate':reverse)[0].heartbeatStatus">
 	                {{((stats.activity | orderBy:'heartbeatDate':reverse)[0].heartbeatDate | date)}}
                 </span>
 
-                <a href="" ng-click="show=!show">+</a>
-                <table ng-show="show">
-                    <tr ng-repeat="activity in stats.activity | orderBy:'heartbeatDate':reverse">
-                        <th ng-class="'age'+activity.heartbeatStatus">{{activity.heartbeatDate | date}}</th>
-	                    <td>{{activity.cardName}}</td>
-	    	        </tr>
-                </table>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
+                    <a href="" ng-click="show=!show">+</a>
+                    <table ng-show="show">
+                        <tr ng-repeat="activity in stats.activity | orderBy:'heartbeatDate':reverse">
+                            <th ng-class="'age'+activity.heartbeatStatus">{{activity.heartbeatDate | date}}</th>
+                            <td>{{activity.cardName}}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

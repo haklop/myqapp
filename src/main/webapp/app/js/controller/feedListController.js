@@ -1,10 +1,13 @@
-function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello, UserService) {
+function FeedListCtrl($scope, $rootScope, $routeParams, Feed, RefreshFeed, Trello, UserService) {
     var types = [
         {"name": "News", "selected": true},
         {"name": "Article", "selected": true},
         {"name": "Interview", "selected": true},
         {"name": "Presentation", "selected": true}
     ];
+
+    $scope.feedRefreshing = false;
+
     $scope.types = types;
 
     $scope.isEditor = UserService.isEditor;
@@ -23,24 +26,6 @@ function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello, UserServi
         }
     });
 
-    $scope.alerts = [];
-
-    $scope.$on('handleAlert', function(evt, alert) {
-        $scope.alerts.push(alert);
-    });
-
-    $scope.formatCategories = function (categories) {
-        var s = "";
-        var append = "";
-        var i;
-        for (i = 0; i < categories.length; i++) {
-            s += append;
-            append = ", ";
-            s += categories[i];
-        }
-        return s;
-    };
-
     $scope.addingToTrello = function (feed) {
         return feed.addingToTrello ? 'disabled' : undefined;
     };
@@ -49,16 +34,19 @@ function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello, UserServi
         feed.addingToTrello = true;
         Trello.add(feed, function (result) {
 
-            $scope.alerts.push({"title": "Carte créée dans Trello", "type": "success", "content": ""});
+            $rootScope.$broadcast('handleAlert', {"title": "Carte ajoutée dans Trello", "type": "success",
+                "content": "", category: 'message'});
             $scope.feeds = Feed.query({"page": feedPage}, function (f) {
                 $scope.feeds = f;
             });
             feed.addingToTrello = false;
         }, function (response) {
             if (response.status === 409) {
-                $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "info", "content": "Carte déjà existante"});
-            } else {
-                $scope.alerts.push({"title": "Erreur lors de la création de la carte dans Trello", "type": "error", "content": ""});
+                $rootScope.$broadcast('handleAlert', {"title": "Erreur lors de la création de la carte dans Trello",
+                    "type": "warning", "content": "Carte déjà existante", category: 'message'});
+            } else if (response.status !== 403) {
+                $rootScope.$broadcast('handleAlert', {"title": "Erreur lors de la création de la carte dans Trello",
+                    "type": "error", "content": "", category: 'message'});
             }
             feed.addingToTrello = false;
         });
@@ -76,9 +64,11 @@ function FeedListCtrl($scope, $routeParams, Feed, RefreshFeed, Trello, UserServi
     };
 
     $scope.refreshFeed = function () {
+        $scope.feedRefreshing = true;
         RefreshFeed.query(function (f) {
+            $scope.feedRefreshing = false;
             $scope.feeds = f;
-            $scope.alerts.push({"title": "Mise à jour terminée", "type": "success", "content": ""});
+            $rootScope.$broadcast('handleAlert', {"title": "Mise à jour terminée", "type": "success", "content": "", category: 'message'});
         });
     };
 }

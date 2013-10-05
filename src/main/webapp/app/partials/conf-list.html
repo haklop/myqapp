@@ -1,60 +1,73 @@
-<div class="row-fluid">
-    <div class="span3" >
-        <fieldset ng-show="isEditor()">
-            <legend>Ajouter une conférence</legend>
-            <form class="form-horizontal conf-form" name="newconfForm" ng-submit="createConf()" novalidate>
-                <div class="control-group">
-                    <label class="control-label" for="inputName">Nom</label>
-                    <div class="controls">
+<div class="feed-content">
+    <div class="page-header pure-g">
+        <div class="pure-u-3-4 r-tablet-full-width">
+            <button class="pure-button feed-action" ng-click="today()">
+                Today
+            </button>
+            <button class="pure-button feed-action" ng-click="nextMonth()">
+                <i class="icon-chevron-right"></i>
+            </button>
+            <button class="pure-button feed-action" ng-click="previousMonth()">
+                <i class="icon-chevron-left"></i>
+            </button>
+            <h1 class="content-subhead">Calendrier des conférences</h1>
+        </div>
+    </div>
+
+    <div class="pure-g">
+
+        <div class="pure-u-3-4 r-tablet-full-width">
+            <div id="conf-calendar">
+            </div>
+        </div>
+
+        <div class="pure-u-1-4 r-tablet-full-width" ng-show="isEditor()">
+            <div class="conf-form">
+                <form class="pure-form pure-form-stacked" name="newconfForm" ng-submit="createConf()" novalidate>
+                    <fieldset>
+                        <legend>Ajouter une conférence</legend>
+
+                        <label for="inputName">Nom</label>
                         <input type="text" id="inputName" placeholder="Nom de la conférence" ng-model="newconf.name" required>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputLocation">Lieux</label>
-                    <div class="controls">
+
+                        <label for="inputLocation">Lieux</label>
                         <input type="text" id="inputLocation" placeholder="Lieux de la conférence" ng-model="newconf.location" required>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputWebsite">URL</label>
-                    <div class="controls">
+
+                        <label for="inputWebsite">URL</label>
                         <input type="url" id="inputWebsite" placeholder="Site web de la conférence" ng-model="newconf.website" required>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputStartDate">Début</label>
-                    <div class="controls">
-                        <input id="inputStartDate" class="input-small" type="text" ng-model="newconf.startDate"
-                               data-date-format="dd/mm/yyyy" bs-datepicker data-toggle="datepicker" required>
-                        <button type="button" class="btn" data-toggle="datepicker"><i class="icon-calendar"></i></button>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputEndDate">Fin</label>
-                    <div class="controls">
-                        <input id="inputEndDate" class="input-small" type="text" ng-model="newconf.endDate"
-                               data-date-weekStart="1" data-date-format="dd/mm/yyyy" bs-datepicker data-toggle="datepicker" required>
-                        <button type="button" class="btn" data-toggle="datepicker"><i class="icon-calendar"></i></button>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <button type="submit" class="btn btn-success">Ajouter</button>
-                    </div>
-                </div>
-                <div ng-show="newconfForm.$invalid">
-                    Formulaire invalide !
-                </div>
-            </form>
-        </fieldset>
-    </div>
-    <div class="span9">
-        <div class="alerts">
-            <div class="alert fade" ng-repeat="alert in alerts" bs-alert="alert"></div>
-        </div>
 
-        <div id="conf-calendar">
+                        <label for="inputStartDate">Début</label>
+                        <input id="inputStartDate" type="text" placeholder="Date de début" ng-model="newconf.startDate" required>
+
+                        <label for="inputEndDate">Fin</label>
+                        <input id="inputEndDate" type="text" placeholder="Date de fin" ng-model="newconf.endDate" required>
+
+                        <button type="submit" class="pure-button pure-button-primary">Ajouter</button>
+
+                        <div ng-show="newconfForm.$invalid">
+                            Formulaire invalide !
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+
         </div>
     </div>
 
+    <script>
+        $(function() {
+            $("#inputStartDate").datepicker({
+                defaultDate: "0",
+                onClose: function(selectedDate) {
+                    $("#inputEndDate").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#inputEndDate").datepicker({
+                onClose: function(selectedDate) {
+                    $("#inputStartDate").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+        });
+    </script>
 </div>

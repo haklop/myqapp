@@ -1,9 +1,8 @@
 package com.infoq.myqapp.service;
 
-import com.infoq.myqapp.domain.FeedEntry;
-import com.infoq.myqapp.domain.TrelloHeartbeat;
-import com.infoq.myqapp.domain.TrelloLabel;
+import com.infoq.myqapp.domain.*;
 import com.infoq.myqapp.repository.FeedRepository;
+import com.infoq.myqapp.repository.TrelloMemberRepository;
 import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.*;
@@ -16,8 +15,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.julienvey.trello.utils.ArgUtils.arg;
 
@@ -32,11 +35,17 @@ public class TrelloService {
     @Value("${editingprocess.stats.board.id}")
     private String trelloBoardForStatsId;
 
+    @Value("${editingprocess.list.validated.id}")
+    private String trelloValidatedListId;
+
     @Value("${trello.oauth.key}")
     private String trelloKey;
 
     @Resource
     private FeedRepository feedRepository;
+
+    @Resource
+    private TrelloMemberRepository trelloMemberRepository;
 
     public void addCardToTrello(FeedEntry feedEntry, Token accessToken) {
         FeedEntry entry = feedRepository.findOne(feedEntry.getLink());
@@ -66,9 +75,18 @@ public class TrelloService {
         return board.fetchLists(arg("cards", "open"));
     }
 
-    private Member getUserInfo(String username, Token accessToken) {
+    public TList getList(Token accessToken, String listId) {
         Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
-        return trelloApi.getBasicMemberInformation(username);
+        return trelloApi.getList(listId, arg("cards", "open"));
+    }
+
+    public TList getValidatedList(Token accesToken) {
+        return getList(accesToken, trelloValidatedListId);
+    }
+
+    public Member getUserInfo(String username, Token accessToken) {
+        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
+        return trelloApi.getMemberInformation(username);
     }
 
     public List<Member> getMembers(Token accessToken) {
@@ -121,15 +139,86 @@ public class TrelloService {
         return result;
     }
 
+    public List<ValidatedContent> enhancedValidatedContentList(TList list) {
+        List<ValidatedContent> validatedContents = new ArrayList<>();
+        for (Card card : list.getCards()) {
+            ValidatedContent content = new ValidatedContent();
+            content.setName(card.getName());
+            content.setDateLastActivity(card.getDateLastActivity());
+            content.setTrelloUrl(card.getUrl());
+
+            content.setOriginal(false);
+            content.setMentoring(false);
+            content.setArticle(false);
+            for (Label label : card.getLabels()) {
+                switch (label.getName()) {
+                    case "Articles":
+                        content.setArticle(true);
+                        break;
+                    case "Original":
+                        content.setOriginal(true);
+                        break;
+                    case "Mentorat":
+                        content.setMentoring(true);
+                        break;
+                }
+            }
+
+            int i = 0;
+            for (String memberId : card.getIdMembers()) {
+                TrelloMember trelloMember = trelloMemberRepository.findOne(memberId);
+                if (trelloMember != null) {
+                    if (i == 0 && !content.isMentoring()) {
+                        content.setAuthor(trelloMember);
+                    } else if (i == 0) {
+                        content.setValidator(trelloMember);
+                        content.setMentor(trelloMember);
+                    } else if (i == 1) {
+                        content.setValidator(trelloMember);
+                    }
+                }
+                i++;
+            }
+
+            List<String> urls = extractUrls(card.getDesc());
+            for (String url : urls) {
+                if (url.contains("github.com")) {
+                    content.setGithubUrl(url);
+                } else if (url.contains("infoq.com")) {
+                    content.setInfoqUrl(url);
+                }
+            }
+
+            if (content.getInfoqUrl() != null) {
+                String infoqNode = content.getInfoqUrl().substring(content.getInfoqUrl().lastIndexOf('/') + 1);
+                if (content.isArticle()) {
+                    content.setNode(infoqNode);
+                } else {
+                    content.setNode(new SimpleDateFormat("yyyy/MM").format(Calendar.getInstance().getTime()) + "/" + infoqNode);
+                }
+            }
+
+            validatedContents.add(content);
+        }
+
+        return validatedContents;
+    }
+
+    private List<String> extractUrls(String content) {
+        List<String> result = new ArrayList<String>();
+        String urlPattern = "((https?):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        Pattern p = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(content);
+        while (m.find()) {
+            result.add(content.substring(m.start(0), m.end(0)));
+        }
+        return result;
+    }
+
     private Card buildCardFromFeedEntry(FeedEntry feedEntry) {
         Card cardToCreate = new Card();
         cardToCreate.setName(feedEntry.getTitle());
         cardToCreate.setDesc(feedEntry.getLink());
         return cardToCreate;
-    }
-
-    public TList getList(Token accessToken, String listId) {
-        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
-        return trelloApi.getList(listId, arg("cards", "open"));
     }
 }

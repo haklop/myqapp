@@ -1,6 +1,4 @@
-function ConfListCtrl($scope, Confs, UserService) {
-    $scope.alerts = [];
-
+function ConfListCtrl($scope, $rootScope, Confs, UserService) {
     $scope.newconf = {};
 
     $scope.isEditor = UserService.isEditor;
@@ -8,13 +6,28 @@ function ConfListCtrl($scope, Confs, UserService) {
     $scope.createConf = function () {
         if ($scope.newconfForm.$valid) {
             Confs.save($scope.newconf, function () {
-                $scope.alerts.push({"title": "Conference ajoutée", "type": "success", "content": ""});
+                $rootScope.$broadcast('handleAlert', {"title": "Conference ajoutée", "type": "success", "content": "",
+                    category: 'message'});
                 $scope.newconf = {};
+                $('#conf-calendar').fullCalendar('refetchEvents');
 
             }, function () {
-                $scope.alerts.push({"title": "Erreur lors de la création de la conference", "type": "error", "content": ""});
+                $rootScope.$broadcast('handleAlert', {"title": "Erreur lors de la création de la conference", "type": "error", "content": "",
+                    category: 'message'});
             });
         }
+    };
+
+    $scope.nextMonth = function() {
+        $('#conf-calendar').fullCalendar('next');
+    };
+
+    $scope.previousMonth = function() {
+        $('#conf-calendar').fullCalendar('prev');
+    };
+
+    $scope.today = function() {
+        $('#conf-calendar').fullCalendar('today');
     };
 
     var date = new Date();
@@ -24,7 +37,7 @@ function ConfListCtrl($scope, Confs, UserService) {
 
     $('#conf-calendar').fullCalendar({
         header: {
-            left: 'prev,next today',
+            left: '',
             center: 'title',
             right: ''
         },
@@ -37,7 +50,6 @@ function ConfListCtrl($scope, Confs, UserService) {
                 url: '/api/conf/period',
                 dataType: 'json',
                 data: {
-                    // our hypothetical feed requires UNIX timestamps
                     start: start.getTime(),
                     end: end.getTime()
                 },

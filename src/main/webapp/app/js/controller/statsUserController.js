@@ -34,6 +34,10 @@ function StatsUserCtrl($scope, StatsUsers, Stats, UserService) {
         Stats.refresh(function () {
             $scope.authorStats = StatsUsers.query();
             $scope.refreshInProgress = false;
+        }, function() {
+            $scope.refreshInProgress = false;
+            $rootScope.$broadcast('handleAlert', {"title": "Erreur lors du rafraichissement des stats",
+                "type": "error", "content": "", category: 'message'});
         });
     }
 

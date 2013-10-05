@@ -1,49 +1,94 @@
-<div class="row-fluid">
-    <div class="span4">
-        <input type="text" ng-model="gitHubFilter" placeholder="Filter">
-        <table class="table table-striped">
-            <tbody>
-            <tr ng-repeat="card in cards | filter:gitHubFilter ">
-                <td><a href="{{card.githubUrl}}">{{card.name}}</a></td>
-                <td><button class="btn btn-success" ng-click="fetchRaw(card.githubUrl, cardType(card))">Fetch</button></td>
-            </tr>
-            </tbody>
-        </table>
-        <hr>
-
-        Sans lien GitHub dans la description de la carte sur Trello
-        <table class="table table-striped">
-            <tbody>
-            <tr ng-repeat="card in cardsNoGithub">
-                <td><a href="{{card.url}}">{{card.name}}</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="span8">
-        <div class="alerts">
-            <div class="alert fade" ng-repeat="alert in alerts" bs-alert="alert"></div>
-        </div>
-
-        <form class="form-horizontal" name="generateMarkdownForm" novalidate>
-            <textarea style="width: 100% !important; height: 300px;" ng-model="markdown.text"></textarea>
-
-            <label class="radio inline">
-                <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
-            </label>
-            <label class="radio inline">
-                <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
-            </label>
-            <label class="radio inline">
-                <input type="text" class="input-large" name="node" id="node" placeholder="/fr/articles/"
-                       ng-model="markdown.node" required/>
-            </label>
-            <label class="radio inline">
-                <button class="btn btn-success" ng-click="generateHtml()">Générer HTML</button>
-            </label>
+<div class="pure-g-r" id="md-layout">
+    <div class="pure-u-1" id="md-list">
+        <form class="pure-form md-filter">
+            <label for="filter">Filtrer</label>
+            <input id="filter" type="text" ng-model="gitHubFilter" placeholder="Filter">
+            <button class="feed-action pure-button" ng-click="retrieveList()" ng-disabled="isRefreshing"
+                    title="Rafraîchir la liste des éléments à publier">
+                <i class="icon-refresh" ng-class="{'icon-spin': isRefreshing}"></i>
+            </button>
         </form>
 
-        <textarea style="width: 100% !important; height: 300px;" ng-model="generated" disabled></textarea>
+        <div class="pure-g md-spinner" ng-show="isRefreshing && cards.length === 0">
+            <i class="icon-spinner icon-spin icon-4x"></i>
+        </div>
+
+        <div class="md-item pure-g" ng-repeat="card in cards | filter:gitHubFilter"
+             ng-click="fetchRaw(card.githubUrl, card.article, card.node)"
+             ng-class="{'md-article-border': card.article, 'md-news-border': !card.article, 'md-item-selected': isSelected(card)}">
+
+            <div class="pure-u my-hidden-phone">
+                <img class="md-trello-avatar" alt="{{card.fullName}}" ng-src="{{card.avatarUrl}}" height="64" width="64">
+            </div>
+            <div class="pure-u-3-4">
+                <h5 class="feed-name">{{card.dateLastActivity | date:'dd/MM/yyyy'}}</h5>
+                <h4 class="md-title">{{card.name}}</h4>
+                <a class="pure-button md-action" href="{{card.githubUrl}}" target="_blank" title="Consulter la traduction sur GitHub">
+                    <i class="icon-github"></i>
+                </a>
+                <a class="pure-button md-action" href="{{card.trelloUrl}}" target="_blank" title="Consulter la carte Trello">
+                    <i class="icon-trello"></i>
+                </a>
+                <a class="pure-button md-action" href="{{card.infoqUrl}}" target="_blank" title="Voir l'original" ng-show="card.infoqUrl">
+                    Q
+                </a>
+            </div>
+        </div>
+
+        <h5 ng-show="!isRefreshing && cardsNoGithub">Sans lien GitHub dans la description de la carte sur Trello:</h5>
+
+        <div class="md-item pure-g" ng-repeat="card in cardsNoGithub | filter:gitHubFilter"
+             ng-click="fetchRaw(card.githubUrl, card.article, card.node)"
+             ng-class="{'md-article-border': card.article, 'md-news-border': !card.article}">
+
+            <div class="pure-u">
+                <img class="md-trello-avatar" alt="{{card.fullName}}" ng-src="{{card.avatarUrl}}" height="64" width="64">
+            </div>
+            <div class="pure-u-3-4">
+                <h5 class="feed-name">{{card.dateLastActivity | date:'dd/MM/yyyy'}}</h5>
+                <h4 class="md-title">{{card.name}}</h4>
+                <a class="pure-button md-action" href="{{card.trelloUrl}}" target="_blank" title="Consulter la carte Trello">
+                    <i class="icon-trello"></i>
+                </a>
+            </div>
+        </div>
     </div>
 
+    <div class="pure-u-1">
+        <div id="md-main">
+            <form class="pure-form" name="generateMarkdownForm" novalidate>
+                <fieldset>
+                    <legend>Génération du HTML</legend>
+                    <div class="pure-g-r">
+                        <div class="pure-u-1 md-form-group">
+                            <textarea class="md-textarea pure-input-1" ng-model="markdown.text"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="pure-g-r">
+                        <div class="pure-u-1 md-form-group">
+                            <label for="newsRadio">
+                                <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
+                            </label>
+
+                            <label for="articleRadio">
+                                <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
+                            </label>
+
+                            <input type="text" name="node" id="node" placeholder="/fr/articles/" ng-model="markdown.node" required/>
+
+                            <button class="pure-button pure-button-primary" ng-click="generateHtml()"
+                                    ng-class="{'pure-button-disabled': isGeneratingHtml}">Générer HTML</button>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+
+            <form class="pure-form pure-form-stacked">
+                <textarea class="md-textarea pure-input-1" ng-model="generated"></textarea>
+            </form>
+        </div>
+
+   </div>
 </div>

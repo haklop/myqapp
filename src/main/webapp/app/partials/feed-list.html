@@ -1,57 +1,53 @@
-<div class="row-fluid">
-    <div class="span3">
-        <fieldset>
-            <legend>Filtrer par type</legend>
-            <label class="checkbox" ng-repeat="type in types">
-                <input type="checkbox" ng-model="type.selected"> {{type.name}}
-            </label>
-        </fieldset>
-
-        <fieldset>
-            <legend>Actions</legend>
-            <button class="btn" ng-click="refreshFeed()" ng-show="isEditor()">Rafraîchir le feed</button>
-        </fieldset>
-    </div>
-    <div class="span9">
-        <div class="alerts">
-            <div class="alert fade" ng-repeat="alert in alerts" bs-alert="alert"></div>
+<div class="feed-content">
+    <div class="page-header pure-g-r">
+        <div class="pure-u-3-4 r-tablet-full-width">
+            <button class="pure-button feed-action" ng-click="refreshFeed()" ng-show="isEditor()" ng-disabled="feedRefreshing" title="Rafraîchir le feed">
+                <i class="icon-refresh" ng-class="{'icon-spin': feedRefreshing}"></i>
+            </button>
+            <h1 class="content-subhead">Flux RSS InfoQ</h1>
         </div>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Type</th>
-                <th>Title</th>
-                <th>Date</th>
-                <th width="30%">Categories</th>
-                <th width="120px" ng-show="isEditor()">Add to Trello</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="feed in feeds.content | filter:filterCategory">
-                <td>{{feed.type}}</td>
-                <td><a ng-href="{{feed.link}}" target="_blank">{{feed.title}}</a></td>
-                <td>{{feed.publishedDate | date:'dd/MM/yyyy'}}</td>
-                <td>{{formatCategories(feed.categories)}}</td>
-                <td ng-show="isEditor()">
-                    <button ng-show="(feed.type == 'Article' || feed.type == 'News') && !feed.addedInTrello"
-                            class="btn btn-info" ng-click="addToTrello(feed)" ng-class="addingToTrello(feed)" ng-disabled="addingToTrello(feed)">Add to Trello
-                    </button>
+    </div>
 
-                    <a ng-show="feed.addedInTrello" ng-href="{{feed.urlTrello}}" class="btn disabled"
-                       title="View on Trello" target="_blank">Added</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
 
-        <div class="pagination pagination-centered pagination-large">
-            <ul>
-                <!-- FIXME rendre actif/inactif prev et next en fonction du contexte-->
-                <li><a ng-href="#/feed/{{feeds.number - 1 }}">Prev</a></li>
-                <li class="active"><a href="#">{{feeds.number}}</a></li>
-                <li><a ng-href="#/feed/{{feeds.number + 1 }}">Next</a></li>
+    <div ng-repeat="feed in feeds.content" class="feed-item pure-g-r">
+
+        <div class="pure-u-3-4 r-tablet-full-width">
+            <a ng-show="feed.addedInTrello" ng-href="{{feed.urlTrello}}" class="pure-button pure-button-disabled feed-action"
+               title="View on Trello" target="_blank">Added</a>
+            <a ng-show="(feed.type == 'Article' || feed.type == 'News') && !feed.addedInTrello" class="pure-button pure-button-primary feed-action"
+               ng-click="addToTrello(feed)" ng-class="addingToTrello(feed)" ng-disabled="addingToTrello(feed)">Add to Trello
+            </a>
+
+            <h5 class="feed-name">{{feed.publishedDate | date:'dd/MM/yyyy'}} - {{feed.type}}</h5>
+            <h3 class="feed-title"><a href="{{feed.link}}" target="_blank">{{feed.title}}</a></h3>
+            <p class="feed-categories pure-hidden-phone">
+                <span class="feed-category" ng-repeat="category in feed.categories">{{category}}</span>
+            </p>
+            <p class="feed-desc my-hidden-phone">
+                {{feed.description}}
+            </p>
+        </div>
+
+
+    </div>
+
+    <div class="pure-g-r">
+        <div class="pure-u-3-4 r-tablet-full-width">
+            <ul class="pure-paginator feed-paginator">
+                <li><a class="pure-button prev" ng-show="feeds.number > 0" ng-href="#/feed/{{feeds.number - 1}}">&#171;</a></li>
+                <li><a class="pure-button pure-hidden-phone" ng-show="feeds.number > 1" ng-href="#/feed/{{feeds.number - 2}}">{{feeds.number - 1}}</a></li>
+                <li><a class="pure-button" ng-show="feeds.number > 0" ng-href="#/feed/{{feeds.number - 1}}">{{feeds.number}}</a></li>
+                <li><a class="pure-button pure-button-active" href="#">{{feeds.number + 1}}</a></li>
+                <li><a class="pure-button" ng-href="#/feed/{{feeds.number + 1 }}">{{feeds.number + 2}}</a></li>
+                <li><a class="pure-button pure-hidden-phone" ng-href="#/feed/{{feeds.number + 2 }}">{{feeds.number + 3}}</a></li>
+                <li><a class="pure-button pure-hidden-phone" ng-show="feeds.number < 2" ng-href="#/feed/{{feeds.number + 3 }}">{{feeds.number + 4}}</a></li>
+                <li><a class="pure-button pure-hidden-phone" ng-show="feeds.number < 1" ng-href="#/feed/{{feeds.number + 4 }}">{{feeds.number + 5}}</a></li>
+                <li><a class="pure-button next" ng-href="#/feed/{{feeds.number + 1 }}">&#187;</a></li>
             </ul>
         </div>
     </div>
 
 </div>
+
+
+

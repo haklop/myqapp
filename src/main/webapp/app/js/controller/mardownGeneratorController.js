@@ -1,77 +1,71 @@
-function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloList, GithubRaw) {
+function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, GithubRaw) {
     $scope.markdown = {};
-
-    $scope.alerts = [];
+    $scope.cards = [];
+    $scope.cardsNoGithub = [];
 
     $scope.generateHtml = function () {
+        $scope.isGeneratingHtml = true;
         if ($scope.markdown.text) {
             MarkdownGenerator.generate(JSON.stringify($scope.markdown), function (result) {
                 $scope.generated = result.value;
+                $scope.isGeneratingHtml = false;
+            }, function () {
+                $scope.isGeneratingHtml = false;
             });
         }
     };
 
-    $scope.cardType = function (card) {
-        for (var i = 0; i < card.labels.length; i++) {
-            var label = card.labels[i];
-            if (label.name === "Articles") {
-                return "article"
-            } else if (label.name === "News") {
-                return "news";
-            }
-        }
-        return "";
-    };
-
-    $scope.fetchRaw = function (githubUrl, type) {
+    $scope.fetchRaw = function (githubUrl, isArticle, nodeName) {
+        $scope.selectedUrl = githubUrl;
         GithubRaw.query({url: githubUrl}, function (result) {
+            $scope.generated = '';
             $scope.markdown.text = result.content;
-            $scope.markdown.type = type;
-        }, function(error){
-            if(error.status == 412){
+            $scope.markdown.type = isArticle ? "article" : "news";
+            $scope.markdown.node = nodeName;
+
+        }, function (error) {
+            if (error.status == 412) {
                 alert("Le contenu recupéré n'appartient pas à la branche master, veuillez mettre à jour l'URL dans Trello");
             }
         })
     };
 
-    $scope.$on('handleAlert', function(evt, alert) {
-        $scope.alerts.push(alert);
-    });
+    $scope.isRefreshing = false;
 
-//    FIXME Ne pas mettre cet ID en dur ici
-    TrelloList.query({id: "51499c4cb867d5eb59006794"}, function (result) {
-        $scope.cards = [];
-        $scope.cardsNoGithub = [];
-        for (var i = 0; i < result.cards.length; i++) {
-            var card = result.cards[i];
-            if (card.desc.indexOf("github.com") !== -1) {
-                var urls = findUrls(card.desc);
-                for (var j = 0; j < urls.length; j++) {
-                    if (urls[j].indexOf("github.com") !== -1) {
-                        card.githubUrl = urls[j];
-                    }
+    $scope.retrieveList = function retrieveList() {
+        $scope.isRefreshing = true;
+
+        TrelloValidatedList.query(function (result) {
+            $scope.isRefreshing = false;
+
+            $scope.cards = [];
+            $scope.cardsNoGithub = [];
+
+            for (var i = 0; i < result.length; i++) {
+                var card = result[i];
+                if (card.githubUrl) {
+                    $scope.cards.push(card);
+                } else {
+                    $scope.cardsNoGithub.push(card);
                 }
-                $scope.cards.push(card);
-            } else {
-                $scope.cardsNoGithub.push(card);
+
+                if (card.mentoring) {
+                    card.avatarUrl = card.mentor.avatarUrl;
+                    card.fullName = card.mentor.fullName;
+                } else {
+                    card.avatarUrl = card.author.avatarUrl;
+                    card.fullName = card.author.fullName;
+                }
             }
-        }
-    });
+        }, function () {
+            $scope.isRefreshing = false;
 
-    function findUrls(text) {
-        var source = (text || '').toString();
-        var urlArray = [];
-        var matchArray;
+        });
+    };
 
-        // Regular expression to find FTP, HTTP(S) and email URLs.
-        var regexToken = /(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)|((mailto:)?[_.\w-]+@([\w][\w\-]+\.)+[a-zA-Z]{2,3})/g;
+    $scope.isSelected = function (card) {
+        return card.githubUrl === $scope.selectedUrl;
+    };
 
-        // Iterate through any URLs in the text.
-        while ((matchArray = regexToken.exec(source)) !== null) {
-            var token = matchArray[0];
-            urlArray.push(token);
-        }
-
-        return urlArray;
-    }
+    $scope.retrieveList();
 }
