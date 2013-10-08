@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ScriptAssert(lang = "javascript", script = "_this.startDate.before(_this.endDate)")
 public class Conference {
 
     private String id;
