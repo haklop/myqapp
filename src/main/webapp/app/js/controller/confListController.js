@@ -5,7 +5,14 @@ function ConfListCtrl($scope, $rootScope, Confs, UserService) {
 
     $scope.createConf = function () {
         if ($scope.newconfForm.$valid) {
-            Confs.save($scope.newconf, function () {
+            var confToSubmit = {
+                startDate: $('#inputStartDate').datepicker("getDate").getTime(),
+                endDate: $('#inputEndDate').datepicker("getDate").getTime(),
+                name: $scope.newconf.name,
+                location: $scope.newconf.location,
+                website: $scope.newconf.website
+            };
+            Confs.save(confToSubmit, function () {
                 $rootScope.$broadcast('handleAlert', {"title": "Conference ajoutée", "type": "success", "content": "",
                     category: 'message'});
                 $scope.newconf = {};
@@ -68,6 +75,24 @@ function ConfListCtrl($scope, $rootScope, Confs, UserService) {
                     callback(events);
                 }
             })
+        }
+    });
+
+    $('#inputStartDate').datepicker({
+        defaultDate: "0",
+        dateFormat: 'dd/mm/yy',
+        onClose: function(selectedDate) {
+            $('#inputEndDate').datepicker("option", "minDate", selectedDate);
+            $scope.newconf.startDate = selectedDate;
+            $scope.$apply();
+        }
+    });
+    $('#inputEndDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        onClose: function(selectedDate) {
+            $('#inputStartDate').datepicker("option", "maxDate", selectedDate);
+            $scope.newconf.endDate = selectedDate;
+            $scope.$apply();
         }
     });
 

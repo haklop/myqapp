@@ -54,20 +54,4 @@
 
         </div>
     </div>
-
-    <script>
-        $(function() {
-            $("#inputStartDate").datepicker({
-                defaultDate: "0",
-                onClose: function(selectedDate) {
-                    $("#inputEndDate").datepicker("option", "minDate", selectedDate);
-                }
-            });
-            $("#inputEndDate").datepicker({
-                onClose: function(selectedDate) {
-                    $("#inputStartDate").datepicker("option", "maxDate", selectedDate);
-                }
-            });
-        });
-    </script>
 </div>
