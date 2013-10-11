@@ -156,22 +156,12 @@
 
 /* ########################################	*/
 
-#header {
-    float: left;
-    text-align: left;
-    margin: 1px 0 0 0;
-    display: block;
-    width: 989px;
-    clear: both;
-}
-
 .preview #content {
     float: left;
     text-align: left;
     padding: 10px 10px 0px 10px;
     margin: 10px 0;
     display: block;
-    width: 969px;
     clear: both;
     border-bottom: 1px solid #bcbcbc;
     position: relative;
