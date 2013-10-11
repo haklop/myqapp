@@ -1,6 +1,6 @@
 "use strict";
 
-var module = angular.module('myqapp', ['myqapi']).
+var module = angular.module('myqapp', ['myqapi', 'ngSanitize']).
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.
             when('/feed/:page', {templateUrl: 'app/partials/feed-list.html',   controller: FeedListCtrl}).
@@ -12,6 +12,25 @@ var module = angular.module('myqapp', ['myqapi']).
             when('/admin', {templateUrl: 'app/partials/admin.html',   controller: AdminCtrl}).
             otherwise({redirectTo: '/feed/0'});
     }]);
+
+module.directive('previewInfoq', function () {
+    return {
+        restrict: 'A',
+        replace: true,
+        transclude: false,
+        scope: { content:'@preview' },
+        template: '<div class="preview">' +
+            '<div id="content">' +
+            '<div class="article_page_left news_container text_content_container">' +
+            '<div class="text_info" ng-bind-html="content"></div>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
+        link: function(scope, element, attrs) {
+            console.log('link me');
+        }
+    }
+});
 
 module.factory('httpInterceptor', function ($q, $rootScope) {
     return function (promise) {
