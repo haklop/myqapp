@@ -25,10 +25,7 @@ module.directive('previewInfoq', function () {
             '<div class="text_info" ng-bind-html="content"></div>' +
             '</div>' +
             '</div>' +
-            '</div>',
-        link: function(scope, element, attrs) {
-            console.log('link me');
-        }
+            '</div>'
     }
 });
 
