@@ -103,6 +103,7 @@
 
 .preview pre {
     font-family: "Courier New", Courier, monospace;
+    word-wrap: normal;
 }
 
 /* 	@@@@@@@@@@@@@@@@ FONT FAMILY @@@@@@ */
@@ -137,17 +138,17 @@
 
 .preview pre {
     border: 1px solid #e8e8e8;
-    background: #f4f4f4 url(/app/images/green_border.jpg) repeat-y left top;
     color: #314E64;
-    padding: 10px 10px 10px 55px;
+    padding: 10px 10px 10px 10px;
     line-height: 150%;
     margin: 10px 0 10px 0;
-    width: 80%;
+    width: 95%;
     overflow: auto;
     float: left;
     text-align: left;
     display: block;
     clear: both;
+    background: #f4f4f4 url(/app/images/green_border.jpg) repeat-y -29px;
 }
 
 .preview a {
