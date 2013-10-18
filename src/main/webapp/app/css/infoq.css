@@ -222,6 +222,10 @@
 
 .preview .text_content_container blockquote ul {
     clear: left;
+    padding-left: 0px;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000;
 }
 
 .preview .text_content_container blockquote ul li {
