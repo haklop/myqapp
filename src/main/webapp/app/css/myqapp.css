@@ -16,13 +16,57 @@ a {
 
 /* Markdown page */
 
+#tabs {
+    overflow: hidden;
+    background: #777;
+    padding-left: 20px;
+    margin: 0px;
+}
+#tabs li { list-style: none; }
+#tabs li a {
+    float: left;
+    display: block;
+    padding: 9px;
+    color: #fff;
+    width: 25%;
+    text-decoration: none;
+    text-align: center;
+    border-right: 1px solid #555;
+    border-left: 1px solid #888;
+    font-size: 15px;
+}
+
+#tabs li a:hover { background: #666; }
+#tabs li:first-child a { border-left: 0; }
+#tabs li:last-child a { border-right: 0; }
+
+#tabs li.current a {
+    background: #fff;
+    color: #666;
+}
+
+#panel-container > div {
+    clear: both;
+    line-height: 19px;
+    display: none;
+    padding: .2em 0.4em;
+}
+
+#panel-container .current { display: block; }
+#panel-container #md-generated-html.first { display: block; }
+#panel-container p { margin: 0 0 20px 0;}
+
 #md-layout {
     padding-left:300px;
     position: relative;
 }
 
 #md-main {
-    padding: .2em 0.4em;
+    background: #fff;
+    overflow: hidden;
+    width: 100%;
+    min-height: 300px;
+    border: 1px solid #ddd;
 }
 
 .md-textarea {

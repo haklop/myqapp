@@ -56,40 +56,49 @@
 
     <div class="pure-u-1">
         <div id="md-main">
-            <form class="pure-form" name="generateMarkdownForm" novalidate>
-                <fieldset>
-                    <legend>Génération du HTML</legend>
-                    <div class="pure-g-r">
-                        <div class="pure-u-1 md-form-group">
-                            <textarea class="md-textarea pure-input-1" ng-model="markdown.text"></textarea>
-                        </div>
-                    </div>
+            <ul id="tabs">
+                <li class="current"><a href="#md-generated-html">Génération du HTML</a></li>
+                <li><a href="#md-preview">Preview</a></li>
+            </ul>
+            <div id="panel-container">
+                <div id="md-generated-html" class="current">
+                    <form class="pure-form" name="generateMarkdownForm" novalidate>
+                        <fieldset>
+                            <div class="pure-g-r">
+                                <div class="pure-u-1 md-form-group">
+                                    <textarea class="md-textarea pure-input-1" ng-model="markdown.text"></textarea>
+                                </div>
+                            </div>
 
-                    <div class="pure-g-r">
-                        <div class="pure-u-1 md-form-group">
-                            <label for="newsRadio">
-                                <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
-                            </label>
+                            <div class="pure-g-r">
+                                <div class="pure-u-1 md-form-group">
+                                    <label for="newsRadio">
+                                        <input type="radio" name="type" id="newsRadio" value="news" ng-model="markdown.type"> News
+                                    </label>
 
-                            <label for="articleRadio">
-                                <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
-                            </label>
+                                    <label for="articleRadio">
+                                        <input type="radio" name="type" id="articleRadio" value="article" ng-model="markdown.type"> Article
+                                    </label>
 
-                            <input type="text" name="node" id="node" placeholder="/fr/articles/" ng-model="markdown.node" required/>
+                                    <input type="text" name="node" id="node" placeholder="/fr/articles/" ng-model="markdown.node" required/>
 
-                            <button class="pure-button pure-button-primary" ng-click="generateHtml()"
-                                    ng-class="{'pure-button-disabled': isGeneratingHtml}">Générer HTML</button>
-                        </div>
-                    </div>
+                                    <button class="pure-button pure-button-primary" ng-disabled="!markdown.text" ng-click="generateHtml()"
+                                            ng-class="{'pure-button-disabled': isGeneratingHtml}">Générer HTML</button>
+                                </div>
+                            </div>
 
-                </fieldset>
-            </form>
+                        </fieldset>
+                    </form>
 
-            <form class="pure-form pure-form-stacked">
-                <textarea class="md-textarea pure-input-1" ng-model="generated"></textarea>
-            </form>
+                    <form class="pure-form pure-form-stacked">
+                        <textarea class="md-textarea pure-input-1" ng-model="generated"></textarea>
+                    </form>
+                </div>
+                <div id="md-preview">
+                    <div preview-infoq preview="{{generated}}"></div>
+                </div>
+            </div>
 
-            <div preview-infoq preview="{{generated}}"></div>
         </div>
 
    </div>

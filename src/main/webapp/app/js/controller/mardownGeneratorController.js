@@ -68,4 +68,14 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
     };
 
     $scope.retrieveList();
+
+    $("#tabs").find("li a").click(function(e){
+
+        $("#tabs li, #panel-container .current").removeClass('current');
+        $(this).parent().addClass('current');
+        var currentTab = $(this).attr('href');
+        $(currentTab).addClass('current');
+        e.preventDefault();
+
+    });
 }
