@@ -1,4 +1,4 @@
-function AlertController($scope) {
+myqappModule.controller('AlertController', ['$scope', function ($scope) {
 
     $scope.alerts = [];
 
@@ -23,5 +23,5 @@ function AlertController($scope) {
         }
     };
 
-}
+}]);
 

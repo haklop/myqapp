@@ -1,4 +1,4 @@
-function ConfListCtrl($scope, $rootScope, Confs, UserService) {
+myqappModule.controller('ConfListCtrl', ['$scope', '$rootScope', 'Confs', 'UserService', function ($scope, $rootScope, Confs, UserService) {
     $scope.newconf = {};
 
     $scope.isEditor = UserService.isEditor;
@@ -96,4 +96,4 @@ function ConfListCtrl($scope, $rootScope, Confs, UserService) {
         }
     });
 
-}
+}]);

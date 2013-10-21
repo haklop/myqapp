@@ -1,4 +1,5 @@
-function FeedListCtrl($scope, $rootScope, $routeParams, Feed, RefreshFeed, Trello, UserService) {
+myqappModule.controller('FeedListCtrl', ['$scope', '$rootScope', '$routeParams', 'Feed', 'RefreshFeed', 'Trello', 'UserService', function ($scope, $rootScope, $routeParams, Feed, RefreshFeed, Trello, UserService) {
+
     var types = [
         {"name": "News", "selected": true},
         {"name": "Article", "selected": true},
@@ -71,4 +72,4 @@ function FeedListCtrl($scope, $rootScope, $routeParams, Feed, RefreshFeed, Trell
             $rootScope.$broadcast('handleAlert', {"title": "Mise à jour terminée", "type": "success", "content": "", category: 'message'});
         });
     };
-}
+}]);
