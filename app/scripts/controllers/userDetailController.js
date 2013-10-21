@@ -1,2 +1,0 @@
-function UserDetailCtrl($scope, $routeParams) {
-}

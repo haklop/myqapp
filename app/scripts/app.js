@@ -6,7 +6,6 @@ var myqappModule = angular.module('myqapp', ['myqapi', 'ngSanitize']).
             when('/feed/:page', {templateUrl: 'views/feed-list.html',   controller: 'FeedListCtrl'}).
             when('/stats', {templateUrl: 'views/stats-list.html',   controller: 'StatsListCtrl'}).
             when('/users', {templateUrl: 'views/stats-user.html',   controller: 'StatsUserCtrl'}).
-            when('/users/:user', {templateUrl: 'views/user-detail.html',   controller: UserDetailCtrl}).
             when('/conf', {templateUrl: 'views/conf-list.html',   controller: 'ConfListCtrl'}).
             when('/markdown', {templateUrl: 'views/markdown-generator.html',   controller: 'MarkdownGeneratorCtrl'}).
             when('/admin', {templateUrl: 'views/admin.html',   controller: 'AdminController'}).
