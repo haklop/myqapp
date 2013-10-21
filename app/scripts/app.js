@@ -3,13 +3,13 @@
 var module = angular.module('myqapp', ['myqapi', 'ngSanitize']).
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.
-            when('/feed/:page', {templateUrl: 'app/partials/feed-list.html',   controller: FeedListCtrl}).
-            when('/stats', {templateUrl: 'app/partials/stats-list.html',   controller: StatsListCtrl}).
-            when('/users', {templateUrl: 'app/partials/stats-user.html',   controller: StatsUserCtrl}).
-            when('/users/:user', {templateUrl: 'app/partials/user-detail.html',   controller: UserDetailCtrl}).
-            when('/conf', {templateUrl: 'app/partials/conf-list.html',   controller: ConfListCtrl}).
-            when('/markdown', {templateUrl: 'app/partials/markdown-generator.html',   controller: MarkdownGeneratorCtrl}).
-            when('/admin', {templateUrl: 'app/partials/admin.html',   controller: AdminCtrl}).
+            when('/feed/:page', {templateUrl: 'views/feed-list.html',   controller: FeedListCtrl}).
+            when('/stats', {templateUrl: 'views/stats-list.html',   controller: StatsListCtrl}).
+            when('/users', {templateUrl: 'views/stats-user.html',   controller: StatsUserCtrl}).
+            when('/users/:user', {templateUrl: 'views/user-detail.html',   controller: UserDetailCtrl}).
+            when('/conf', {templateUrl: 'views/conf-list.html',   controller: ConfListCtrl}).
+            when('/markdown', {templateUrl: 'views/markdown-generator.html',   controller: MarkdownGeneratorCtrl}).
+            when('/admin', {templateUrl: 'views/admin.html',   controller: AdminCtrl}).
             otherwise({redirectTo: '/feed/0'});
     }]);
 

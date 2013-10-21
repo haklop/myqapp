@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.1/pure-min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="app/css/myqapp.css">
-    <link rel="stylesheet" type="text/css" href="app/css/infoq.css">
 
-    <link rel="stylesheet" type="text/css" href="lib/fullcalendar/fullcalendar.css"/>
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/fullcalendar/fullcalendar.css" />
+    <!-- endbower -->
 
+
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" type="text/css" href="styles/myqapp.css">
+    <link rel="stylesheet" type="text/css" href="styles/infoq.css">
+    <!-- endbuild -->
 </head>
 <body>
 
@@ -45,26 +50,31 @@
     <div ng-view class="pure-u-1"></div>
 </div>
 
-<script src="lib/jquery/jquery-1.10.2.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script src="lib/angular/angular.min.js"></script>
-<script src="lib/angular/lib/angular-resource.min.js"></script>
-<script src="/lib/angular/lib/angular-sanitize.min.js"></script>
-<script src="lib/fullcalendar/fullcalendar.min.js"></script>
+<!-- bower:js -->
+<script src="bower_components/jquery/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+<script src="bower_components/fullcalendar/fullcalendar.js"></script>
+<!-- endbower -->
 
-<script src="app/js/app.js"></script>
-<script src="app/js/services.js"></script>
-<script src="app/js/controller/feedListController.js"></script>
-<script src="app/js/controller/headerController.js"></script>
-<script src="app/js/controller/alertController.js"></script>
-<script src="app/js/controller/statsListsController.js"></script>
-<script src="app/js/controller/statsUserController.js"></script>
-<script src="app/js/controller/userDetailController.js"></script>
-<script src="app/js/controller/confListController.js"></script>
-<script src="app/js/controller/mardownGeneratorController.js"></script>
-<script src="app/js/controller/adminController.js"></script>
-<script src="app/js/controller/userCreationController.js"></script>
-<script src="app/js/controller/userModificationController.js"></script>
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/services.js"></script>
+<script src="scripts/controllers/feedListController.js"></script>
+<script src="scripts/controllers/headerController.js"></script>
+<script src="scripts/controllers/alertController.js"></script>
+<script src="scripts/controllers/statsListsController.js"></script>
+<script src="scripts/controllers/statsUserController.js"></script>
+<script src="scripts/controllers/userDetailController.js"></script>
+<script src="scripts/controllers/confListController.js"></script>
+<script src="scripts/controllers/mardownGeneratorController.js"></script>
+<script src="scripts/controllers/adminController.js"></script>
+<script src="scripts/controllers/userCreationController.js"></script>
+<script src="scripts/controllers/userModificationController.js"></script>
+<!-- endbuild -->
 
 <script type="text/javascript">
     var menu = document.getElementById('menu'),
