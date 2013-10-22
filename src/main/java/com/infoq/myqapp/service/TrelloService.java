@@ -72,12 +72,12 @@ public class TrelloService {
         Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
         Board board = trelloApi.getBoard(trelloBoardForStatsId);
 
-        return board.fetchLists(arg("cards", "open"));
+        return board.fetchLists(arg("cards", "all"));
     }
 
     public TList getList(Token accessToken, String listId) {
         Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
-        return trelloApi.getList(listId, arg("cards", "open"));
+        return trelloApi.getList(listId, arg("cards", "all"));
     }
 
     public TList getValidatedList(Token accesToken) {
