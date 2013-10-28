@@ -1,4 +1,4 @@
-function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, GithubRaw) {
+myqappModule.controller('MarkdownGeneratorCtrl', ['$scope', 'MarkdownGenerator', 'TrelloValidatedList', 'GithubRaw', function ($scope, MarkdownGenerator, TrelloValidatedList, GithubRaw) {
     $scope.markdown = {};
     $scope.cards = [];
     $scope.cardsNoGithub = [];
@@ -78,4 +78,4 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
         e.preventDefault();
 
     });
-}
+}]);

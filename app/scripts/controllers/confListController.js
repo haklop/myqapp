@@ -1,4 +1,4 @@
-function ConfListCtrl($scope, $rootScope, Confs, UserService) {
+myqappModule.controller('ConfListCtrl', ['$scope', '$rootScope', 'Confs', 'UserService', function ($scope, $rootScope, Confs, UserService) {
     $scope.newconf = {};
 
     $scope.isEditor = UserService.isEditor;
@@ -6,8 +6,8 @@ function ConfListCtrl($scope, $rootScope, Confs, UserService) {
     $scope.createConf = function () {
         if ($scope.newconfForm.$valid) {
             var confToSubmit = {
-                startDate: $('#inputStartDate').datepicker("getDate").getTime(),
-                endDate: $('#inputEndDate').datepicker("getDate").getTime(),
+                startDate: startPicker.getDate().getTime(),
+                endDate: endPicker.getDate().getTime(),
                 name: $scope.newconf.name,
                 location: $scope.newconf.location,
                 website: $scope.newconf.website
@@ -78,22 +78,27 @@ function ConfListCtrl($scope, $rootScope, Confs, UserService) {
         }
     });
 
-    $('#inputStartDate').datepicker({
-        defaultDate: "0",
-        dateFormat: 'dd/mm/yy',
-        onClose: function(selectedDate) {
-            $('#inputEndDate').datepicker("option", "minDate", selectedDate);
-            $scope.newconf.startDate = selectedDate;
+    var startPicker = new Pikaday({
+        field: $('#inputStartDate')[0],
+        firstDay: 1,
+        format: 'dd/mm/yy',
+        onClose: function() {
+            endPicker.minDate = startPicker.getDate();
+            $scope.newconf.startDate = startPicker.toString();
             $scope.$apply();
+            endPicker.show();
         }
     });
-    $('#inputEndDate').datepicker({
-        dateFormat: 'dd/mm/yy',
-        onClose: function(selectedDate) {
-            $('#inputStartDate').datepicker("option", "maxDate", selectedDate);
-            $scope.newconf.endDate = selectedDate;
+
+    var endPicker = new Pikaday({
+        field: $('#inputEndDate')[0],
+        firstDay: 1,
+        format: 'dd/mm/yy',
+        onClose: function() {
+            startPicker.maxDate = endPicker.getDate();
+            $scope.newconf.endDate = endPicker.toString();
             $scope.$apply();
         }
     });
 
-}
+}]);

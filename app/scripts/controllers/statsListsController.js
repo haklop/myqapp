@@ -1,4 +1,4 @@
-function StatsListCtrl($scope, $rootScope, StatsLists, Stats, UserService) {
+myqappModule.controller('StatsListCtrl', ['$scope','$rootScope','StatsLists','Stats','UserService', function ($scope, $rootScope, StatsLists, Stats, UserService) {
     $scope.lists = StatsLists.query();
 
     $scope.predicate = $scope.name;
@@ -44,4 +44,4 @@ function StatsListCtrl($scope, $rootScope, StatsLists, Stats, UserService) {
         return $scope.refreshInProgress ? "disabled" : undefined;
     }
 
-}
+}]);

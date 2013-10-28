@@ -1,4 +1,5 @@
-function AdminCtrl($scope, User, UserService) {
+myqappModule.controller('AdminController', ['$scope', 'User', 'UserService', function ($scope, User, UserService) {
+
     $scope.users = User.findAll();
 
     $scope.remove = function (user) {
@@ -96,4 +97,5 @@ function AdminCtrl($scope, User, UserService) {
             created: false
         };
     }
-}
+}]);
+

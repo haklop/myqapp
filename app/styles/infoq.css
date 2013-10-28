@@ -32,7 +32,7 @@
     display: block;
     width: 89%;
     border: 1px solid #e8e8e8;
-    background: #f4f4f4 url(/app/images/gg.jpg) no-repeat left top;
+    background: #f4f4f4 url(../images/gg.jpg) no-repeat left top;
 }
 
 .preview blocknote p, .preview blockquote {
@@ -148,7 +148,7 @@
     text-align: left;
     display: block;
     clear: both;
-    background: #f4f4f4 url(/app/images/green_border.jpg) repeat-y -29px;
+    background: #f4f4f4 url(../images/green_border.jpg) repeat-y -29px;
 }
 
 .preview a {
@@ -266,7 +266,7 @@
     display: block;
     width: 545px;
     border: 1px solid #e8e8e8;
-    background: #f4f4f4 url(/app/images/gg.jpg) no-repeat left top;
+    background: #f4f4f4 url(../images/gg.jpg) no-repeat left top;
 }
 
 .preview .blocknote p, .preview blockquote {

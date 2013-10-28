@@ -1,82 +1,82 @@
 var angularModule = angular.module('myqapi', ['ngResource']);
 
-angularModule.factory('Feed', function ($resource) {
+angularModule.factory('Feed', ['$resource', function ($resource) {
     return $resource('api/feed/:page', {}, {
         query: {method: 'GET', isArray: false}
     });
-});
+}]);
 
-angularModule.factory('RefreshFeed', function ($resource) {
+angularModule.factory('RefreshFeed', ['$resource', function ($resource) {
     return $resource('api/feed/refresh', {}, {
         query: {method: 'GET', isArray: false}
     });
-});
+}]);
 
-angularModule.factory('Trello', function ($resource) {
+angularModule.factory('Trello', ['$resource', function ($resource) {
     return $resource('api/trello/card', {}, {
         add: {method: 'POST'}
     });
-});
+}]);
 
-angularModule.factory('TrelloList', function ($resource) {
+angularModule.factory('TrelloList', ['$resource', function ($resource) {
     return $resource('api/trello/list/:id', {}, {
         query: {method: 'GET', isArray: false}
     });
-});
+}]);
 
-angularModule.factory('TrelloValidatedList', function ($resource) {
+angularModule.factory('TrelloValidatedList', ['$resource', function ($resource) {
     return $resource('api/trello/validated');
-});
+}]);
 
-angularModule.factory('TrelloMember', function ($resource) {
+angularModule.factory('TrelloMember', ['$resource', function ($resource) {
     return $resource('api/trello/userinfo', {}, {
         query: {method: 'GET'}
     });
-});
+}]);
 
-angularModule.factory('TrelloUser', function ($resource) {
+angularModule.factory('TrelloUser', ['$resource', function ($resource) {
     return $resource('api/trello/member', {}, {
         query: {method: 'GET', isArray: true}
     });
-});
+}]);
 
-angularModule.factory('Confs', function ($resource) {
+angularModule.factory('Confs', ['$resource', function ($resource) {
     return $resource('api/conf', {}, {
         save: {method: 'POST'}
     });
-});
+}]);
 
-angularModule.factory('StatsUsers', function ($resource) {
+angularModule.factory('StatsUsers', ['$resource', function ($resource) {
     return $resource('api/stats/users', {}, {
         query: {method: 'GET', isArray: true}
     });
-});
+}]);
 
-angularModule.factory('StatsLists', function ($resource) {
+angularModule.factory('StatsLists', ['$resource', function ($resource) {
     return $resource('api/stats/lists', {}, {
         query: {method: 'GET', isArray: true}
     });
-});
+}]);
 
-angularModule.factory('Stats', function ($resource) {
+angularModule.factory('Stats', ['$resource', function ($resource) {
     return $resource('api/stats/refresh', {}, {
         refresh: {method: 'GET', isArray: false}
     });
-});
+}]);
 
-angularModule.factory('MarkdownGenerator', function ($resource) {
+angularModule.factory('MarkdownGenerator', ['$resource', function ($resource) {
     return $resource('api/markdown', {}, {
         generate: {method: 'POST'}
     });
-});
+}]);
 
-angularModule.factory('GithubRaw', function ($resource) {
+angularModule.factory('GithubRaw', ['$resource', function ($resource) {
     return $resource('api/github/raw', {}, {
         query: {method: 'GET', isArray: false}
     });
-});
+}]);
 
-angularModule.factory('User', function ($resource) {
+angularModule.factory('User', ['$resource', function ($resource) {
     return $resource('api/user/:userId', {}, {
         findAll: {method: 'GET', isArray: true},
         query: {method: 'GET', isArray: false},
@@ -84,9 +84,9 @@ angularModule.factory('User', function ($resource) {
         update: {method: 'PUT'},
         remove: {method: 'DELETE'}
     });
-});
+}]);
 
-angularModule.service('UserService', function (TrelloMember) {
+angularModule.service('UserService', ['TrelloMember', function (TrelloMember) {
 
     var self = this;
     this._isEditor = true;
@@ -100,15 +100,15 @@ angularModule.service('UserService', function (TrelloMember) {
             });
         }
         return this.member
-    }
+    };
 
     this.isEditor = function () {
        return self._isEditor;
-    }
+    };
 
     this.isAdmin = function () {
         return self._isAdmin;
-    }
+    };
 
     this.hasAuthority = function(user, authority) {
         if (user && user.authorities) {
@@ -120,4 +120,4 @@ angularModule.service('UserService', function (TrelloMember) {
         }
         return false;
     }
-});
+}]);

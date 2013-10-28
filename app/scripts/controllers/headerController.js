@@ -1,4 +1,4 @@
-function HeaderController($scope, $location, UserService) {
+myqappModule.controller('HeaderController', ['$scope', '$location', 'UserService', function ($scope, $location, UserService) {
     $scope.userinfo = UserService.query();
 
     $scope.isActive = function (route) {
@@ -14,5 +14,4 @@ function HeaderController($scope, $location, UserService) {
         });
     });
 
-}
-
+}]);
