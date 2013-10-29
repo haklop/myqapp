@@ -7,9 +7,8 @@
 ## Install Vagrant
 
 - Install [VirtualBox and VirtualBox Extension Pack](https://www.virtualbox.org/wiki/Downloads)
-- Install [Vagrant](http://www.vagrantup.com/)
+- Install [Vagrant](http://www.vagrantup.com/) - Require Version 1.3.4 or more
 - Open a terminal
-- Clone [trello-java-wrapper](https://github.com/julienvey/trello-java-wrapper) ```git clone git@github.com:julienvey/trello-java-wrapper.git```
 - Clone the project ```git clone git@github.com:haklop/myqapp.git```
 - ```cd myqapp```
 - Start the VM ```vagrant up```
@@ -69,6 +68,22 @@ By default, MyQApp is starting on port 8080.
 
 // TODO
 
+## Code organization
+
+The app directory contains the frontend and the src directory contains the backend.
+
+### Frontend
+
+Dependencies are managed with [Bower](http://bower.io/). [Grunt](http://gruntjs.com/getting-started) is used for building.
+
+Add a dependency:
+
+	bower install <my_dependency> --save
+
+### Backend
+
+Dependencies and build are managed with Maven.
+
 ## Release and deploy
 
 ### Config
@@ -95,3 +110,7 @@ Finish the release and set the next snapshot version. Release-finish creates the
 	mvn jgitflow:release-finish
 	
 When something is pushed to master, the application is automatically deployed on the server.
+
+### Build
+
+For building the war, use the script build.sh. You must have Nodejs, Bower, Grunt and Maven installed.
