@@ -1,13 +1,15 @@
-# MyQApp Developer Install Guide
+# MyQApp Developer Guide
 
 **Always commit on branch dev**
 
-**Never commit dev.properties**
+**Never commit your version of dev.properties**
 
 ## Install Vagrant
 
+We provide a development environments with a [Vagrant box](https://github.com/haklop/myqapp/blob/dev/Vagrantfile) based on Ubuntu with Java7, Maven3, Node and Bower installed.
+
 - Install [VirtualBox and VirtualBox Extension Pack](https://www.virtualbox.org/wiki/Downloads)
-- Install [Vagrant](http://www.vagrantup.com/) - Require Version 1.3.4 or more
+- Install [Vagrant](http://www.vagrantup.com/) - **Require Version 1.3.4 or more**
 - Open a terminal
 - Clone the project ```git clone git@github.com:haklop/myqapp.git```
 - ```cd myqapp```
