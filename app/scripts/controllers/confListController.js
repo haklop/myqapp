@@ -1,4 +1,6 @@
-myqappModule.controller('ConfListCtrl', ['$scope', '$rootScope', 'Confs', 'UserService', function ($scope, $rootScope, Confs, UserService) {
+"use strict";
+
+angular.module("myqapp").controller("ConfListCtrl", ["$scope", "$rootScope", "Confs", "UserService", function ($scope, $rootScope, Confs, UserService) {
     $scope.newconf = {};
 
     $scope.isEditor = UserService.isEditor;
@@ -13,49 +15,44 @@ myqappModule.controller('ConfListCtrl', ['$scope', '$rootScope', 'Confs', 'UserS
                 website: $scope.newconf.website
             };
             Confs.save(confToSubmit, function () {
-                $rootScope.$broadcast('handleAlert', {"title": "Conference ajoutée", "type": "success", "content": "",
-                    category: 'message'});
+                $rootScope.$broadcast("handleAlert", {"title": "Conference ajoutée", "type": "success", "content": "",
+                    category: "message"});
                 $scope.newconf = {};
-                $('#conf-calendar').fullCalendar('refetchEvents');
+                $("#conf-calendar").fullCalendar("refetchEvents");
 
             }, function () {
-                $rootScope.$broadcast('handleAlert', {"title": "Erreur lors de la création de la conference", "type": "error", "content": "",
-                    category: 'message'});
+                $rootScope.$broadcast("handleAlert", {"title": "Erreur lors de la création de la conference", "type": "error", "content": "",
+                    category: "message"});
             });
         }
     };
 
     $scope.nextMonth = function() {
-        $('#conf-calendar').fullCalendar('next');
+        $("#conf-calendar").fullCalendar("next");
     };
 
     $scope.previousMonth = function() {
-        $('#conf-calendar').fullCalendar('prev');
+        $("#conf-calendar").fullCalendar("prev");
     };
 
     $scope.today = function() {
-        $('#conf-calendar').fullCalendar('today');
+        $("#conf-calendar").fullCalendar("today");
     };
 
-    var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
-
-    $('#conf-calendar').fullCalendar({
+    $("#conf-calendar").fullCalendar({
         header: {
-            left: '',
-            center: 'title',
-            right: ''
+            left: "",
+            center: "title",
+            right: ""
         },
         firstDay: 1,
-        weekMode: 'liquid',
+        weekMode: "liquid",
         editable: false,
 
         events: function (start, end, callback) {
             $.ajax({
-                url: '/api/conf/period',
-                dataType: 'json',
+                url: "/api/conf/period",
+                dataType: "json",
                 data: {
                     start: start.getTime(),
                     end: end.getTime()
@@ -74,14 +71,14 @@ myqappModule.controller('ConfListCtrl', ['$scope', '$rootScope', 'Confs', 'UserS
                     }
                     callback(events);
                 }
-            })
+            });
         }
     });
 
     var startPicker = new Pikaday({
-        field: $('#inputStartDate')[0],
+        field: $("#inputStartDate")[0],
         firstDay: 1,
-        format: 'dd/mm/yy',
+        format: "dd/mm/yy",
         onClose: function() {
             endPicker.minDate = startPicker.getDate();
             $scope.newconf.startDate = startPicker.toString();
@@ -91,9 +88,9 @@ myqappModule.controller('ConfListCtrl', ['$scope', '$rootScope', 'Confs', 'UserS
     });
 
     var endPicker = new Pikaday({
-        field: $('#inputEndDate')[0],
+        field: $("#inputEndDate")[0],
         firstDay: 1,
-        format: 'dd/mm/yy',
+        format: "dd/mm/yy",
         onClose: function() {
             startPicker.maxDate = endPicker.getDate();
             $scope.newconf.endDate = endPicker.toString();

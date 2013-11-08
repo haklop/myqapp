@@ -1,4 +1,6 @@
-myqappModule.controller('AdminController', ['$scope', 'User', 'UserService', function ($scope, User, UserService) {
+"use strict";
+
+angular.module("myqapp").controller("AdminController", ["$scope", "User", "UserService", function ($scope, User, UserService) {
 
     $scope.users = User.findAll();
 
@@ -21,11 +23,11 @@ myqappModule.controller('AdminController', ['$scope', 'User', 'UserService', fun
 
     $scope.roles = [
         {
-            name: 'ROLE_EDITOR',
+            name: "ROLE_EDITOR",
             checked: false
         },
         {
-            name: 'ROLE_ADMIN',
+            name: "ROLE_ADMIN",
             checked: false
         }
     ];
@@ -52,7 +54,7 @@ myqappModule.controller('AdminController', ['$scope', 'User', 'UserService', fun
         var authorities = [];
         for (var i = 0; i < user.roles.length; i++) {
             if (user.roles[i].checked) {
-                authorities.push(user.roles[i].name)
+                authorities.push(user.roles[i].name);
             }
         }
 
@@ -67,7 +69,7 @@ myqappModule.controller('AdminController', ['$scope', 'User', 'UserService', fun
         var authorities = [];
         for (var i = 0; i < user.roles.length; i++) {
             if (user.roles[i].checked) {
-                authorities.push(user.roles[i].name)
+                authorities.push(user.roles[i].name);
             }
         }
 
