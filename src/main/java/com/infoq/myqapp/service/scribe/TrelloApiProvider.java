@@ -4,7 +4,7 @@ import org.scribe.builder.api.DefaultApi10a;
 import org.scribe.model.Token;
 
 public class TrelloApiProvider extends DefaultApi10a {
-    private static final String AUTHORIZE_URL = "https://trello.com/1/OAuthAuthorizeToken?scope=read,write&oauth_token=%s&name=MyQApp";
+    private static final String AUTHORIZE_URL = "https://trello.com/1/OAuthAuthorizeToken?scope=read,write&expiration=never&oauth_token=%s&name=MyQApp";
 
     @Override
     public String getAccessTokenEndpoint() {

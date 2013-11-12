@@ -1,4 +1,6 @@
-function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, GithubRaw) {
+"use strict";
+
+angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "MarkdownGenerator", "TrelloValidatedList", "GithubRaw", function ($scope, MarkdownGenerator, TrelloValidatedList, GithubRaw) {
     $scope.markdown = {};
     $scope.cards = [];
     $scope.cardsNoGithub = [];
@@ -18,16 +20,16 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
     $scope.fetchRaw = function (githubUrl, isArticle, nodeName) {
         $scope.selectedUrl = githubUrl;
         GithubRaw.query({url: githubUrl}, function (result) {
-            $scope.generated = '';
+            $scope.generated = "";
             $scope.markdown.text = result.content;
             $scope.markdown.type = isArticle ? "article" : "news";
             $scope.markdown.node = nodeName;
 
         }, function (error) {
-            if (error.status == 412) {
+            if (error.status === 412) {
                 alert("Le contenu recupéré n'appartient pas à la branche master, veuillez mettre à jour l'URL dans Trello");
             }
-        })
+        });
     };
 
     $scope.isRefreshing = false;
@@ -68,4 +70,14 @@ function MarkdownGeneratorCtrl($scope, MarkdownGenerator, TrelloValidatedList, G
     };
 
     $scope.retrieveList();
-}
+
+    $("#tabs").find("li a").click(function(e){
+
+        $("#tabs li, #panel-container .current").removeClass("current");
+        $(this).parent().addClass("current");
+        var currentTab = $(this).attr("href");
+        $(currentTab).addClass("current");
+        e.preventDefault();
+
+    });
+}]);

@@ -1,4 +1,6 @@
-function StatsUserCtrl($scope, StatsUsers, Stats, UserService) {
+"use strict";
+
+angular.module("myqapp").controller("StatsUserCtrl", ["$scope", "$rootScope", "StatsUsers", "Stats", "UserService", function ($scope, $rootScope, StatsUsers, Stats, UserService) {
     $scope.authorStats = StatsUsers.query();
 
     $scope.predicate = $scope.name;
@@ -25,7 +27,7 @@ function StatsUserCtrl($scope, StatsUsers, Stats, UserService) {
 
     $scope.name = function (stats) {
         return stats.member.fullName;
-    }
+    };
 
     $scope.refreshInProgress = false;
 
@@ -36,13 +38,13 @@ function StatsUserCtrl($scope, StatsUsers, Stats, UserService) {
             $scope.refreshInProgress = false;
         }, function() {
             $scope.refreshInProgress = false;
-            $rootScope.$broadcast('handleAlert', {"title": "Erreur lors du rafraichissement des stats",
-                "type": "error", "content": "", category: 'message'});
+            $rootScope.$broadcast("handleAlert", {"title": "Erreur lors du rafraichissement des stats",
+                "type": "error", "content": "", category: "message"});
         });
-    }
+    };
 
     $scope.refreshing = function () {
         return $scope.refreshInProgress ? "disabled" : undefined;
-    }
+    };
 
-}
+}]);

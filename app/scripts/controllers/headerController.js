@@ -1,4 +1,6 @@
-function HeaderController($scope, $location, UserService) {
+"use strict";
+
+angular.module("myqapp").controller("HeaderController", ["$scope", "$location", "UserService", function ($scope, $location, UserService) {
     $scope.userinfo = UserService.query();
 
     $scope.isActive = function (route) {
@@ -8,11 +10,10 @@ function HeaderController($scope, $location, UserService) {
     $scope.isAdmin = UserService.isAdmin;
     $scope.isEditor = UserService.isEditor;
 
-    $scope.$on('$routeChangeStart', function (next, current) {
+    $scope.$on("$routeChangeStart", function () {
         UserService.query(function (response) {
             $scope.userinfo = response;
         });
     });
 
-}
-
+}]);

@@ -1,0 +1,355 @@
+@charset "utf-8";
+
+.preview a {
+    outline: none !important;
+    text-decoration: none;
+    color: #000;
+}
+
+.preview {
+    margin: 0;
+    padding: 0 0 0 0;
+    font-family: "Arial", Helvetica, sans-serif;
+    width: 100%;
+    font-size: 14px;
+    background: #f7f8fa;
+    color: #000;
+    float: left;
+    line-height: 150%;
+    clear: both;
+    display: block;
+    width: 100%;
+}
+
+/* ########################################	*/
+
+.preview blocknote, .preview blockquote {
+    float: left;
+    text-align: left;
+    padding: 10px 10px 10px 55px;
+    margin: 10px 0;
+    clear: both;
+    display: block;
+    width: 89%;
+    border: 1px solid #e8e8e8;
+    background: #f4f4f4 url(../images/gg.jpg) no-repeat left top;
+}
+
+.preview blocknote p, .preview blockquote {
+    font-size: 12px;
+    color: #666666;
+    line-height: 150%;
+}
+
+.preview h1 {
+    float: left;
+    text-align: left;
+    padding: 0px;
+    margin: 0 0 10px 0;
+    display: block;
+    clear: both;
+    width: 100%;
+    font-size: 22px;
+    color: #222222;
+    line-height: 120%;
+}
+
+.preview h2 {
+    float: left;
+    text-align: left;
+    padding: 0px;
+    margin: 0 0 10px 0;
+    display: block;
+    clear: both;
+    width: 100%;
+    font-size: 20px;
+    color: #222222;
+    line-height: 120%;
+}
+
+.preview h3 {
+    float: left;
+    text-align: left;
+    padding: 0px;
+    margin: 0 0 10px 0;
+    display: block;
+    clear: both;
+    width: 100%;
+    font-size: 18px;
+    color: #222222;
+    line-height: 120%;
+}
+
+.preview h4, .preview h5 {
+    float: left;
+    text-align: left;
+    padding: 0px;
+    margin: 0 0 10px 0;
+    display: block;
+    clear: both;
+    width: 100%;
+    font-size: 17px;
+    color: #222222;
+    line-height: 120%;
+}
+
+/* 	@@@@@@@@@@@@@@@@ FONT FAMILY @@@@@@ */
+
+.preview h1, .preview h2, .preview h3, .preview h4, .preview h5, .preview h6, .preview h7,
+.preview .section_title,
+.preview .tab_article .txxt h2 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.preview pre {
+    font-family: "Courier New", Courier, monospace;
+    word-wrap: normal;
+}
+
+/* 	@@@@@@@@@@@@@@@@ FONT FAMILY @@@@@@ */
+
+.preview p {
+    float: left;
+    padding: 0px;
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000;
+    clear: both;
+    display: block;
+    width: 100%;
+}
+
+.preview p img {
+    margin: 0 10px 10px 0;
+}
+
+.preview p strong img {
+    margin: 0 10px 10px 0;
+}
+
+.preview i, .preview em {
+    font-style: italic;
+}
+
+.preview b, .preview strong {
+    font-weight: bold;
+}
+
+.preview pre {
+    border: 1px solid #e8e8e8;
+    color: #314E64;
+    padding: 10px 10px 10px 10px;
+    line-height: 150%;
+    margin: 10px 0 10px 0;
+    width: 95%;
+    overflow: auto;
+    float: left;
+    text-align: left;
+    display: block;
+    clear: both;
+    background: #f4f4f4 url(../images/green_border.jpg) repeat-y -29px;
+}
+
+.preview a {
+    text-decoration: none;
+    color: #000;
+}
+
+.preview a:hover {
+    text-decoration: none;
+}
+
+/* ########################################	*/
+
+.preview #content {
+    float: left;
+    text-align: left;
+    padding: 10px 10px 0px 10px;
+    margin: 10px 0;
+    display: block;
+    clear: both;
+    border-bottom: 1px solid #bcbcbc;
+    position: relative;
+    z-index: 99;
+}
+
+.preview #content p a, .preview #content .text_info li a, .preview #content blockquote a, .preview #content span a {
+    text-decoration: none;
+    color: #286AB2;
+}
+
+.preview #content p a:hover, .preview #content .text_info li a:hover, .preview #content blockquote a:hover, .preview #content span a:hover {
+    text-decoration: underline;
+}
+
+.preview #content .article_page_left table, .preview #content .text_content_container table, .preview #content .ebook table {
+    border: 1px solid #E0E0E0;
+    margin: 10px 0;
+}
+
+.preview #content .article_page_left table td, .preview #content .text_content_container table td, .preview #content .ebook table td {
+    border: 1px solid #E0E0E0;
+}
+
+/*	artile page css		*/
+
+.preview .article_page_left {
+    float: left;
+    text-align: left;
+    padding: 0px;
+    margin: 0px;
+    display: block;
+    width: 610px;
+}
+
+.preview .news_container img {
+    max-width: 100%;
+}
+
+.preview .text_content_container ul {
+    list-style-type: disc;
+    clear: left;
+    margin: 0 0 10px 10px;
+}
+
+.preview .text_content_container ul ul {
+    list-style-type: circle;
+}
+
+.preview .text_content_container ul li {
+    margin: 0 0 0 15px;
+}
+
+.preview .text_content_container blockquote ul {
+    clear: left;
+    padding-left: 0px;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000;
+}
+
+.preview .text_content_container blockquote ul li {
+    clear: left;
+}
+
+.preview .text_content_container blockquote ul li p {
+    float: none;
+}
+
+.preview .text_content_container ol, .ebook ol {
+    clear: left;
+    margin-left: 10px;
+}
+
+.preview .text_content_container ol li, .ebook ol li {
+    clear: none;
+    float: none;
+    border: none;
+}
+
+.preview .text_content_container ol li p, .ebook ol li p {
+    float: none !important;
+}
+
+.preview .text_content_container h2 {
+    clear: none;
+    float: none;
+}
+
+.preview .blocknote, .preview blockquote {
+    float: left;
+    text-align: left;
+    padding: 10px 10px 10px 55px;
+    margin: 10px 0;
+    clear: both;
+    display: block;
+    width: 545px;
+    border: 1px solid #e8e8e8;
+    background: #f4f4f4 url(../images/gg.jpg) no-repeat left top;
+}
+
+.preview .blocknote p, .preview blockquote {
+    font-size: 13px;
+    color: #666666;
+    line-height: 150%;
+}
+
+.preview blockquote p, .preview blockquote {
+    word-wrap: break-word !important;
+}
+
+.preview blockquote, .preview blockquote {
+    width: 482px;
+}
+
+.preview ul.news {
+    float: left;
+    text-align: left;
+    padding: 0 5px 10px 5px;
+    margin: 0 0 10px 0;
+    clear: both;
+    display: block;
+    width: 330px;
+    border-bottom: 1px solid #b2b2b2;
+}
+
+.preview ul.news li {
+    float: left;
+    text-align: left;
+    padding: 0px;
+    margin: 0 0 5px 0;
+    display: block;
+    width: 100%;
+    clear: both;
+    list-style: none;
+    font-size: 13px;
+    color: #333333;
+    line-height: 140%;
+}
+
+.preview ul.news li a {
+    color: #333333;
+    text-decoration: none;
+    width: 100%;
+    clear: both;
+    display: block;
+    font-weight: bold;
+}
+
+.preview ul.news li a:hover {
+    text-decoration: underline;
+}
+
+.preview ul.news li span {
+    float: left;
+    text-align: left;
+    padding: 0px;
+    margin: 0px;
+    display: block;
+    clear: both;
+    width: 100%;
+    font-size: 10px;
+    color: #333333;
+}
+
+.preview ol {
+    margin: 10px 0;
+    display: block;
+    width: 90%;
+    list-style-type: decimal;
+    padding-left: 20px;
+}
+
+.preview ol li {
+    text-align: left;
+    padding: 0 0 0 10px;
+    margin: 4px 0;
+    clear: both;
+    border-bottom: 1px dotted #E9E6E6;
+}
+
+.preview ol li p, ol li pre {
+    float: right !important;
+}
+

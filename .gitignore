@@ -8,4 +8,8 @@ target
 *.swp
 .settings
 .vagrant
+target-grunt
+node_modules
+app/bower_components
+.tmp
 

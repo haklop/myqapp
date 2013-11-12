@@ -1,4 +1,7 @@
-function AdminCtrl($scope, User, UserService) {
+"use strict";
+
+angular.module("myqapp").controller("AdminController", ["$scope", "User", "UserService", function ($scope, User, UserService) {
+
     $scope.users = User.findAll();
 
     $scope.remove = function (user) {
@@ -20,11 +23,11 @@ function AdminCtrl($scope, User, UserService) {
 
     $scope.roles = [
         {
-            name: 'ROLE_EDITOR',
+            name: "ROLE_EDITOR",
             checked: false
         },
         {
-            name: 'ROLE_ADMIN',
+            name: "ROLE_ADMIN",
             checked: false
         }
     ];
@@ -51,7 +54,7 @@ function AdminCtrl($scope, User, UserService) {
         var authorities = [];
         for (var i = 0; i < user.roles.length; i++) {
             if (user.roles[i].checked) {
-                authorities.push(user.roles[i].name)
+                authorities.push(user.roles[i].name);
             }
         }
 
@@ -66,7 +69,7 @@ function AdminCtrl($scope, User, UserService) {
         var authorities = [];
         for (var i = 0; i < user.roles.length; i++) {
             if (user.roles[i].checked) {
-                authorities.push(user.roles[i].name)
+                authorities.push(user.roles[i].name);
             }
         }
 
@@ -96,4 +99,5 @@ function AdminCtrl($scope, User, UserService) {
             created: false
         };
     }
-}
+}]);
+
