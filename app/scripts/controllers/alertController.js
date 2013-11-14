@@ -8,6 +8,10 @@ angular.module("myqapp").controller("AlertController", ["$scope", function ($sco
         $scope.alerts.push(alert);
     });
 
+    $scope.$on("$routeChangeStart", function () {
+        $scope.alerts = [];
+    });
+
     $scope.removeAlert = function removeAlert(alert) {
         $scope.alerts.splice($scope.alerts.indexOf(alert), 1);
     };
