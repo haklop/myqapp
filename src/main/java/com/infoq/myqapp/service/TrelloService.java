@@ -1,12 +1,14 @@
 package com.infoq.myqapp.service;
 
-import com.infoq.myqapp.domain.*;
+import com.infoq.myqapp.domain.FeedEntry;
+import com.infoq.myqapp.domain.TrelloLabel;
+import com.infoq.myqapp.domain.ValidatedContent;
+import com.infoq.myqapp.domain.trello.Author;
+import com.infoq.myqapp.repository.AuthorRepository;
 import com.infoq.myqapp.repository.FeedRepository;
-import com.infoq.myqapp.repository.TrelloMemberRepository;
 import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.Trello;
 import com.julienvey.trello.domain.*;
-import com.julienvey.trello.domain.Action.Data;
 import com.julienvey.trello.impl.TrelloImpl;
 import org.scribe.model.Token;
 import org.slf4j.Logger;
@@ -45,7 +47,7 @@ public class TrelloService {
     private FeedRepository feedRepository;
 
     @Resource
-    private TrelloMemberRepository trelloMemberRepository;
+    private AuthorRepository authorRepository;
 
     public void addCardToTrello(FeedEntry feedEntry, Token accessToken) {
         FeedEntry entry = feedRepository.findOne(feedEntry.getLink());
@@ -100,45 +102,6 @@ public class TrelloService {
         return getUserInfo("me", accessToken);
     }
 
-    public List<TrelloHeartbeat> getMemberHeartbeat(Member member, Token accessToken) {
-        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
-
-        // get a list of all card moving actions where the member is involved
-        List<CardWithActions> cards = trelloApi.getBoardMemberActivity(trelloBoardForStatsId,
-                member.getId(), "updateCard:idList");
-        List<TrelloHeartbeat> result = new ArrayList<>(cards.size());
-        for (CardWithActions card : cards) {
-            if (result.size() >= 5) {
-                break;
-            }
-
-            // some false positives are to be expected... resolve them below
-            // exclude mentored content
-            if (StatsService.hasLabel(card, StatsService.MENTORAT)) {
-                continue;
-            }
-
-            // exclude content where member is not the author (1st position in card)
-            if (card.getIdMembers().size() < 1
-                    || !card.getIdMembers().get(0).equals(member.getId())) {
-                continue;
-            }
-
-            for (Action action : card.getActions()) {
-                Data data = action.getData();
-                // include only content where card was moved to A_VALIDER list
-                if (data.getListAfter() != null
-                        && data.getListAfter().getName().equals(StatsService.A_VALIDER)) {
-
-                    TrelloHeartbeat hb = new TrelloHeartbeat(card, member, action.getDate());
-                    result.add(hb);
-                }
-            }
-        }
-
-        return result;
-    }
-
     public List<ValidatedContent> enhancedValidatedContentList(TList list) {
         List<ValidatedContent> validatedContents = new ArrayList<>();
         for (Card card : list.getCards()) {
@@ -166,7 +129,7 @@ public class TrelloService {
 
             int i = 0;
             for (String memberId : card.getIdMembers()) {
-                TrelloMember trelloMember = trelloMemberRepository.findOne(memberId);
+                Author trelloMember = authorRepository.findOne(memberId);
                 if (trelloMember != null) {
                     if (i == 0 && !content.isMentoring()) {
                         content.setAuthor(trelloMember);

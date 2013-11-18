@@ -2,6 +2,7 @@ package com.infoq.myqapp.domain;
 
 import java.util.List;
 
+@Deprecated
 public class ListStat {
 
     private String listName;

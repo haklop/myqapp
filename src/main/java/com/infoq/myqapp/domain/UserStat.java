@@ -2,6 +2,7 @@ package com.infoq.myqapp.domain;
 
 import org.springframework.data.annotation.Id;
 
+@Deprecated
 public class UserStat {
 
     @Id

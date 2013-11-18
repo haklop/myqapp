@@ -6,6 +6,7 @@ import com.julienvey.trello.domain.Member;
 import java.util.Calendar;
 import java.util.Date;
 
+@Deprecated
 public class TrelloHeartbeat {
 
     private String cardName;

@@ -1,5 +1,7 @@
 package com.infoq.myqapp.domain;
 
+import com.infoq.myqapp.domain.trello.Author;
+
 import java.util.Date;
 
 public class ValidatedContent {
@@ -17,9 +19,9 @@ public class ValidatedContent {
     private boolean isOriginal;
     private boolean isMentoring;
 
-    private TrelloMember author;
-    private TrelloMember mentor;
-    private TrelloMember validator;
+    private Author author;
+    private Author mentor;
+    private Author validator;
 
     public String getName() {
         return name;
@@ -93,27 +95,27 @@ public class ValidatedContent {
         isMentoring = mentoring;
     }
 
-    public TrelloMember getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(TrelloMember author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
-    public TrelloMember getMentor() {
+    public Author getMentor() {
         return mentor;
     }
 
-    public void setMentor(TrelloMember mentor) {
+    public void setMentor(Author mentor) {
         this.mentor = mentor;
     }
 
-    public TrelloMember getValidator() {
+    public Author getValidator() {
         return validator;
     }
 
-    public void setValidator(TrelloMember validator) {
+    public void setValidator(Author validator) {
         this.validator = validator;
     }
 }
