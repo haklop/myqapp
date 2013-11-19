@@ -9,12 +9,16 @@ import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
 import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.TList;
+import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -65,11 +69,12 @@ public class StatsService {
         UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("ROLE_ADMIN")),
                 UserProfile.class);
 
-        List<Member> members = trelloService.getMembers(adminUser.getTokenTrello());
-        Map<String, Author> authorMap = mapMemberList(members);
-        List<TList> lists = trelloService.getLists(adminUser.getTokenTrello());
-
         boardListRepository.deleteAll();
+        authorRepository.deleteAll();
+
+        List<Member> members = trelloService.getMembers(adminUser.getTokenTrello());
+        Map<String, Author> authorMap = mapMemberList(members, adminUser.getTokenTrello());
+        List<TList> lists = trelloService.getLists(adminUser.getTokenTrello());
 
         for (TList list : lists) {
             BoardList boardList = getBoardList(list);
@@ -160,29 +165,27 @@ public class StatsService {
         return false;
     }
 
-    private Map<String, Author> mapMemberList(List<Member> members) {
+    private Map<String, Author> mapMemberList(List<Member> members, Token token) {
         Map<String, Author> memberMap = new HashMap<>();
         for (Member member : members) {
-            memberMap.put(member.getId(), getAuthor(member));
+            memberMap.put(member.getId(), getAuthor(member, token));
         }
-        Author noneMember = new Author();
-        noneMember.setUsername(NONE);
-        memberMap.put(NONE, noneMember);
         return memberMap;
     }
 
-    private Author getAuthor(Member member) {
+    private Author getAuthor(Member member, Token token) {
         Author author = authorRepository.findOne(member.getId());
         if (author == null) {
+            Member memberRetrieveFromTrello = trelloService.getUserInfo(member.getUsername(), token);
             author = new Author();
-            author.setUsername(member.getUsername());
-            author.setFullName(member.getFullName());
-            author.setTrelloId(member.getId());
+            author.setUsername(memberRetrieveFromTrello.getUsername());
+            author.setFullName(memberRetrieveFromTrello.getFullName());
+            author.setTrelloId(memberRetrieveFromTrello.getId());
 
-            if (member.getAvatarHash() != null && !member.getAvatarHash().isEmpty()) {
-                author.setAvatarUrl("https://trello-avatars.s3.amazonaws.com/" + member.getAvatarHash() + "/170.png");
-            } else if (member.getGravatarHash() != null && !member.getGravatarHash().isEmpty()) {
-                author.setAvatarUrl("http://www.gravatar.com/avatar/" + member.getGravatarHash() + "?s=170");
+            if (memberRetrieveFromTrello.getAvatarHash() != null && !memberRetrieveFromTrello.getAvatarHash().isEmpty()) {
+                author.setAvatarUrl("https://trello-avatars.s3.amazonaws.com/" + memberRetrieveFromTrello.getAvatarHash() + "/170.png");
+            } else if (memberRetrieveFromTrello.getGravatarHash() != null && !memberRetrieveFromTrello.getGravatarHash().isEmpty()) {
+                author.setAvatarUrl("http://www.gravatar.com/avatar/" + memberRetrieveFromTrello.getGravatarHash() + "?s=170");
             }
         }
 

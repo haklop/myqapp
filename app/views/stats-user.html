@@ -22,7 +22,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="stats in authorStats | orderBy:order:reverse">
-                <td>{{stats.memberFullName}}</td>
+                <td>{{stats.fullName}}</td>
                 <td>
                     <strong>{{stats.originalNews + stats.translatedNews}}</strong>
                     ({{stats.originalNews}} <ng-pluralize count="stats.originalNews" when="{0:'originale', one:'originale', other:'originales'}"></ng-pluralize>,

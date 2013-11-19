@@ -26,7 +26,7 @@ angular.module("myqapp").controller("StatsUserCtrl", ["$scope", "$rootScope", "S
     };
 
     $scope.name = function (stats) {
-        return stats.member.fullName;
+        return stats.fullName;
     };
 
     $scope.refreshInProgress = false;
