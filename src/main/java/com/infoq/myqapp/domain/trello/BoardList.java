@@ -62,6 +62,10 @@ public class BoardList {
             this.fullName = fullName;
         }
 
+        public Stats() {
+            // nothing
+        }
+
         public String getTrelloId() {
             return trelloId;
         }

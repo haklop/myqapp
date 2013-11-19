@@ -87,8 +87,8 @@ public class StatsService {
                 populateUserStatMap(idAuthor, userStatMap, authorMap);
                 populateUserStatMap(idValidator, userStatMap, authorMap);
 
-                BoardList.Stats author = userStatMap.get(idAuthor);
-                BoardList.Stats validator = userStatMap.get(idValidator);
+                BoardList.Stats author = idAuthor.equals(NONE) ? new BoardList.Stats() : userStatMap.get(idAuthor);
+                BoardList.Stats validator = idValidator.equals(NONE) ? new BoardList.Stats() : userStatMap.get(idValidator);
 
                 Author globalAuthor = idAuthor.equals(NONE) ? new Author() : authorMap.get(idAuthor);
                 Author globalValidator = idValidator.equals(NONE) ? new Author() : authorMap.get(idValidator);
@@ -204,7 +204,7 @@ public class StatsService {
     }
 
     private void populateUserStatMap(String idAuthor, Map<String, BoardList.Stats> userStatMap, Map<String, Author> memberMap) {
-        if (!userStatMap.containsKey(idAuthor)) {
+        if (!userStatMap.containsKey(idAuthor) && !idAuthor.equals(NONE)) {
             Author author = memberMap.get(idAuthor);
             if (author == null) {
                 author = new Author();
