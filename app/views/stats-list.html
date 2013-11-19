@@ -11,13 +11,13 @@
     <div class="pure-u-1" ng-repeat="list in lists">
         <div class="stats-list-header pure-g">
             <div class="pure-u-1-4">
-                <h2 class="stats-list-title">{{list.listName}}</h2>
+                <h2 class="stats-list-title">{{list.name}}</h2>
                 <p class="stats-content-subtitle">
                     {{list.originalNews + list.translatedNews + list.originalArticles + list.translatedArticles}} items
                     <br>
-                    News : {{list.originalNews + list.translatedNews}} ({{list.originalNews}} original, {{list.translatedNews}} traduction)
+                    News : {{list.originalNews + list.translatedNews}} ({{list.originalNews}} original, {{list.translatedNews}} traductions)
                     <br>
-                    Articles : {{list.originalArticles + list.translatedArticles}} ({{list.originalArticles}} original, {{list.translatedArticles}} traduction)
+                    Articles : {{list.originalArticles + list.translatedArticles}} ({{list.originalArticles}} original, {{list.translatedArticles}} traductions)
                 </p>
             </div>
             <div class="pure-u-3-4">
@@ -32,19 +32,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="stats in list.userStats | orderBy:order:reverse">
-                        <td>{{stats.memberFullName}}</td>
+                    <tr ng-repeat="stats in list.statsByAuthor | orderBy:order:reverse">
+                        <td>{{stats.fullName}}</td>
                         <td>
-                            <strong>{{stats.originalNews + stats.translatedNews}}</strong>
+                            <strong>{{stats.news}}</strong>
                         </td>
                         <td>
-                            <strong>{{stats.originalArticles + stats.translatedArticles}}</strong>
+                            <strong>{{stats.articles}}</strong>
                         </td>
                         <td>
-                            <strong>{{stats.validatedArticles + stats.validatedNews}}</strong>
+                            <strong>{{stats.validated}}</strong>
                         </td>
                         <td>
-                            <strong>{{stats.mentoredArticles + stats.mentoredNews}}</strong>
+                            <strong>{{stats.mentored}}</strong>
                         </td>
                     </tr>
                     </tbody>

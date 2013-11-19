@@ -1,13 +1,10 @@
 package com.infoq.myqapp.service;
 
-import com.infoq.myqapp.domain.TrelloActivity;
-import com.infoq.myqapp.domain.TrelloHeartbeat;
 import com.infoq.myqapp.domain.UserProfile;
 import com.infoq.myqapp.domain.trello.Author;
 import com.infoq.myqapp.domain.trello.BoardList;
 import com.infoq.myqapp.repository.AuthorRepository;
 import com.infoq.myqapp.repository.BoardListRepository;
-import com.infoq.myqapp.repository.UserActivityRepository;
 import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
 import com.julienvey.trello.domain.Member;
@@ -18,7 +15,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.Map.Entry;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -94,11 +90,11 @@ public class StatsService {
 
                 if (hasLabel(card, ARTICLES)) {
                     if (hasLabel(card, MENTORAT)) {
-                        author.montored++;
+                        author.mentored++;
                         globalAuthor.mentoredArticles++;
                         boardList.mentorArticles++;
                     } else {
-                        validator.validate++;
+                        validator.validated++;
                         globalValidator.validatedArticles++;
                         author.articles++;
                     }
@@ -112,11 +108,11 @@ public class StatsService {
                     }
                 } else if (hasLabel(card, NEWS)) {
                     if (hasLabel(card, MENTORAT)) {
-                        author.montored++;
+                        author.mentored++;
                         globalAuthor.mentoredNews++;
                         boardList.mentorNews++;
                     } else {
-                        validator.validate++;
+                        validator.validated++;
                         globalValidator.validatedNews++;
                         author.news++;
                     }

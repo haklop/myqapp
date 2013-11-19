@@ -54,8 +54,8 @@ public class BoardList {
 
         public int news = 0;
         public int articles = 0;
-        public int validate = 0;
-        public int montored = 0;
+        public int validated = 0;
+        public int mentored = 0;
 
         public Stats(String trelloId, String fullName) {
             this.trelloId = trelloId;
