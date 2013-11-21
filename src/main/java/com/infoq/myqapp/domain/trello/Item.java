@@ -92,6 +92,9 @@ public class Item {
     }
 
     public void setAuthor(Author author) {
+        if (author == null || author.getTrelloId() == null) {
+            return;
+        }
         this.author = author;
     }
 
@@ -100,6 +103,9 @@ public class Item {
     }
 
     public void setValidator(Author validator) {
+        if (validator == null || validator.getTrelloId() == null) {
+            return;
+        }
         this.validator = validator;
     }
 
@@ -115,7 +121,7 @@ public class Item {
         return isOriginal;
     }
 
-    public void setOriginal(boolean original) {
+    public void isOriginal(boolean original) {
         isOriginal = original;
     }
 
@@ -123,7 +129,7 @@ public class Item {
         return isAnArticle;
     }
 
-    public void setAnArticle(boolean anArticle) {
+    public void isAnArticle(boolean anArticle) {
         isAnArticle = anArticle;
     }
 
@@ -132,6 +138,9 @@ public class Item {
     }
 
     public void setMentor(Author mentor) {
+        if (mentor == null || mentor.getTrelloId() == null) {
+            return;
+        }
         this.mentor = mentor;
     }
 }

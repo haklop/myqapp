@@ -3,8 +3,10 @@ package com.infoq.myqapp.service;
 import com.infoq.myqapp.domain.UserProfile;
 import com.infoq.myqapp.domain.trello.Author;
 import com.infoq.myqapp.domain.trello.BoardList;
+import com.infoq.myqapp.domain.trello.Item;
 import com.infoq.myqapp.repository.AuthorRepository;
 import com.infoq.myqapp.repository.BoardListRepository;
+import com.infoq.myqapp.repository.ItemRepository;
 import com.julienvey.trello.domain.Card;
 import com.julienvey.trello.domain.Label;
 import com.julienvey.trello.domain.Member;
@@ -42,6 +44,9 @@ public class StatsService {
     private AuthorRepository authorRepository;
 
     @Resource
+    private ItemRepository itemRepository;
+
+    @Resource
     private TrelloService trelloService;
 
     @Resource
@@ -70,8 +75,10 @@ public class StatsService {
                 UserProfile.class);
 
         List<Member> members = trelloService.getMembers(adminUser.getTokenTrello());
-        Map<String, Author> authorMap = mapMemberList(members, adminUser.getTokenTrello());
         List<TList> lists = trelloService.getLists(adminUser.getTokenTrello());
+
+        Map<String, Author> authorMap = mapMemberList(members, adminUser.getTokenTrello());
+        Map<String, Item> items = new HashMap<>();
 
         for (TList list : lists) {
             BoardList boardList = getBoardList(list);
@@ -91,19 +98,33 @@ public class StatsService {
                 Author globalAuthor = idAuthor.equals(NONE) ? new Author() : authorMap.get(idAuthor);
                 Author globalValidator = idValidator.equals(NONE) ? new Author() : authorMap.get(idValidator);
 
+                Item currentItem = getItem(card);
+                currentItem.setTitle(card.getName());
+                currentItem.setList(boardList);
+                currentItem.setLastActivity(card.getDateLastActivity());
+
+                items.put(currentItem.getId(), currentItem);
+
                 if (hasLabel(card, ARTICLES)) {
+                    currentItem.isAnArticle(true);
+
                     if (hasLabel(card, MENTORAT)) {
                         author.mentored++;
                         globalAuthor.mentoredArticles++;
                         boardList.mentorArticles++;
+                        currentItem.setMentor(globalAuthor);
                     } else {
                         validator.validated++;
                         globalValidator.validatedArticles++;
                         author.articles++;
+                        currentItem.setValidator(globalValidator);
+                        currentItem.setAuthor(globalAuthor);
 
                         if (hasLabel(card, ORIGINAL)) {
+                            currentItem.isOriginal(true);
                             globalAuthor.originalArticles++;
                         } else {
+                            currentItem.isOriginal(false);
                             globalAuthor.translatedArticles++;
                         }
                     }
@@ -114,18 +135,25 @@ public class StatsService {
                         boardList.translatedArticles++;
                     }
                 } else if (hasLabel(card, NEWS)) {
+                    currentItem.isAnArticle(false);
+
                     if (hasLabel(card, MENTORAT)) {
                         author.mentored++;
                         globalAuthor.mentoredNews++;
                         boardList.mentorNews++;
+                        currentItem.setMentor(globalAuthor);
                     } else {
                         validator.validated++;
                         globalValidator.validatedNews++;
                         author.news++;
+                        currentItem.setValidator(globalValidator);
+                        currentItem.setAuthor(globalAuthor);
 
                         if (hasLabel(card, ORIGINAL)) {
+                            currentItem.isOriginal(true);
                             globalAuthor.originalNews++;
                         } else {
+                            currentItem.isOriginal(false);
                             globalAuthor.translatedNews++;
                         }
                     }
@@ -143,7 +171,7 @@ public class StatsService {
         }
 
         authorRepository.save(authorMap.values());
-        // TODO sync author and list
+        itemRepository.save(items.values());
 
         // get the heartbeat for each members
         /*
@@ -160,6 +188,8 @@ public class StatsService {
         }
 
         userActivityRepository.save(activities);*/
+
+        logger.debug("End calculate stats");
     }
 
     public static boolean hasLabel(Card card, String label) {
@@ -209,6 +239,16 @@ public class StatsService {
         }
 
         return boardList;
+    }
+
+    private Item getItem(Card card) {
+        Item item = itemRepository.findOne(card.getId());
+        if (item == null) {
+            item = new Item();
+            item.setId(card.getId());
+        }
+
+        return item;
     }
 
     private void populateUserStatMap(String idAuthor, Map<String, BoardList.Stats> userStatMap, Map<String, Author> memberMap) {
