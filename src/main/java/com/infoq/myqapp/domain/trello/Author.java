@@ -65,4 +65,15 @@ public class Author {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
+    public void resetStats() {
+        originalNews = 0;
+        translatedNews = 0;
+        originalArticles = 0;
+        translatedArticles = 0;
+        mentoredNews = 0;
+        mentoredArticles = 0;
+        validatedNews = 0;
+        validatedArticles = 0;
+    }
 }

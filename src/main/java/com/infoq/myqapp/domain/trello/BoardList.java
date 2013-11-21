@@ -47,6 +47,15 @@ public class BoardList {
         this.statsByAuthor = statsByAuthor;
     }
 
+    public void resetStats() {
+        originalNews = 0;
+        translatedNews = 0;
+        originalArticles = 0;
+        translatedArticles = 0;
+        mentorNews = 0;
+        mentorArticles = 0;
+    }
+
     public static class Stats {
 
         private String trelloId;

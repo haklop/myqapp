@@ -69,15 +69,13 @@ public class StatsService {
         UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("ROLE_ADMIN")),
                 UserProfile.class);
 
-        boardListRepository.deleteAll();
-        authorRepository.deleteAll();
-
         List<Member> members = trelloService.getMembers(adminUser.getTokenTrello());
         Map<String, Author> authorMap = mapMemberList(members, adminUser.getTokenTrello());
         List<TList> lists = trelloService.getLists(adminUser.getTokenTrello());
 
         for (TList list : lists) {
             BoardList boardList = getBoardList(list);
+            boardList.resetStats();
             Map<String, BoardList.Stats> userStatMap = new HashMap<>();
 
             for (Card card : list.getCards()) {
@@ -168,7 +166,9 @@ public class StatsService {
     private Map<String, Author> mapMemberList(List<Member> members, Token token) {
         Map<String, Author> memberMap = new HashMap<>();
         for (Member member : members) {
-            memberMap.put(member.getId(), getAuthor(member, token));
+            Author author = getAuthor(member, token);
+            author.resetStats();
+            memberMap.put(member.getId(), author);
         }
         return memberMap;
     }
