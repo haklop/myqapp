@@ -100,14 +100,18 @@ public class StatsService {
                         validator.validated++;
                         globalValidator.validatedArticles++;
                         author.articles++;
+
+                        if (hasLabel(card, ORIGINAL)) {
+                            globalAuthor.originalArticles++;
+                        } else {
+                            globalAuthor.translatedArticles++;
+                        }
                     }
 
                     if (hasLabel(card, ORIGINAL)) {
                         boardList.originalArticles++;
-                        globalAuthor.originalArticles++;
                     } else {
                         boardList.translatedArticles++;
-                        globalAuthor.translatedArticles++;
                     }
                 } else if (hasLabel(card, NEWS)) {
                     if (hasLabel(card, MENTORAT)) {
@@ -118,14 +122,18 @@ public class StatsService {
                         validator.validated++;
                         globalValidator.validatedNews++;
                         author.news++;
+
+                        if (hasLabel(card, ORIGINAL)) {
+                            globalAuthor.originalNews++;
+                        } else {
+                            globalAuthor.translatedNews++;
+                        }
                     }
 
                     if (hasLabel(card, ORIGINAL)) {
                         boardList.originalNews++;
-                        globalAuthor.originalNews++;
                     } else {
                         boardList.translatedNews++;
-                        globalAuthor.translatedNews++;
                     }
                 }
             }
