@@ -36,7 +36,7 @@ public class Item {
     @Indexed
     private BoardList list;
 
-    private boolean isOrignal = false;
+    private boolean isOriginal = false;
     private boolean isAnArticle = false;
 
     public String getId() {
@@ -111,12 +111,12 @@ public class Item {
         this.list = list;
     }
 
-    public boolean isOrignal() {
-        return isOrignal;
+    public boolean isOriginal() {
+        return isOriginal;
     }
 
-    public void setOrignal(boolean orignal) {
-        isOrignal = orignal;
+    public void setOriginal(boolean original) {
+        isOriginal = original;
     }
 
     public boolean isAnArticle() {
