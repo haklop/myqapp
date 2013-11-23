@@ -45,15 +45,7 @@
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
     </bean>
 
-    <bean id="feedService" class="com.infoq.myqapp.service.FeedService"/>
-    <bean id="statsService" class="com.infoq.myqapp.service.StatsService"/>
-
-    <task:executor id="executor" pool-size="1"/>
-    <task:scheduler id="myScheduler" pool-size="10"/>
-    <task:scheduled-tasks scheduler="myScheduler">
-        <task:scheduled ref="feedService" method="retrieveFeedTask" fixed-rate="3600000" initial-delay="10000"/>
-        <task:scheduled ref="statsService" method="calculateStats" fixed-rate="3600000" initial-delay="10000"/>
-    </task:scheduled-tasks>
+    <task:annotation-driven />
 
     <context:annotation-config/>
     <context:component-scan base-package="com.infoq.myqapp"/>

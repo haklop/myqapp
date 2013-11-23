@@ -3,10 +3,9 @@
         PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
         "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
-
     <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:config/spring/spring-*.xml</param-value>
+         <param-name>contextConfigLocation</param-name>
+         <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
     <context-param>
         <param-name>spring.profiles.default</param-name>
@@ -31,7 +30,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:config/spring/spring-*.xml</param-value>
+            <param-value>classpath:spring-servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>

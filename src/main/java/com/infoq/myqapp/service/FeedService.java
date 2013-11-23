@@ -13,12 +13,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class FeedService {
 
     private static final Logger logger = LoggerFactory.getLogger(FeedService.class);
@@ -29,11 +32,11 @@ public class FeedService {
     @Value("${infoq.rss}")
     private String rssFeedUrl;
 
-    public List<FeedEntry> retrieveFeedTask() {
+    @Scheduled(fixedRate = 1800000)
+    public void retrieveFeedTask() {
         try {
             List<FeedEntry> entries = readFeed();
             feedRepository.save(entries);
-            return entries;
         } catch (Exception e) {
             logger.error("Error while retrieving the feed", e);
             throw new RuntimeException(e);

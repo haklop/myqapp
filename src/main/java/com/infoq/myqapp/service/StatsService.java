@@ -15,6 +15,8 @@ import org.scribe.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collections;
@@ -25,6 +27,7 @@ import java.util.Map;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+@Service
 public class StatsService {
     private static final Logger logger = LoggerFactory.getLogger(StatsService.class);
 
@@ -69,6 +72,7 @@ public class StatsService {
         return Collections.unmodifiableList(mongoTemplate.findAll(BoardList.class));
     }
 
+    @Scheduled(fixedRate = 3600000)
     public void calculateStats() {
         logger.debug("Calculate stats");
         UserProfile adminUser = mongoTemplate.findOne(query(where("authorities").in("ROLE_ADMIN")),
@@ -172,22 +176,6 @@ public class StatsService {
 
         authorRepository.save(authorMap.values());
         itemRepository.save(items.values());
-
-        // get the heartbeat for each members
-        /*
-        logger.debug("Get the heartbeat for each members");
-        List<TrelloActivity> activities = new ArrayList<>(memberMap.size());
-        for (Entry<String, Member> entry : memberMap.entrySet()) {
-            String id = entry.getKey();
-            Member member = entry.getValue();
-            if (NONE.equals(member.getId()) || AL_AMINE_USER_ID.equals(id))
-                continue;
-            List<TrelloHeartbeat> hb = trelloService.getMemberHeartbeat(member,
-                    adminUser.getTokenTrello());
-            activities.add(new TrelloActivity(id, member.getFullName(), "Done", hb));
-        }
-
-        userActivityRepository.save(activities);*/
 
         logger.debug("End calculate stats");
     }

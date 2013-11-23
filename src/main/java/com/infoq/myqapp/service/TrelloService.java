@@ -168,7 +168,7 @@ public class TrelloService {
     }
 
     private List<String> extractUrls(String content) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         String urlPattern = "((https?):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
         Pattern p = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(content);

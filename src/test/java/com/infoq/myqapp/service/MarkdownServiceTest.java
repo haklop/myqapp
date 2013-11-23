@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.fest.assertions.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/config/spring/spring-servlet.xml")
+@ContextConfiguration("/WEB-INF/spring-servlet.xml")
 public class MarkdownServiceTest {
 
     @Autowired
