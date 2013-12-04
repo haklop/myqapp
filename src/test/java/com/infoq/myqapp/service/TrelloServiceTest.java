@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import static org.fest.assertions.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/WEB-INF/spring-servlet.xml")
+@ContextConfiguration("/applicationContext.xml")
 public class TrelloServiceTest {
 
     @Resource

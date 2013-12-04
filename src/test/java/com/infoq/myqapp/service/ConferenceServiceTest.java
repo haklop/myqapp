@@ -19,7 +19,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/WEB-INF/spring-servlet.xml")
+@ContextConfiguration("/applicationContext.xml")
 public class ConferenceServiceTest {
 
     @Mock
