@@ -1,4 +1,12 @@
-language: java
 jdk:
   - oraclejdk7
+before_install:
+  - apt-get update
+before_script:
+  - npm install --dev
+  - npm install -g bower
+  - npm install -g phantomjs
+  - npm install -g grunt-cli
+  - npm install
+  - bower install
 script: "./build.sh"
