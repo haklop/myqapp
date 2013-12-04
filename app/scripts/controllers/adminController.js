@@ -69,7 +69,7 @@ angular.module("myqapp").controller("AdminController", ["$scope", "User", "UserS
         if(!user.oldMail) {
             user.oldMail=user.email;
         }
-    }
+    };
 
     $scope.createUser = function (user) {
         var authorities = [];
