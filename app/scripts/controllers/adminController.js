@@ -51,7 +51,6 @@ angular.module("myqapp").controller("AdminController", ["$scope", "User", "UserS
     };
 
     $scope.updateUser = function (user) {
-        alert(user.oldMail)
         var authorities = [];
         for (var i = 0; i < user.roles.length; i++) {
             if (user.roles[i].checked) {
