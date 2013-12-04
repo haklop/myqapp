@@ -116,3 +116,5 @@ When something is pushed to master, the application is automatically deployed on
 ### Build
 
 For building the war, use the script build.sh. You must have Nodejs, Bower, Grunt and Maven installed.
+
+Current build status is [![Build Status](https://travis-ci.org/haklop/myqapp.png?branch=master)](https://travis-ci.org/haklop/myqapp)
