@@ -1,6 +1,7 @@
 package com.infoq.myqapp.service;
 
 import com.infoq.myqapp.domain.MyQAppMarkdown;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class MarkdownServiceTest {
     private MarkdownService markdownService;
 
     @Test
+    @Ignore
     public void testGeneration() {
         String markdown = "*Allo*";
 
