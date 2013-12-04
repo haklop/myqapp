@@ -52,7 +52,7 @@
                     <input type="text" placeholder="Nom" ng-model="user.lastName" required>
                 </td>
                 <td>
-                    <input type="email" placeholder="Email" ng-model="user.email" required>
+                    <input type="email" placeholder="Email" ng-model="user.email" ng-focus="saveOldMail(user)" required>
                 </td>
                 <td>
                     <label ng-repeat="role in user.roles">
