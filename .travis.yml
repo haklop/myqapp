@@ -1,7 +1,3 @@
-jdk:
-  - oraclejdk7
-before_install:
-  - apt-get update
 before_script:
   - npm install --dev
   - npm install -g bower
