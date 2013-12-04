@@ -17,6 +17,9 @@ public class UserProfile {
     @Email
     private String email;
 
+    @Email
+    private String oldMail;
+
     @NotBlank
     private String firstName;
 
@@ -97,5 +100,13 @@ public class UserProfile {
 
     public void setAuthorities(List<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getOldMail() {
+        return oldMail;
+    }
+
+    public void setOldMail(String oldMail) {
+        this.oldMail = oldMail;
     }
 }

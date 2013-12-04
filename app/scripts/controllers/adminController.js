@@ -51,6 +51,7 @@ angular.module("myqapp").controller("AdminController", ["$scope", "User", "UserS
     };
 
     $scope.updateUser = function (user) {
+        alert(user.oldMail)
         var authorities = [];
         for (var i = 0; i < user.roles.length; i++) {
             if (user.roles[i].checked) {
@@ -64,6 +65,12 @@ angular.module("myqapp").controller("AdminController", ["$scope", "User", "UserS
             $scope.refresh();
         });
     };
+
+    $scope.saveOldMail = function(user){
+        if(!user.oldMail) {
+            user.oldMail=user.email;
+        }
+    }
 
     $scope.createUser = function (user) {
         var authorities = [];

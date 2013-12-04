@@ -26,10 +26,17 @@ public class UserService {
     }
 
     public void update(String userId, UserProfile userProfile) {
-        UserProfile old = userProfileRepository.findOne(userId);
+        String oldMail = userProfile.getOldMail();
+
+        System.out.println(oldMail);
+
+        UserProfile old = userProfileRepository.findOne(oldMail);
+
         userProfile.setTokenGithub(old.getTokenGithub());
         userProfile.setTokenTrello(old.getTokenTrello());
-        userProfileRepository.delete(userId);
+        userProfile.setOldMail("");
+
+        userProfileRepository.delete(oldMail);
         userProfileRepository.save(userProfile);
     }
 
