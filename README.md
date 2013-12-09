@@ -1,3 +1,5 @@
+Current build status is [![Build Status](https://travis-ci.org/haklop/myqapp.png?branch=dev)](https://travis-ci.org/haklop/myqapp)
+
 # MyQApp Developer Guide
 
 **Always commit on branch dev**
@@ -116,5 +118,3 @@ When something is pushed to master, the application is automatically deployed on
 ### Build
 
 For building the war, use the script build.sh. You must have Nodejs, Bower, Grunt and Maven installed.
-
-Current build status is [![Build Status](https://travis-ci.org/haklop/myqapp.png?branch=dev)](https://travis-ci.org/haklop/myqapp)
