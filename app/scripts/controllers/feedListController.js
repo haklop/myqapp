@@ -21,7 +21,7 @@ angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$r
     } else {
         feedPage = 0;
     }
-    $scope.feeds = Feed.query({"page": feedPage}, function (f) {
+    $scope.feeds = Feed.get({"page": feedPage}, function (f) {
         if (f.length === 0) {
             $scope.refreshFeed();
         } else {
@@ -39,7 +39,7 @@ angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$r
 
             $rootScope.$broadcast("handleAlert", {"title": "Carte ajoutée dans Trello", "type": "success",
                 "content": "", category: "message"});
-            $scope.feeds = Feed.query({"page": feedPage}, function (f) {
+            $scope.feeds = Feed.get({"page": feedPage}, function (f) {
                 $scope.feeds = f;
             });
             feed.addingToTrello = false;
