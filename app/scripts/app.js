@@ -7,6 +7,7 @@ var myqappModule = angular.module("myqapp", ["ngRoute", "myqapi", "ngSanitize"])
             when("/stats", {templateUrl: "views/stats-list.html",   controller: "StatsListCtrl"}).
             when("/users", {templateUrl: "views/stats-user.html",   controller: "StatsUserCtrl"}).
             when("/conf", {templateUrl: "views/conf-list.html",   controller: "ConfListCtrl"}).
+            when("/vote", {templateUrl: "views/vote.html",   controller: "VoteController"}).
             when("/markdown", {templateUrl: "views/markdown-generator.html",   controller: "MarkdownGeneratorCtrl"}).
             when("/admin", {templateUrl: "views/admin.html",   controller: "AdminController"}).
             otherwise({redirectTo: "/feed/0"});
