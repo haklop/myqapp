@@ -3,15 +3,11 @@
 var angularModule = angular.module("myqapi", ["ngResource"]);
 
 angularModule.factory("Feed", ["$resource", function ($resource) {
-    return $resource("api/feed/:page", {}, {
-        query: {method: "GET", isArray: false}
-    });
+    return $resource("api/feed/:page");
 }]);
 
 angularModule.factory("RefreshFeed", ["$resource", function ($resource) {
-    return $resource("api/feed/refresh", {}, {
-        query: {method: "GET", isArray: false}
-    });
+    return $resource("api/feed/refresh");
 }]);
 
 angularModule.factory("Trello", ["$resource", function ($resource) {
@@ -21,9 +17,7 @@ angularModule.factory("Trello", ["$resource", function ($resource) {
 }]);
 
 angularModule.factory("TrelloList", ["$resource", function ($resource) {
-    return $resource("api/trello/list/:id", {}, {
-        query: {method: "GET", isArray: false}
-    });
+    return $resource("api/trello/list/:id");
 }]);
 
 angularModule.factory("TrelloValidatedList", ["$resource", function ($resource) {
@@ -37,9 +31,7 @@ angularModule.factory("TrelloMember", ["$resource", function ($resource) {
 }]);
 
 angularModule.factory("TrelloUser", ["$resource", function ($resource) {
-    return $resource("api/trello/member", {}, {
-        query: {method: "GET", isArray: true}
-    });
+    return $resource("api/trello/member");
 }]);
 
 angularModule.factory("Confs", ["$resource", function ($resource) {
@@ -49,15 +41,11 @@ angularModule.factory("Confs", ["$resource", function ($resource) {
 }]);
 
 angularModule.factory("StatsUsers", ["$resource", function ($resource) {
-    return $resource("api/stats/users", {}, {
-        query: {method: "GET", isArray: true}
-    });
+    return $resource("api/stats/users");
 }]);
 
 angularModule.factory("StatsLists", ["$resource", function ($resource) {
-    return $resource("api/stats/lists", {}, {
-        query: {method: "GET", isArray: true}
-    });
+    return $resource("api/stats/lists");
 }]);
 
 angularModule.factory("Stats", ["$resource", function ($resource) {
@@ -73,9 +61,7 @@ angularModule.factory("MarkdownGenerator", ["$resource", function ($resource) {
 }]);
 
 angularModule.factory("GithubRaw", ["$resource", function ($resource) {
-    return $resource("api/github/raw", {}, {
-        query: {method: "GET", isArray: false}
-    });
+    return $resource("api/github/raw");
 }]);
 
 angularModule.factory("User", ["$resource", function ($resource) {
@@ -83,8 +69,7 @@ angularModule.factory("User", ["$resource", function ($resource) {
         findAll: {method: "GET", isArray: true},
         query: {method: "GET", isArray: false},
         create: {method: "POST"},
-        update: {method: "PUT"},
-        remove: {method: "DELETE"}
+        update: {method: "PUT"}
     });
 }]);
 
