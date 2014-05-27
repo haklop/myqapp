@@ -19,7 +19,7 @@ angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "Markdow
 
     $scope.fetchRaw = function (githubUrl, isArticle, nodeName) {
         $scope.selectedUrl = githubUrl;
-        GithubRaw.query({url: githubUrl}, function (result) {
+        GithubRaw.get({url: githubUrl}, function (result) {
             $scope.generated = "";
             $scope.markdown.text = result.content;
             $scope.markdown.type = isArticle ? "article" : "news";
