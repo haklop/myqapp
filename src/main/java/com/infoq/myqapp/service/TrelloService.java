@@ -3,8 +3,6 @@ package com.infoq.myqapp.service;
 import com.infoq.myqapp.domain.FeedEntry;
 import com.infoq.myqapp.domain.TrelloLabel;
 import com.infoq.myqapp.domain.ValidatedContent;
-import com.infoq.myqapp.domain.trello.Author;
-import com.infoq.myqapp.repository.AuthorRepository;
 import com.infoq.myqapp.repository.FeedRepository;
 import com.infoq.myqapp.service.exception.CardConflictException;
 import com.julienvey.trello.Trello;
@@ -46,9 +44,6 @@ public class TrelloService {
     @Resource
     private FeedRepository feedRepository;
 
-    @Resource
-    private AuthorRepository authorRepository;
-
     public void addCardToTrello(FeedEntry feedEntry, Token accessToken) {
         FeedEntry entry = feedRepository.findOne(feedEntry.getLink());
         if (entry != null && entry.isAddedInTrello())
@@ -70,13 +65,6 @@ public class TrelloService {
         feedRepository.save(feedEntry);
     }
 
-    public List<TList> getLists(Token accessToken) {
-        Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
-        Board board = trelloApi.getBoard(trelloBoardForStatsId);
-
-        return board.fetchLists(arg("cards", "all"));
-    }
-
     public TList getList(Token accessToken, String listId) {
         Trello trelloApi = new TrelloImpl(trelloKey, accessToken.getToken());
         return trelloApi.getList(listId, arg("cards", "all"));
@@ -96,10 +84,6 @@ public class TrelloService {
         Board board = trelloApi.getBoard(trelloBoardForStatsId);
 
         return board.fetchMembers();
-    }
-
-    public Member getUserInfo(Token accessToken) {
-        return getUserInfo("me", accessToken);
     }
 
     public List<ValidatedContent> enhancedValidatedContentList(TList list) {
@@ -125,22 +109,6 @@ public class TrelloService {
                         content.setMentoring(true);
                         break;
                 }
-            }
-
-            int i = 0;
-            for (String memberId : card.getIdMembers()) {
-                Author trelloMember = authorRepository.findOne(memberId);
-                if (trelloMember != null) {
-                    if (i == 0 && !content.isMentoring()) {
-                        content.setAuthor(trelloMember);
-                    } else if (i == 0) {
-                        content.setValidator(trelloMember);
-                        content.setMentor(trelloMember);
-                    } else if (i == 1) {
-                        content.setValidator(trelloMember);
-                    }
-                }
-                i++;
             }
 
             List<String> urls = extractUrls(card.getDesc());

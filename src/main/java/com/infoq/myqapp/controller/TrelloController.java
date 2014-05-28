@@ -69,39 +69,6 @@ public class TrelloController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/lists")
-    public ResponseEntity getLists(WebRequest request) {
-        Token accessToken = getToken(request);
-        if (accessToken == null || accessToken.isEmpty()) {
-            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is missing"),
-                    HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            return new ResponseEntity<>(trelloService.getLists(accessToken), HttpStatus.OK);
-        } catch (HttpClientErrorException e) {
-            return catchClientException(e);
-        }
-
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/list/{listId}")
-    @ResponseBody
-    public ResponseEntity getListById(@PathVariable String listId, WebRequest request) {
-        Token accessToken = getToken(request);
-        if (accessToken == null || accessToken.isEmpty()) {
-            return new ResponseEntity<>(new ErrorMessage(HttpStatus.FORBIDDEN.value(), "trelloToken", "Trello token is missing"),
-                    HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            return new ResponseEntity<>(trelloService.getList(accessToken, listId), HttpStatus.OK);
-        } catch (HttpClientErrorException e) {
-            return catchClientException(e);
-        }
-
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "/validated")
     @ResponseBody
     public ResponseEntity getValidatedContent(WebRequest request) {

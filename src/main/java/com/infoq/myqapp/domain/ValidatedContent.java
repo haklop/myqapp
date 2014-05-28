@@ -1,7 +1,5 @@
 package com.infoq.myqapp.domain;
 
-import com.infoq.myqapp.domain.trello.Author;
-
 import java.util.Date;
 
 public class ValidatedContent {
@@ -19,20 +17,12 @@ public class ValidatedContent {
     private boolean isOriginal;
     private boolean isMentoring;
 
-    private Author author;
-    private Author mentor;
-    private Author validator;
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getDateLastActivity() {
-        return dateLastActivity;
     }
 
     public void setDateLastActivity(Date dateLastActivity) {
@@ -93,29 +83,5 @@ public class ValidatedContent {
 
     public void setMentoring(boolean mentoring) {
         isMentoring = mentoring;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
-    public Author getMentor() {
-        return mentor;
-    }
-
-    public void setMentor(Author mentor) {
-        this.mentor = mentor;
-    }
-
-    public Author getValidator() {
-        return validator;
-    }
-
-    public void setValidator(Author validator) {
-        this.validator = validator;
     }
 }
