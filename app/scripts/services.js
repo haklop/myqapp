@@ -2,14 +2,6 @@
 
 var angularModule = angular.module("myqapi", ["ngResource"]);
 
-angularModule.factory("TrelloList", ["$resource", function ($resource) {
-    return $resource("api/trello/list/:id");
-}]);
-
-angularModule.factory("TrelloValidatedList", ["$resource", function ($resource) {
-    return $resource("api/trello/validated");
-}]);
-
 angularModule.factory("TrelloMember", ["$resource", function ($resource) {
     return $resource("api/trello/userinfo", {}, {
         query: {method: "GET"}

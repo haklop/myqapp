@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "MarkdownGenerator", "TrelloValidatedList", "GithubRaw", function ($scope, MarkdownGenerator, TrelloValidatedList, GithubRaw) {
+angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "MarkdownGenerator", "trelloService", "GithubRaw", function ($scope, MarkdownGenerator, trelloService, GithubRaw) {
     $scope.markdown = {};
     $scope.cards = [];
     $scope.cardsNoGithub = [];
@@ -37,7 +37,7 @@ angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "Markdow
     $scope.retrieveList = function retrieveList() {
         $scope.isRefreshing = true;
 
-        TrelloValidatedList.query(function (result) {
+        trelloService.getValidatedArticle(function (result) {
             $scope.isRefreshing = false;
 
             $scope.cards = [];
