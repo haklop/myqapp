@@ -4,14 +4,21 @@ angularModule.service("userService", ["trelloService", function (trelloService) 
     this._isEditor = false;
     this._isAdmin = false;
 
-    this.query = function () {
+    this.query = function (callback) {
         if (!self.member) {
             self.member = trelloService.getTrelloMemberInformation(function(result){
                 self._isEditor = self.hasAuthority(result, "ROLE_EDITOR");
                 self._isAdmin = self.hasAuthority(result, "ROLE_ADMIN");
+
+                if (callback) {
+                    callback(result);
+                }
             });
+        } else {
+            if (callback) {
+                callback(self.member);
+            }
         }
-        return self.member;
     };
 
     this.isEditor = function () {
