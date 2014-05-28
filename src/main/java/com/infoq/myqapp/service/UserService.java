@@ -28,8 +28,6 @@ public class UserService {
     public void update(String userId, UserProfile userProfile) {
         String oldMail = userProfile.getOldMail();
 
-        System.out.println(oldMail);
-
         UserProfile old = userProfileRepository.findOne(oldMail);
 
         userProfile.setTokenGithub(old.getTokenGithub());
