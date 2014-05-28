@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("myqapp", ["ngRoute", "myqapi", "ngSanitize"]).
+angular.module("myqapp", ["ngRoute", "ngResource", "myqapi", "ngSanitize"]).
     config(["$routeProvider", function($routeProvider) {
         $routeProvider.
             when("/feed/:page", {templateUrl: "views/feed-list.html",   controller: "FeedListCtrl"}).

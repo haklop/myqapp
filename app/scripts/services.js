@@ -2,14 +2,6 @@
 
 var angularModule = angular.module("myqapi", ["ngResource"]);
 
-angularModule.factory("Feed", ["$resource", function ($resource) {
-    return $resource("api/feed/:page");
-}]);
-
-angularModule.factory("RefreshFeed", ["$resource", function ($resource) {
-    return $resource("api/feed/refresh");
-}]);
-
 angularModule.factory("Trello", ["$resource", function ($resource) {
     return $resource("api/trello/card", {}, {
         add: {method: "POST"}

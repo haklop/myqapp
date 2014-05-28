@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$routeParams", "Feed", "RefreshFeed", "Trello", "UserService", function ($scope, $rootScope, $routeParams, Feed, RefreshFeed, Trello, UserService) {
+angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$routeParams", "feedService", "Trello", "UserService", function ($scope, $rootScope, $routeParams, feedService, Trello, UserService) {
 
     var types = [
         {"name": "News", "selected": true},
@@ -21,11 +21,12 @@ angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$r
     } else {
         feedPage = 0;
     }
-    $scope.feeds = Feed.get({"page": feedPage}, function (f) {
-        if (f.length === 0) {
+
+    $scope.feeds = feedService.getFeedList(feedPage, function (feeds) {
+        if (feeds.length === 0) {
             $scope.refreshFeed();
         } else {
-            $scope.feeds = f;
+            $scope.feeds = feeds;
         }
     });
 
@@ -39,8 +40,8 @@ angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$r
 
             $rootScope.$broadcast("handleAlert", {"title": "Carte ajoutée dans Trello", "type": "success",
                 "content": "", category: "message"});
-            $scope.feeds = Feed.get({"page": feedPage}, function (f) {
-                $scope.feeds = f;
+            $scope.feeds = feedService.getFeedList(feedPage, function (feeds) {
+                $scope.feeds = feeds;
             });
             feed.addingToTrello = false;
         }, function (response) {
@@ -68,9 +69,9 @@ angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$r
 
     $scope.refreshFeed = function () {
         $scope.feedRefreshing = true;
-        RefreshFeed.get(function (f) {
+        feedService.refreshFeed(function (feeds) {
             $scope.feedRefreshing = false;
-            $scope.feeds = f;
+            $scope.feeds = feeds;
             $rootScope.$broadcast("handleAlert", {"title": "Mise à jour terminée", "type": "success", "content": "", category: "message"});
         });
     };
