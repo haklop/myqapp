@@ -1,6 +1,6 @@
 "use strict";
 
-var myqappModule = angular.module("myqapp", ["ngRoute", "myqapi", "ngSanitize"]).
+angular.module("myqapp", ["ngRoute", "myqapi", "ngSanitize"]).
     config(["$routeProvider", function($routeProvider) {
         $routeProvider.
             when("/feed/:page", {templateUrl: "views/feed-list.html",   controller: "FeedListCtrl"}).
@@ -10,23 +10,7 @@ var myqappModule = angular.module("myqapp", ["ngRoute", "myqapi", "ngSanitize"])
             otherwise({redirectTo: "/feed/0"});
     }]);
 
-myqappModule.directive("previewInfoq", function () {
-    return {
-        restrict: "A",
-        replace: true,
-        transclude: false,
-        scope: { content:"@preview" },
-        template: "<div class=\"preview\">" +
-            "<div id=\"content\">" +
-            "<div class=\"article_page_left news_container text_content_container\">" +
-            "<div class=\"text_info\" ng-bind-html=\"content\"></div>" +
-            "</div>" +
-            "</div>" +
-            "</div>"
-    };
-});
-
-myqappModule.factory("httpInterceptor", ["$q", "$rootScope", function ($q, $rootScope) {
+angular.module("myqapp").factory("httpInterceptor", ["$q", "$rootScope", function ($q, $rootScope) {
     return function (promise) {
         return promise.then(function (response) {
             return response;
@@ -67,6 +51,6 @@ myqappModule.factory("httpInterceptor", ["$q", "$rootScope", function ($q, $root
     };
 }]);
 
-myqappModule.config(["$httpProvider", function ($httpProvider) {
+angular.module("myqapp").config(["$httpProvider", function ($httpProvider) {
     $httpProvider.responseInterceptors.push("httpInterceptor");
 }]);
