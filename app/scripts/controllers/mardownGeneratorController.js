@@ -50,14 +50,6 @@ angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "Markdow
                 } else {
                     $scope.cardsNoGithub.push(card);
                 }
-
-                if (card.mentoring) {
-                    card.avatarUrl = card.mentor.avatarUrl;
-                    card.fullName = card.mentor.fullName;
-                } else {
-                    card.avatarUrl = card.author.avatarUrl;
-                    card.fullName = card.author.fullName;
-                }
             }
         }, function () {
             $scope.isRefreshing = false;
