@@ -63,5 +63,5 @@ angular.module("myqapp").service("userService", ["trelloService", "$resource", f
 
     this.createUser = function(user, successCallback, errorCallback) {
         adminResource.create(user, successCallback, errorCallback);
-    }
+    };
 }]);

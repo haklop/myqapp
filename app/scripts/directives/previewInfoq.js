@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module("myqapp").directive("previewInfoq", function () {
     return {
         restrict: "A",
