@@ -1,19 +1,11 @@
 angular.module("myqapi").service("feedService", ["$resource", FeedService]);
 
 function FeedService($resource) {
-    this.getFeedList = function(pageNumber, callback) {
-        return $resource("api/feed/:page").get({"page": pageNumber}, function (feeds) {
-            if (callback) {
-                callback(feeds);
-            }
-        });
+    this.getFeedList = function(pageNumber, successCallback, errorCallback) {
+        return $resource("api/feed/:page").get({"page": pageNumber}, successCallback, errorCallback);
     };
 
-    this.refreshFeed = function(callback) {
-        $resource("api/feed/refresh").get(function(feeds) {
-           if (callback) {
-               callback(feeds);
-           }
-        });
+    this.refreshFeed = function(successCallback, errorCallback) {
+        $resource("api/feed/refresh").get(successCallback);
     };
 }
