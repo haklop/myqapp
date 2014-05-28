@@ -68,7 +68,7 @@ angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$r
 
     $scope.refreshFeed = function () {
         $scope.feedRefreshing = true;
-        RefreshFeed.query(function (f) {
+        RefreshFeed.get(function (f) {
             $scope.feedRefreshing = false;
             $scope.feeds = f;
             $rootScope.$broadcast("handleAlert", {"title": "Mise à jour terminée", "type": "success", "content": "", category: "message"});
