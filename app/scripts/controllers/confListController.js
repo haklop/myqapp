@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("myqapp").controller("ConfListCtrl", ["$scope", "$rootScope", "Confs", "userService", function ($scope, $rootScope, Confs, userService) {
+angular.module("myqapp").controller("ConfListCtrl", ["$scope", "$rootScope", "confService", "userService", function ($scope, $rootScope, confService, userService) {
     $scope.newconf = {};
 
     $scope.isEditor = userService.isEditor;
@@ -14,7 +14,7 @@ angular.module("myqapp").controller("ConfListCtrl", ["$scope", "$rootScope", "Co
                 location: $scope.newconf.location,
                 website: $scope.newconf.website
             };
-            Confs.save(confToSubmit, function () {
+            confService.createConf(confToSubmit, function () {
                 $rootScope.$broadcast("handleAlert", {"title": "Conference ajoutée", "type": "success", "content": "",
                     category: "message"});
                 $scope.newconf = {};
@@ -39,6 +39,7 @@ angular.module("myqapp").controller("ConfListCtrl", ["$scope", "$rootScope", "Co
         $("#conf-calendar").fullCalendar("today");
     };
 
+    // TODO directive
     $("#conf-calendar").fullCalendar({
         header: {
             left: "",
