@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "MarkdownGenerator", "trelloService", "GithubRaw", function ($scope, MarkdownGenerator, trelloService, GithubRaw) {
+angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "markdownService", "trelloService", function ($scope, markdownService, trelloService) {
     $scope.markdown = {};
     $scope.cards = [];
     $scope.cardsNoGithub = [];
@@ -8,7 +8,7 @@ angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "Markdow
     $scope.generateHtml = function () {
         $scope.isGeneratingHtml = true;
         if ($scope.markdown.text) {
-            MarkdownGenerator.generate(JSON.stringify($scope.markdown), function (result) {
+            markdownService.generateHtml(JSON.stringify($scope.markdown), function (result) {
                 $scope.generated = result.value;
                 $scope.isGeneratingHtml = false;
             }, function () {
@@ -19,7 +19,7 @@ angular.module("myqapp").controller("MarkdownGeneratorCtrl", ["$scope", "Markdow
 
     $scope.fetchRaw = function (githubUrl, isArticle, nodeName) {
         $scope.selectedUrl = githubUrl;
-        GithubRaw.get({url: githubUrl}, function (result) {
+        markdownService.getMarkdownFromGitHub(githubUrl, function (result) {
             $scope.generated = "";
             $scope.markdown.text = result.content;
             $scope.markdown.type = isArticle ? "article" : "news";
