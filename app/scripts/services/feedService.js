@@ -6,6 +6,6 @@ function FeedService($resource) {
     };
 
     this.refreshFeed = function(successCallback, errorCallback) {
-        $resource("api/feed/refresh").get(successCallback);
+        $resource("api/feed/refresh").get({}, successCallback, errorCallback);
     };
 }

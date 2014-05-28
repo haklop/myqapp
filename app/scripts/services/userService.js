@@ -1,17 +1,17 @@
-angularModule.service("userService", ["TrelloMember", function (TrelloMember) {
+angularModule.service("userService", ["trelloService", function (trelloService) {
 
     var self = this;
-    this._isEditor = true;
-    this._isEditor = true;
+    this._isEditor = false;
+    this._isAdmin = false;
 
     this.query = function () {
-        if (!this.member) {
-            this.member = TrelloMember.query(function(result){
+        if (!self.member) {
+            self.member = trelloService.getTrelloMemberInformation(function(result){
                 self._isEditor = self.hasAuthority(result, "ROLE_EDITOR");
                 self._isAdmin = self.hasAuthority(result, "ROLE_ADMIN");
             });
         }
-        return this.member;
+        return self.member;
     };
 
     this.isEditor = function () {

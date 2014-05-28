@@ -8,4 +8,8 @@ function TrelloService($resource) {
     this.getValidatedArticle = function(successCallback, errorCallback) {
         $resource("api/trello/validated").query(successCallback, errorCallback);
     };
+
+    this.getTrelloMemberInformation = function(successCallback, errorCallback) {
+        $resource("api/trello/userinfo").get({}, successCallback, errorCallback);
+    };
 }
