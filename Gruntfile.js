@@ -1,11 +1,4 @@
-// Generated on 2013-10-20 using generator-angular 0.5.0
 "use strict";
-
-// # Globbing
-// for performance reasons we"re only matching one level down:
-// "test/spec/{,*/}*.js"
-// use this if you want to recursively match all subfolders:
-// "test/spec/**/*.js"
 
 module.exports = function (grunt) {
     require("load-grunt-tasks")(grunt);
@@ -16,23 +9,6 @@ module.exports = function (grunt) {
             // configurable paths
             app: require("./bower.json").appPath || "app",
             dist: "target-grunt"
-        },
-        watch: {
-            styles: {
-                files: ["<%= yeoman.app %>/styles/{,*/}*.css"],
-                tasks: ["copy:styles", "autoprefixer"]
-            },
-            livereload: {
-                options: {
-                    livereload: "<%= connect.options.livereload %>"
-                },
-                files: [
-                    "<%= yeoman.app %>/{,*/}*.html",
-                    ".tmp/styles/{,*/}*.css",
-                    "{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js",
-                    "<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}"
-                ]
-            }
         },
         autoprefixer: {
             options: ["last 1 version"],
@@ -45,38 +21,6 @@ module.exports = function (grunt) {
                         dest: ".tmp/styles/"
                     }
                 ]
-            }
-        },
-        connect: {
-            options: {
-                port: 9000,
-                // Change this to "0.0.0.0" to access the server from outside.
-                hostname: "localhost",
-                livereload: 35729
-            },
-            livereload: {
-                options: {
-                    open: true,
-                    base: [
-                        ".tmp",
-                        "<%= yeoman.app %>"
-                    ]
-                }
-            },
-            test: {
-                options: {
-                    port: 9001,
-                    base: [
-                        ".tmp",
-                        "test",
-                        "<%= yeoman.app %>"
-                    ]
-                }
-            },
-            dist: {
-                options: {
-                    base: "<%= yeoman.dist %>"
-                }
             }
         },
         clean: {
@@ -223,12 +167,6 @@ module.exports = function (grunt) {
                 "htmlmin"
             ]
         },
-        karma: {
-            unit: {
-                configFile: "karma.conf.js",
-                singleRun: true
-            }
-        },
         cdnify: {
             dist: {
                 html: ["<%= yeoman.dist %>/*.html"]
@@ -254,35 +192,13 @@ module.exports = function (grunt) {
                     ]
                 }
             }
-        },
-        "bower-install": {
-            target: {
-                html: "<%= yeoman.app %>/index.html",
-                ignorePath: "<%= yeoman.app %>/"
-            }
         }
-    });
-
-    grunt.registerTask("server", function (target) {
-        if (target === "dist") {
-            return grunt.task.run(["build", "connect:dist:keepalive"]);
-        }
-
-        grunt.task.run([
-            "clean:server",
-            "concurrent:server",
-            "autoprefixer",
-            "connect:livereload",
-            "watch"
-        ]);
     });
 
     grunt.registerTask("test", [
         "clean:server",
         "concurrent:test",
         "autoprefixer",
-        "connect:test",
-        "karma"
     ]);
 
     grunt.registerTask("build", [
@@ -297,7 +213,7 @@ module.exports = function (grunt) {
         "cssmin",
         "uglify",
         "rev",
-        "usemin"
+        "usemin",
     ]);
 
     grunt.registerTask("default", [
