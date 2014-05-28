@@ -40,20 +40,6 @@ angularModule.factory("Confs", ["$resource", function ($resource) {
     });
 }]);
 
-angularModule.factory("StatsUsers", ["$resource", function ($resource) {
-    return $resource("api/stats/users");
-}]);
-
-angularModule.factory("StatsLists", ["$resource", function ($resource) {
-    return $resource("api/stats/lists");
-}]);
-
-angularModule.factory("Stats", ["$resource", function ($resource) {
-    return $resource("api/stats/refresh", {}, {
-        refresh: {method: "GET", isArray: false}
-    });
-}]);
-
 angularModule.factory("MarkdownGenerator", ["$resource", function ($resource) {
     return $resource("api/markdown", {}, {
         generate: {method: "POST"}

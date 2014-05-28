@@ -29,8 +29,6 @@
             <a class="pure-menu-heading" href="/">MyQApp</a>
             <ul>
                 <li><a ng-class="{'pure-menu-selected': isActive('/feed')}" href="#/feed">Flux</a></li>
-                <li><a ng-class="{'pure-menu-selected': isActive('/stats')}" href="#/stats">Stats Listes</a></li>
-                <li><a ng-class="{'pure-menu-selected': isActive('/users')}" href="#/users">Stats Contributeurs</a></li>
                 <li><a ng-class="{'pure-menu-selected': isActive('/conf')}" href="#/conf">Conférences</a></li>
                 <li ng-show="isEditor()"><a ng-class="{'pure-menu-selected': isActive('/markdown')}" href="#/markdown">Markdown</a></li>
                 <li ng-show="isAdmin()"><a ng-class="{'pure-menu-selected': isActive('/admin')}" href="#/admin">Admin</a></li>
