@@ -1,14 +1,15 @@
 "use strict";
 
-angular.module("myqapp").controller("AdminController", ["$scope", "User", "userService", function ($scope, User, userService) {
+angular.module("myqapp").controller("AdminController", ["$scope", "userService", function ($scope, userService) {
 
-    $scope.users = User.findAll();
+    $scope.users = userService.findAllUser();
 
     $scope.remove = function (user) {
         var answer = confirm("Voulez-vous vraiment supprimer l'utilisateur " + user.email);
         if (answer) {
-            User.remove({userId: user.email});
-            $scope.refresh();
+            userService.removeUser(user.email, function() {
+                $scope.refresh();
+            });
         }
     };
 
@@ -16,7 +17,7 @@ angular.module("myqapp").controller("AdminController", ["$scope", "User", "userS
 
     $scope.refresh = function () {
         $scope.isRefreshing = true;
-        $scope.users = User.findAll(function () {
+        $scope.users = userService.findAllUser(function () {
             $scope.isRefreshing = false;
         });
     };
@@ -59,7 +60,7 @@ angular.module("myqapp").controller("AdminController", ["$scope", "User", "userS
         }
 
         user.authorities = authorities;
-        User.update({userId: user.email}, user, function () {
+        userService.updateUser(user, function () {
             user.edited = false;
             $scope.refresh();
         });
@@ -80,7 +81,7 @@ angular.module("myqapp").controller("AdminController", ["$scope", "User", "userS
         }
 
         user.authorities = authorities;
-        User.create(user, function () {
+        userService.createUser(user, function () {
             initNewUser();
             $scope.refresh();
         });

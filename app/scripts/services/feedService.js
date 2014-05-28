@@ -1,4 +1,6 @@
-angular.module("myqapi").service("feedService", ["$resource", FeedService]);
+"use strict";
+
+angular.module("myqapp").service("feedService", ["$resource", FeedService]);
 
 function FeedService($resource) {
     this.getFeedList = function(pageNumber, successCallback, errorCallback) {

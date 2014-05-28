@@ -18,6 +18,7 @@ public class UserService {
     }
 
     public void create(UserProfile userProfile) {
+        userProfile.setOldMail(userProfile.getEmail());
         userProfileRepository.save(userProfile);
     }
 
@@ -32,7 +33,7 @@ public class UserService {
 
         userProfile.setTokenGithub(old.getTokenGithub());
         userProfile.setTokenTrello(old.getTokenTrello());
-        userProfile.setOldMail("");
+        userProfile.setOldMail(userProfile.getEmail());
 
         userProfileRepository.delete(oldMail);
         userProfileRepository.save(userProfile);

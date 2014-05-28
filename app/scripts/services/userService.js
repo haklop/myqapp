@@ -1,4 +1,6 @@
-angularModule.service("userService", ["trelloService", function (trelloService) {
+"use strict";
+
+angular.module("myqapp").service("userService", ["trelloService", "$resource", function (trelloService, $resource) {
 
     var self = this;
     this._isEditor = false;
@@ -39,4 +41,27 @@ angularModule.service("userService", ["trelloService", function (trelloService) 
         }
         return false;
     };
+
+    var adminResource = $resource("api/user/:userId", {}, {
+        findAll: {method: "GET", isArray: true},
+        query: {method: "GET", isArray: false},
+        create: {method: "POST"},
+        update: {method: "PUT"}
+    });
+
+    this.removeUser = function(email, successCallback, errorCallback) {
+        adminResource.remove({userId: email}, successCallback, errorCallback);
+    };
+
+    this.findAllUser = function(successCallback, errorCallback) {
+        return adminResource.findAll({}, successCallback, errorCallback);
+    };
+
+    this.updateUser = function(user, successCallback, errorCallback) {
+        adminResource.update({userId: user.email}, user, successCallback, errorCallback);
+    };
+
+    this.createUser = function(user, successCallback, errorCallback) {
+        adminResource.create(user, successCallback, errorCallback);
+    }
 }]);

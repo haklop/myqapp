@@ -1,4 +1,6 @@
-angular.module("myqapi").service("trelloService", ["$resource", TrelloService]);
+"use strict";
+
+angular.module("myqapp").service("trelloService", ["$resource", TrelloService]);
 
 function TrelloService($resource) {
     this.addFeedToTrello = function (feed, successCallback, errorCallback) {

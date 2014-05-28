@@ -1,4 +1,6 @@
-angular.module("myqapi").service("markdownService", ["$resource", MarkdownService]);
+"use strict";
+
+angular.module("myqapp").service("markdownService", ["$resource", MarkdownService]);
 
 function MarkdownService($resource) {
     this.generateHtml = function(html, successCallback, errorCallback) {

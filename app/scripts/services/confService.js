@@ -1,4 +1,6 @@
-angular.module("myqapi").service("confService", ["$resource", ConfService]);
+"use strict";
+
+angular.module("myqapp").service("confService", ["$resource", ConfService]);
 
 function ConfService($resource) {
     this.createConf = function(conf, successCallback, errorCallback) {
