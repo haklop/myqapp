@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("myqapp").controller("AdminController", ["$scope", "User", "UserService", function ($scope, User, UserService) {
+angular.module("myqapp").controller("AdminController", ["$scope", "User", "userService", function ($scope, User, userService) {
 
     $scope.users = User.findAll();
 
@@ -96,7 +96,7 @@ angular.module("myqapp").controller("AdminController", ["$scope", "User", "UserS
     };
 
     $scope.hasAuthority = function(user, role) {
-        return UserService.hasAuthority(user, role);
+        return userService.hasAuthority(user, role);
     };
 
     function initNewUser() {

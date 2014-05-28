@@ -1,9 +1,9 @@
 "use strict";
 
-angular.module("myqapp").controller("ConfListCtrl", ["$scope", "$rootScope", "Confs", "UserService", function ($scope, $rootScope, Confs, UserService) {
+angular.module("myqapp").controller("ConfListCtrl", ["$scope", "$rootScope", "Confs", "userService", function ($scope, $rootScope, Confs, userService) {
     $scope.newconf = {};
 
-    $scope.isEditor = UserService.isEditor;
+    $scope.isEditor = userService.isEditor;
 
     $scope.createConf = function () {
         if ($scope.newconfForm.$valid) {

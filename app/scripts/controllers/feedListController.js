@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$routeParams", "feedService", "trelloService", "UserService", function ($scope, $rootScope, $routeParams, feedService, trelloService, UserService) {
+angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$routeParams", "feedService", "trelloService", "userService", function ($scope, $rootScope, $routeParams, feedService, trelloService, userService) {
 
     var types = [
         {"name": "News", "selected": true},
@@ -13,7 +13,7 @@ angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$r
 
     $scope.types = types;
 
-    $scope.isEditor = UserService.isEditor;
+    $scope.isEditor = userService.isEditor;
 
     var feedPage;
     if ($routeParams.page) {
