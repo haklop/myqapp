@@ -1,25 +1,24 @@
 angular.module("myqapi").service("UserService", ["TrelloMember", function (TrelloMember) {
 
-    var self = this;
     this._isEditor = true;
     this._isEditor = true;
 
     this.query = function () {
         if (!this.member) {
             this.member = TrelloMember.query(function(result){
-                self._isEditor = self.hasAuthority(result, "ROLE_EDITOR");
-                self._isAdmin = self.hasAuthority(result, "ROLE_ADMIN");
-            });
+                this._isEditor = this.hasAuthority(result, "ROLE_EDITOR");
+                this._isAdmin = this.hasAuthority(result, "ROLE_ADMIN");
+            }.bind(this));
         }
         return this.member;
     };
 
     this.isEditor = function () {
-        return self._isEditor;
+        return this._isEditor;
     };
 
     this.isAdmin = function () {
-        return self._isAdmin;
+        return this._isAdmin;
     };
 
     this.hasAuthority = function(user, authority) {
