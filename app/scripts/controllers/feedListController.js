@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$routeParams", "feedService", "Trello", "UserService", function ($scope, $rootScope, $routeParams, feedService, Trello, UserService) {
+angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$routeParams", "feedService", "trelloService", "UserService", function ($scope, $rootScope, $routeParams, feedService, trelloService, UserService) {
 
     var types = [
         {"name": "News", "selected": true},
@@ -36,7 +36,7 @@ angular.module("myqapp").controller("FeedListCtrl", ["$scope", "$rootScope", "$r
 
     $scope.addToTrello = function (feed) {
         feed.addingToTrello = true;
-        Trello.add(feed, function () {
+        trelloService.addFeedToTrello(feed, function () {
 
             $rootScope.$broadcast("handleAlert", {"title": "Carte ajoutée dans Trello", "type": "success",
                 "content": "", category: "message"});

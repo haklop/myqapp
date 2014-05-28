@@ -2,12 +2,6 @@
 
 var angularModule = angular.module("myqapi", ["ngResource"]);
 
-angularModule.factory("Trello", ["$resource", function ($resource) {
-    return $resource("api/trello/card", {}, {
-        add: {method: "POST"}
-    });
-}]);
-
 angularModule.factory("TrelloList", ["$resource", function ($resource) {
     return $resource("api/trello/list/:id");
 }]);
