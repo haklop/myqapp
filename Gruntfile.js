@@ -192,6 +192,12 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        "bower-install": {
+            target: {
+                html: "<%= yeoman.app %>/index.html",
+                ignorePath: "<%= yeoman.app %>/"
+            }
         }
     });
 

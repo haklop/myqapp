@@ -23,10 +23,11 @@
     "load-grunt-tasks": "~0.1.0",
     "grunt-google-cdn": "~0.2.0",
     "grunt-ngmin": "~0.0.2",
-    "time-grunt": "~0.1.0"
+    "time-grunt": "~0.1.0",
+    "grunt-bower-install": "~0.6.1"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   },
   "scripts": {
     "test": "grunt test"
