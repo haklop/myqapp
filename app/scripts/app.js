@@ -30,7 +30,7 @@ angular.module("myqapp").factory("httpInterceptor", ["$q", "$rootScope", functio
                             content: "Données invalides"});
                         break;
                     case "googleAuthentication":
-                        window.location = window.location.pathname + "google-signin.html";
+                        window.location = window.location.pathname + "signin.html";
                         break;
                     case "accessDenied":
                         window.location = window.location.pathname;
