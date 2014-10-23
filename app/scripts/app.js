@@ -48,7 +48,7 @@ myqappModule.factory("httpInterceptor", ["$q", "$rootScope", function ($q, $root
                             content: "Données invalides"});
                         break;
                     case "googleAuthentication":
-                        window.location = window.location.pathname + "google-signin.html";
+                        window.location = window.location.hostname + "/google-signin.html" + window.location.hash;
                         break;
                     case "accessDenied":
                         window.location = window.location.pathname;
